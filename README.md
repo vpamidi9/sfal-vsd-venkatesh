@@ -18,21 +18,17 @@ This program offers a perfect blend of foundational learning, specialization, an
 
 This is a unique opportunity to transform my passion into expertise and advance my career in SoC design and implementation!
 
-## Table of Contents
-
-- [Day 0: System Set Up and Tools Instllation](#installation)
-- [Day 1](#usage)
-- [Day 2](#contributing)
-- [Day 3](#license)
-- [Day 4](#credits)
+## Day To Day Progress
+<details>
+	<summary>Day 0 - System Set Up and Tools Installation </summary>
 
 ## Day 0: System Set Up and Tools Instllation
 
-Instructions on how to install tools, configure, and get the project running.
+**Instructions on how to install tools:**
 
-**Oracle virtual machine link**  - https://www.virtualbox.org/wiki/Downloads  
+Download the Oracle Virtual Machine  - https://www.virtualbox.org/wiki/Downloads  
 
-**System Check**    
+**System Configuration**    
 
     6GB RAM       
     50 GB HDD    
@@ -71,8 +67,8 @@ Instructions on how to install tools, configure, and get the project running.
     $sudo apt-get update    
     $sudo apt install gtkwave    
 
-
 ![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/5d789652-3560-4a5a-8c36-1c9556fea5be)
+
 
 
 

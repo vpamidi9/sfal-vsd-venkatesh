@@ -69,6 +69,28 @@ Download the Oracle Virtual Machine  - https://www.virtualbox.org/wiki/Downloads
 
 ![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/5d789652-3560-4a5a-8c36-1c9556fea5be)
 
+</details>
+
+<details>
+<summary>Day 1 - Introudction to Verilog RTL Design and Synthesis </summary>
+
+
+## Day 1: Introduction to Verilog RTL Design and Synthesis
+
+</details>
+<details> <summary>Day 2 </summary> 
+</details>
+<details>
+
+<summary>Day 3 </summary>
+ 
+</details>
+
+<details>
+
+<summary>Day 4 </summary>
+ 
+</details>
 
 
 

@@ -143,7 +143,7 @@ This command runs the simulation and generates a waveform dump file (in this cas
 
 To view the simulation results, use a waveform viewer like GTKWave. Open GTKWave and load the generated VCD file:
 ```
-$ gtkwave example_tb.vcd
+$ gtkwave tb_good_mux.vcd
 ```
 GTKWave will open, allowing you to inspect the signals and verify the behavior of your design
 

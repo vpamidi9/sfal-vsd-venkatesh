@@ -377,15 +377,506 @@ Glitches can manifest in digital circuits due to factors like signal propagation
 
 </details>
 <details>
-<summary>Day 3 </summary>
- 
+    <summary>Day 3: Combinational and Sequential Optimization </summary>
+    <ul>
+        <li>
+            <details>
+                <summary>Combinational Logic Optimization</summary>
+                <ul>
+                    <li>
+                        <details>
+                            <summary>PART 1: For opt_check Modules</summary>
+                            <p>Step 1</p>
+                            <pre>
+In Yosys, read the library
+<img width="728" alt="Screenshot 2024-05-25 at 10 52 57 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/bf2a8b14-da19-41ff-96ac-ee1fc0572722">
+                            </pre>
+                            <p>Step 2</p>
+                            <pre>
+Read the verilog file for opt_check
+<img width="652" alt="Screenshot 2024-05-25 at 10 55 56 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/1c68e3e0-f349-4a91-9aa0-df769f531e71">
+                            </pre>
+                            <p>Step 3</p>
+                            <pre>
+Define the module to be synthesized
+<img width="286" alt="Screenshot 2024-05-25 at 11 23 08 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/7e9cb74a-e0d5-4779-b786-eb7d62618c60">
+View the number of cells in module
+<img width="420" alt="Screenshot 2024-05-25 at 10 57 03 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/ea4b5d4a-122a-4881-903f-66d5a37996c0">
+                            </pre>
+                            <p>Step 4</p>
+                            <pre>
+Execute opt_clean to remove unused cells and wires                                
+<img width="623" alt="Screenshot 2024-05-25 at 10 57 18 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/b9d682ef-5229-4092-9dff-ac44c408aff0">
+                            </pre>
+                            <p>Step 5</p>
+                            <pre>
+Generate the netlist
+<img width="611" alt="Screenshot 2024-05-25 at 10 57 38 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/4d887668-b080-4942-a05d-5350f1ac6e51">
+Notice the number of cells reduce
+<img width="598" alt="Screenshot 2024-05-25 at 10 57 51 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/78dbf1ca-d2c6-458c-9b3e-8ef595bd0c82">
+                            </pre>
+                            <p>Step 6</p>
+                            <pre>
+Execute show to view the netlist design
+<img width="611" alt="Screenshot 2024-05-25 at 10 58 00 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/0992c28f-063b-4a43-90b0-b2abdfad762b">
+                            </pre>
+                            <p>Step 7</p>
+                            <pre>
+Repeat Steps 2-5 for opt_check2
+Notice the number of cells reduce from before opt_clean to after
+After synth command,
+<img width="418" alt="Screenshot 2024-05-25 at 10 59 48 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/16b97a65-65b6-4b51-ac38-3218c9d2865d">
+After abc command,
+<img width="556" alt="Screenshot 2024-05-25 at 11 00 18 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/17c9dd9f-fd22-4312-bb51-0be49eadb040">
+                            </pre>
+                            <p>Step 8</p>
+                            <pre>
+Execute show to view the netlist design
+<img width="602" alt="Screenshot 2024-05-25 at 11 00 27 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/576287f0-b732-4a4f-a572-0c0fb3d21e93">
+                            </pre>
+                            <p>Step 9</p>
+                            <pre>
+Repeat Steps 2-5 for opt_check3
+Notice the number of cells reduce from before opt_clean to after
+After abc command,
+<img width="497" alt="Screenshot 2024-05-25 at 11 04 17 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/3607a834-f446-462b-ab11-25856870721a">
+                            </pre>
+                            <p>Step 10</p>
+                            <pre>
+Execute show to view the netlist design
+<img width="607" alt="Screenshot 2024-05-25 at 11 04 32 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/21cde162-5510-4588-8bc4-7eeea1b899b2">
+                            </pre>
+                            <p>Step 11</p>
+                            <pre>
+Repeat Steps 2-5 for opt_check4
+Notice the number of cells reduce from before opt_clean to after
+After abc command,
+<img width="577" alt="Screenshot 2024-05-25 at 11 06 52 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/8196fbe3-8fea-47d0-99e3-ab764930e3e5">
+                            </pre>
+                            <p>Step 12</p>
+                            <pre>
+Execute show to view the netlist design
+<img width="599" alt="Screenshot 2024-05-25 at 11 06 59 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/b3d8a2af-1625-43ed-b4dd-4c39cc89c4e1">
+                            </pre>
+                        </details>
+                    </li>
+                    <li>
+                        <details>
+                            <summary>PART 2: multiple_modules Optimization</summary>
+                            <p>Step 1</p>
+                            <pre>
+Read the verilog file for multiple_modules_opt.v
+<img width="744" alt="Screenshot 2024-05-25 at 11 12 50 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/4ef7a599-3701-4953-8c1a-450a923a9876">
+                            </pre>
+                            <p>Step 2</p>
+                            <pre>
+Define the module to be synthesized
+<img width="398" alt="Screenshot 2024-05-25 at 11 12 57 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/73c1c313-ae77-45ad-9814-436b4d1cdebf">
+                            </pre>
+                            <p>Step 3</p>
+                            <pre>
+Flatten the design
+<img width="475" alt="Screenshot 2024-05-25 at 11 13 15 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/7dd4686a-7897-4ba8-8a65-52111a04903d">
+                            </pre>
+                            <p>Step 4</p>
+                            <pre>
+Execute opt_clean to remove unused cells and wires                                
+<img width="635" alt="Screenshot 2024-05-25 at 11 13 21 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/4bfecaba-c49b-4ca9-958e-f1e7486aaa62">
+                            </pre>
+                            <p>Step 5</p>
+                            <pre>
+Generate the netlist 
+<img width="617" alt="Screenshot 2024-05-25 at 11 13 54 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/c7b85d9d-f18d-4992-bf0b-151f22301e3d">
+Notice the number of cells reduce
+<img width="571" alt="Screenshot 2024-05-25 at 11 14 04 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/cf863f0b-27aa-4781-8b36-0e6bd0f6275a">
+                            </pre>
+                            <p>Step 6</p>
+                            <pre>
+Execute show to view the netlist design
+<img width="595" alt="Screenshot 2024-05-25 at 11 14 12 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/83c65d81-da59-49a9-8735-3938a35d7c18">
+                            </pre>
+                            <p>Step 7</p>
+                            <pre>
+Repeat Steps 1-5 for multiple_modules_opt2.v
+Notice the number of cells reduce from before opt_clean to after
+                            </pre>
+                            <p>Step 8</p>
+                            <pre>
+Execute show to view the netlist design
+<img width="353" alt="Screenshot 2024-05-25 at 11 15 33 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/18374a6c-27ec-4bb3-9094-b057cbc6a9e2">
+                            </pre>          
+                        </details>
+                    </li>
+                </ul>
+            </details>
+        </li>
+        <li>
+            <details>
+                <summary>Sequential Logic Optimization</summary>
+                <ul>
+                    <li>
+                        <details>
+                            <summary>PART 1: Dff_const Synthesis</summary>
+                            <p>Step 1</p>
+                            <pre>
+Read the library
+<img width="735" alt="Screenshot 2024-05-25 at 11 54 14 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/c4b43fb9-4a90-4695-842f-d68680ce4f0b">
+                            </pre>
+                            <p>Step 2</p>
+                            <pre>
+Read the verilog file dff_const1.v
+<img width="669" alt="Screenshot 2024-05-25 at 11 54 27 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/e85367f2-5aa3-4692-9684-a5726016a08e">
+                            </pre>          
+                            <p>Step 3</p>
+                            <pre>
+Define the module to be synthesized 
+<img width="306" alt="Screenshot 2024-05-25 at 11 54 52 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/c5e25901-ce0f-4520-9e21-ac1d5bc2666c">
+View the design hierarchy:
+<img width="422" alt="Screenshot 2024-05-25 at 11 55 02 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/80bc0503-0ade-47e4-bb10-a6773c53051f">
+                            </pre>
+                            <p>Step 4</p>
+                            <pre>
+Run dfflibmap to map dff cells to sequential cells
+<img width="870" alt="Screenshot 2024-05-25 at 11 56 14 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/76ce4935-130d-4692-a5b3-211c7211afdc">
+                            </pre>
+                            <p>Step 5</p>
+                            <pre>
+Generate the netlist
+<img width="611" alt="Screenshot 2024-05-25 at 11 57 03 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/4802d8a6-2763-4975-be62-805a4473ac2a">
+                            </pre>
+                            <p>Step 6</p>
+                            <pre>
+run command 'show' to view the design
+<img width="594" alt="Screenshot 2024-05-25 at 11 57 27 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/8dcc75b9-0bc2-43a3-89ae-9b0a1a8b6122">
+                            </pre>
+                            <p>Step 7</p>
+                            <pre>
+Repeat Steps 2-5 for dff_const2.v
+                            </pre>
+                            <p>Step 8</p>
+                            <pre>
+run command 'show' to view the design
+<img width="609" alt="Screenshot 2024-05-26 at 12 02 02 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/481c7486-83c1-4fe3-8301-ba1f930bc791">
+                            </pre>
+                            <p>Step 9</p>
+                            <pre>
+Repeat Steps 2-5 for dff_const3.v
+                            </pre>
+                            <p>Step 10</p>
+                            <pre>
+run command 'show' to view the design
+<img width="1359" alt="Screenshot 2024-05-26 at 12 37 59 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/5f8109ea-1f69-4d4f-bdb5-fb59e37cc882">
+                            </pre>
+                            <p>Step 11</p>
+                            <pre>
+Repeat Steps 2-5 for dff_const4.v
+                            </pre>
+                            <p>Step 12</p>
+                            <pre>
+run command 'show' to view the design
+<img width="616" alt="Screenshot 2024-05-26 at 12 39 53 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/69a155b4-d899-4597-9631-59e497c7edb5">
+                            </pre>
+                        </details>
+                    </li>
+                    <li>
+                        <details>
+                            <summary>PART 2: Sequential optimzations for unused outputs</summary>
+                            <p>Step 1</p>
+                            <pre>
+Read the library
+<img width="744" alt="Screenshot 2024-05-26 at 1 13 14 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/f2b3de6b-a2c1-498b-b957-aec0487c08be">
+                            </pre>
+                            <p>Step 2</p>
+                            <pre>
+Read the verilog file counter_opt.v
+<img width="663" alt="Screenshot 2024-05-26 at 1 13 34 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/c603c612-d903-4e05-ab1d-bde84a52fd3c">
+                            </pre>          
+                            <p>Step 3</p>
+                            <pre>
+Define the module to be synthesized 
+<img width="324" alt="Screenshot 2024-05-26 at 1 13 55 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/1a4979c3-0da7-4cf9-9bb2-a698f2b4c51d">
+View the design hierarchy:
+<img width="407" alt="Screenshot 2024-05-26 at 1 14 07 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/ecd2ad69-1e69-44cf-8403-d8670bf7028e">
+                            </pre>
+                            <p>Step 4</p>
+                            <pre>
+Run dfflibmap to map dff cells to sequential cells
+<img width="873" alt="Screenshot 2024-05-26 at 1 14 39 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/65e34b53-4b7a-4d55-a43f-0cf59489a386">
+                            </pre>
+                            <p>Step 5</p>
+                            <pre>
+Generate the netlist
+<img width="621" alt="Screenshot 2024-05-26 at 1 15 10 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/d4b49572-0224-4ca6-978d-71ace7464ce3">
+                            </pre>
+                            <p>Step 6</p>
+                            <pre>
+run command 'show' to view the design
+<img width="1361" alt="Screenshot 2024-05-26 at 1 15 31 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/26807584-5733-4728-bc9f-de30d5d18d4d">
+                            </pre>
+                            <p>Step 7</p>
+                            <pre>
+Repeat Steps 2-6 for counter_opt2.v
+<img width="425" alt="Screenshot 2024-05-26 at 1 21 36 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/2fdaa020-ca5a-4bf7-9ca2-b4087914ac52">
+                            </pre>
+                            <p>Step 8</p>
+                            <pre>
+run command 'show' to view the design
+<img width="1370" alt="Screenshot 2024-05-26 at 1 22 42 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/848db3bb-35bd-4fd2-8e92-122e76d86f70">
+                            </pre>
+                        </details>
+                    </li>
+                </ul>
+            </details>
+        </li>
+    </ul>
 </details>
+
 
 <details>
-
-<summary>Day 4 </summary>
- 
+    <summary>Day 4: Gate Level Simulation, Synthesis Simulation Mismatch, and Blocking & Non-Blocking Statements </summary>
+    <ul>
+        <li>
+            <details>
+                <summary>Lab on GLS and Synth Simulation Mismatch</summary>
+                <ul>
+                    <li>
+                        <details>
+                            <summary>PART 1: For ternary_operator_mux</summary>
+                            <p>Step 1</p>
+                            <pre>
+Load ternary_operator_mux.v & its testbench to Iverilog.
+<img width="1333" alt="Screenshot 2024-05-26 at 2 25 18 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/5fb664a3-428b-40b5-95c3-6e5e76385d2e">
+                            </pre>
+                            <p>Step 2</p>
+                            <pre>
+Execute a.out file.
+<img width="831" alt="Screenshot 2024-05-26 at 2 25 28 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/0845279c-0fdb-458a-b911-593f7f138990">
+                            </pre>
+                            <p>Step 3</p>
+                            <pre>
+Load the .vcd file genrated into GTKWave.
+<img width="895" alt="Screenshot 2024-05-26 at 2 25 46 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/a17efccf-4528-4b08-856c-e3366dea9441">
+The ternary_operator_mux's behavior is analyzed on GTKWave                            
+<img width="1374" alt="Screenshot 2024-05-26 at 2 26 56 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/b2f81f99-be77-4d8f-8c5f-c76efa0db555">
+                            </pre>
+                            <p>Step 4</p>
+                            <pre>
+Invoke Yosys by using command yosys
+<img width="817" alt="Screenshot 2024-05-26 at 2 27 23 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/5aeace9b-91d1-43df-b7a7-95a22d2f7dca">
+                            </pre>
+                            <p>Step 5</p>
+                            <pre>
+Read the library using read_liberty
+<img width="733" alt="Screenshot 2024-05-26 at 2 27 36 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/c7df753c-4859-4517-b10b-844be452fbc0">
+                            </pre>
+                            <p>Step 6</p>
+                            <pre>
+Read the ternary_operator_mux.v using read_verilog
+<img width="754" alt="Screenshot 2024-05-26 at 2 27 54 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/9bd5d509-2035-4be9-b17f-084f80f58835">
+                            </pre>
+                            <p>Step 7</p>
+                            <pre>
+Define the module that needs to be synthesized
+<img width="397" alt="Screenshot 2024-05-26 at 2 28 29 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/6b23f59f-4e02-43ec-932b-750d183b30f0">
+                            </pre>
+                            <p>Step 8</p>
+                            <pre>
+Generate the netlist using abc command
+<img width="622" alt="Screenshot 2024-05-26 at 2 28 54 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/9565e3d5-66ba-45ef-8464-7cec13c5cdd4">
+                            </pre>
+                            <p>Step 9</p>
+                            <pre>
+Write the netlist to ternary_operator_mux_net.v
+<img width="490" alt="Screenshot 2024-05-26 at 2 29 20 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/61065d52-6532-4a74-b8ae-34b8734fbce6">
+                            </pre>
+                            <p>Step 10</p>
+                            <pre>
+Execute show to view the design
+<img width="609" alt="Screenshot 2024-05-26 at 2 29 30 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/76ee78c8-95fe-47e6-a9aa-ec2b6fa1e9c1">
+                            </pre>
+                            <p>Step 11</p>
+                            <pre>
+Exit yosys and load the ternary_operator_mux_net.v to iverilog.
+<img width="1372" alt="Screenshot 2024-05-26 at 2 32 32 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/30cf677a-e529-4f09-a0e2-7d77f5ab48e5">
+                            </pre>
+                            <p>Step 12</p>
+                            <pre>
+Execute a.out file.
+<img width="829" alt="Screenshot 2024-05-26 at 2 32 47 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/9194b986-d637-4919-9a9a-a66ef5fd8150">
+                            </pre>
+                            <p>Step 13</p>
+                            <pre>
+Load the generated .vcd file into GTKWave
+<img width="1107" alt="Screenshot 2024-05-26 at 2 33 19 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/4b04c1e3-5aff-4937-9670-706364e92fa3">
+                            </pre>
+                            <p>Step 14</p>
+                            <pre>
+Observe the GLS of ternary_operator_mux
+<img width="1357" alt="Screenshot 2024-05-26 at 2 33 52 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/746f372e-4dd9-4da4-a4ff-57836f00945e">
+                            </pre>
+                        </details>
+                    </li>
+                    <li>
+                        <details>
+                            <summary>PART 2: For bad_mux</summary>
+                            <p>Step 1</p>
+                            <pre>
+Load bad_mux.v & its testbench to Iverilog.
+<img width="1072" alt="Screenshot 2024-05-26 at 2 47 47 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/3886f80b-b39e-4f91-9cfb-d7fd26f87a2b">
+                            </pre>
+                            <p>Step 2</p>
+                            <pre>
+Execute a.out file.
+<img width="836" alt="Screenshot 2024-05-26 at 2 47 59 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/80bff7b8-6f38-42e9-b7ee-b527d9e06de7">
+                            </pre>
+                            <p>Step 3</p>
+                            <pre>
+Load the .vcd file genrated into GTKWave.
+<img width="980" alt="Screenshot 2024-05-26 at 2 48 17 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/94c68039-9cd8-435f-b02d-914619642094">
+The bad_mux's behavior is analyzed on GTKWave                            
+<img width="1362" alt="Screenshot 2024-05-26 at 2 49 01 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/cb432d9f-023b-4b28-ac59-c25e9abff098">
+                            </pre>
+                            <p>Step 4</p>
+                            <pre>
+Invoke Yosys by using command yosys
+<img width="815" alt="Screenshot 2024-05-26 at 2 49 12 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/3a80b296-11d9-4150-ae87-17d6d2c971d1">
+                            </pre>
+                            <p>Step 5</p>
+                            <pre>
+Read the library using read_liberty
+<img width="731" alt="Screenshot 2024-05-26 at 2 49 25 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/4e9fade6-5f81-41ac-a5d1-f3dbf9c35e98">
+                            </pre>
+                            <p>Step 6</p>
+                            <pre>
+Read the bad_mux.v using read_verilog
+<img width="756" alt="Screenshot 2024-05-26 at 2 49 40 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/3d74ecc6-a028-4c2f-bf0b-9567d5270b26">
+                            </pre>
+                            <p>Step 7</p>
+                            <pre>
+Define the module that needs to be synthesized
+<img width="268" alt="Screenshot 2024-05-26 at 2 50 33 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/ac8165b4-4a23-46ad-8196-242af9a8a9a8">
+                            </pre>
+                            <p>Step 8</p>
+                            <pre>
+Generate the netlist using abc command
+<img width="612" alt="Screenshot 2024-05-26 at 2 50 51 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/ca4dc976-5645-4c1f-878c-650c93136276">
+                            </pre>
+                            <p>Step 9</p>
+                            <pre>
+Write the netlist to bad_mux_net.v
+<img width="364" alt="Screenshot 2024-05-26 at 2 51 09 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/87c4ebdf-95ff-4a34-847e-d49d5fe62e2a">
+                            </pre>
+                            <p>Step 10</p>
+                            <pre>
+Execute show to view the design
+<img width="603" alt="Screenshot 2024-05-26 at 2 51 21 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/287737a1-3d21-4fde-8578-7a65d568b560">
+                            </pre>
+                            <p>Step 11</p>
+                            <pre>
+Exit yosys and load the bad_mux_net.v to iverilog.
+<img width="1368" alt="Screenshot 2024-05-26 at 2 52 52 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/f4bc8f2c-e08a-4675-be9a-e905b879c28a">
+                            </pre>
+                            <p>Step 12</p>
+                            <pre>
+Execute a.out file.
+<img width="835" alt="Screenshot 2024-05-26 at 2 53 02 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/7813fe2a-bb20-43de-9cf7-ec53c1459f51">
+                            </pre>
+                            <p>Step 13</p>
+                            <pre>
+Load the generated .vcd file into GTKWave
+<img width="979" alt="Screenshot 2024-05-26 at 2 53 25 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/87f26967-6d37-45e9-963e-15d4107e767f">
+                            </pre>
+                            <p>Step 14</p>
+                            <pre>
+Observe the behavior of GLS of ternary_operator_mux due to Simulation Mismatch
+<img width="1365" alt="Screenshot 2024-05-26 at 2 53 59 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/16ececd7-a724-43be-91a3-b394763a3678">
+                            </pre>          
+                        </details>
+                    </li>
+                </ul>
+            </details>
+        </li>
+        <li>
+            <details>
+                <summary>Synthesis Simulation Mismatch</summary>
+                <p>Step 1</p>
+                <pre>
+Load blocking_caveat.v & its testbench to Iverilog.
+<img width="1232" alt="Screenshot 2024-05-26 at 3 20 01 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/98e89aec-e1e0-4371-9865-7f4d46970466">
+                </pre>
+                <p>Step 2</p>
+                <pre>
+Execute a.out file.
+<img width="831" alt="Screenshot 2024-05-26 at 3 20 12 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/cabfbd67-5caf-467e-a4fe-36b9dd3613ae">
+                </pre>
+                <p>Step 3</p>
+                <pre>
+Load the .vcd file genrated into GTKWave.
+<img width="1056" alt="Screenshot 2024-05-26 at 3 20 37 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/cd3b4d01-c92d-40e8-842f-e41fcb512967">
+The blocking_caveat's behavior is analyzed on GTKWave                            
+<img width="1362" alt="Screenshot 2024-05-26 at 3 21 17 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/0313fa9c-df40-46d2-9e31-0e18b9eb5b84">
+                </pre>
+                <p>Step 4</p>
+                <pre>
+Invoke Yosys by using command yosys
+<img width="809" alt="Screenshot 2024-05-26 at 3 21 29 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/45aa14d6-5cc0-4a4d-b629-74bc87fda4fa">
+                </pre>
+                <p>Step 5</p>
+                <pre>
+Read the library using read_liberty
+<img width="727" alt="Screenshot 2024-05-26 at 3 21 43 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/e4aa45a5-c575-4ecc-9fe6-e10553ba31da">
+                </pre>
+                <p>Step 6</p>
+                <pre>
+Read the blocking_caveat.v using read_verilog
+<img width="709" alt="Screenshot 2024-05-26 at 3 21 55 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/2c84de8b-63bc-4394-b833-79569ab86d0c">
+                </pre>
+                <p>Step 7</p>
+                <pre>
+Define the module that needs to be synthesized
+<img width="596" alt="Screenshot 2024-05-26 at 3 23 34 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/886c9129-5cf7-4622-8857-326ffef0597f">
+                </pre>
+                <p>Step 8</p>
+                <pre>
+Generate the netlist using abc command
+<img width="615" alt="Screenshot 2024-05-26 at 3 24 14 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/3035c361-2a06-41ca-8363-5a40d4827d87">
+                </pre>
+                <p>Step 9</p>
+                <pre>
+Write the netlist to blocking_caveat_net.v
+<img width="523" alt="Screenshot 2024-05-26 at 3 25 02 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/cef23d28-8d32-4c0c-941f-a0420db792d6">
+                </pre>
+                <p>Step 10</p>
+                <pre>
+Execute show to view the design
+<img width="603" alt="Screenshot 2024-05-26 at 3 25 14 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/f05de1e7-98ce-4ac3-bbaa-fbf14a31336c">
+                </pre>
+                <p>Step 11</p>
+                <pre>
+Exit yosys and load the blocking_caveat_net.v to iverilog.
+<img width="1370" alt="Screenshot 2024-05-26 at 3 27 05 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/db39196e-3fba-424f-95ad-6b2f2e069d03">
+                </pre>
+                <p>Step 12</p>
+                <pre>
+Execute a.out file.
+<img width="832" alt="Screenshot 2024-05-26 at 3 27 14 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/897f10b8-5491-46d7-a7ff-ca0eac28123a">
+                </pre>
+                <p>Step 13</p>
+                <pre>
+Load the generated .vcd file into GTKWave
+<img width="1059" alt="Screenshot 2024-05-26 at 3 27 38 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/2f6188c0-d262-48f1-a756-24f1c709de6f">
+                </pre>
+                <p>Step 14</p>
+                <pre>
+Observe the behavior of GLS of blocking_caveat due to Simulation Mismatch
+<img width="1357" alt="Screenshot 2024-05-26 at 3 28 12 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/4f2dcd1c-5d73-474e-bf68-12c82ff30205">
+                </pre>
+            </details>
+        </li>
+    </ul>
 </details>
+<!--End of Day 4-->
+
 
 <details>
 
@@ -566,3 +1057,298 @@ How to draw the waveform of the following circuit?
 
 </details>
 
+<details>
+    <summary>Day 6: Introduction to Logic Synthesis</summary>
+    <ul>
+        <li>
+            <details>
+                <summary>Logic Synthesis</summary>
+                <p>What is Logic Synthesis</p>
+                <pre>
+- Logic synthesis takes an RTL description of a circuit and converts it into a netlist of logic gates and their connections.
+- HDL Compiler is used to convert RTL to Generic Boolean (without timing info)
+- Design Compiler is used to convert the Generic Boolean into our Target Technology (with timing info)
+                </pre>
+                <p>What is Design Compiler</p>
+                <pre>
+- Design Compiler (DC) is a EDA tool used for Synthesis made by Synopsys
+- dc_shell is used as the text interface & Design Vision is used as the graphical interface for the users
+- Uses the .db format for library files
+- .ddc files contain design information which can be used across various Synopsys tools
+- Synopsys Design Constraint (SDC) file contains information about design constraints (power, timing and area) and uses TCL script
+                </pre>
+                <p>Design Compiler Flow</p>
+                <pre>
+|  Set & link .db 
+V  Read .v filed
+|  Read SDC
+V  Integrate the Design
+|  Synthesize
+V  Report
+|  Check Quality of Results (qor) files
+V  Write Netlist
+                </pre>
+                <p>Netlist & Libraries</p>
+                <pre>
+- Design is written using standard cells (gates, mux, flops, etc) provided in .db
+- Target Library is the database with standard cell information (area, pin names, timing)
+- Multiple libraries can be appended using link library
+                </pre>
+                <p>Getting Started:</p>
+                <pre>
+- Target & link libraries must be specified.
+- File formats have to be considered.
+- For GUI:
+    design_vision
+- For non-GUI:
+    dc_shell
+- From non-GUI to GUI:
+    gui_start/start_gui
+- .synopsys_dc.setup is used for integrating libraries at startup
+                </pre>
+                <p>TCL Tips</p>
+                <pre>
+- Keep track of bracket types.
+- Referring a variable uses $ at start.
+- Assigning a variable doesn't require $ at start.
+- * is used for matching string of characters
+                </pre>
+            </details>
+        </li>
+        <li>
+            <details>
+                <summary>Design Compiler Introduction</summary>
+                <ul>
+                    <li>
+                        <details>
+                            <summary>PART 1: Invoking DC Basic Setup </summary>
+                            <p>Step 1</p>
+                            <pre>
+Go to work directory
+<img width="272" alt="Screenshot 2024-05-29 at 11 10 10 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/c1898944-c657-4367-9dfe-77669b0735ea">
+                            </pre>
+                            <p>Step 2</p>
+                            <pre>
+Enable C Shell
+<img width="266" alt="Screenshot 2024-05-29 at 11 15 11 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/218718b8-1f4c-4c5d-b3ab-d476a4f039e6">
+                            </pre>          
+                            <p>Step 3</p>
+                            <pre>
+Invoke DC using 'dc_shell'
+<img width="326" alt="Screenshot 2024-05-29 at 11 16 44 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/1ddf90d6-6063-4aba-9b78-d7a9130302d2">
+<img width="1035" alt="Screenshot 2024-05-29 at 11 17 33 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/5c5cb34f-43d4-459f-978e-eeef164e5dcb">
+                            </pre>
+                            <p>Step 4</p>
+                            <pre>
+Read library
+<img width="1095" alt="Screenshot 2024-05-30 at 12 39 11 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/18a875ce-7f44-4c99-ba0c-48f47da0254d">
+                            </pre>
+                            <p>Step 5</p>
+                            <pre>
+Set target library
+<img width="1198" alt="Screenshot 2024-05-29 at 11 38 12 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/f3398dc4-f491-4523-b08d-801678c27e7a">
+                            </pre>
+                            <p>Step 6</p>
+                            <pre>
+Set link library
+<img width="1224" alt="Screenshot 2024-05-29 at 11 40 09 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/1b3cacfd-f359-4f30-94e6-c39d9b9433f2">
+Note: 
+- This step is important to specify the said library for our design.
+- '*' represents the library that is already loaded to DC. This is done to avoid overwriting of existing libraries.
+- If the library was read and set after writing the netlist (Step 7), you can use 'link' after to link the library to the design
+<img width="1314" alt="Screenshot 2024-05-29 at 11 59 30 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/5d833966-4a25-4814-9021-4d700f848ccc">
+                            </pre>
+                            <p>Step 7</p>
+                            <pre>
+You can use echo to check locations of target library and link library
+<img width="953" alt="Screenshot 2024-05-30 at 12 02 34 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/906bda39-e7b9-4c60-8c1f-4f25ee81a205">
+                            </pre>
+                            <p>Step 8</p>
+                            <pre>
+Read verilog
+<img width="1300" alt="Screenshot 2024-05-29 at 11 45 27 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/313fb49e-f4b7-45f9-8ec6-f9dd2589476e">
+Note:
+- The register information tells us that the design is a 1-bit Flip Flop
+                            </pre>
+                            <p>Step 9</p>
+                            <pre>
+Compile the design
+<img width="1112" alt="Screenshot 2024-05-30 at 12 08 13 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/188ec2ad-4474-4ced-9772-fcf4f292505b">
+                            </pre>
+                            <p>Step 10</p>
+                            <pre>
+Write verilog
+<img width="485" alt="Screenshot 2024-05-29 at 11 51 13 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/6e361556-5c2a-4e1a-a4e5-d71d50614840">
+Note:
+- -f refers to the format of the file to be written
+                            </pre>
+                            <p>Step 11</p>
+                            <pre>
+View the written netlist
+<img width="263" alt="Screenshot 2024-05-29 at 11 53 29 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/2711f662-f59a-4f7c-9c0d-cec9f95f8a1f">
+<img width="622" alt="Screenshot 2024-05-30 at 12 11 10 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/5b6be879-a9e0-469f-9f12-db9224510c5b">
+                            </pre>
+                        </details>
+                    </li>
+                    <li>
+                        <details>
+                            <summary>PART 2: Intro to Design Vision</summary>
+                            <p>Step 1</p>
+                            <pre>
+Enable C Shell
+<img width="266" alt="Screenshot 2024-05-29 at 11 15 11 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/218718b8-1f4c-4c5d-b3ab-d476a4f039e6">
+                            </pre>
+                            <p>Step 2</p>
+                            <pre>
+Use 'design_vision' to laugh gui format of Design Compiler
+<img width="358" alt="Screenshot 2024-05-30 at 12 33 34 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/f7241987-1b33-4b8a-8b02-c2eefe976a03">
+<img width="800" alt="Screenshot 2024-05-30 at 12 34 34 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/6cf70b0e-b2ab-4b47-9f17-c9246d91e070">
+                            </pre>
+                            <p>Step 3</p>
+                            <pre>
+Write .ddc in dc_shell
+<img width="334" alt="Screenshot 2024-05-30 at 12 44 08 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/0c1efd7b-1df6-441d-80e4-a1db95c0c52c">
+                            </pre>
+                            <p>Step 4</p>
+                            <pre>
+In design_vision, run 'start_gui'
+<img width="230" alt="Screenshot 2024-05-30 at 12 46 58 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/55918560-bb8c-4560-b7c9-809843f7e67b">
+                            </pre>
+                            <p>Step 5</p>
+                            <pre>
+Read ddc in Design Vision GUI
+<img width="980" alt="Screenshot 2024-05-30 at 12 50 39 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/264a0f84-f367-4811-ad4a-83a2177edd5d">
+                            </pre>
+                            <p>Step 6</p>
+                            <pre>
+Open the Schematic View of the design
+<img width="766" alt="Screenshot 2024-05-30 at 12 56 46 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/337b99c6-7f60-4fe5-ad1d-a2d50cfed1da">
+<img width="1414" alt="Screenshot 2024-05-30 at 12 57 35 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/7abb8a0e-d20c-4343-afa8-2d5f69250e49">
+                            </pre>
+                            <p>Step 7</p>
+                            <pre>
+Double-Click on the module to view the standard cells
+<img width="1129" alt="Screenshot 2024-05-30 at 12 58 19 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/57cd7f17-18ac-442b-b67e-aeaa5adbd67c">
+                            </pre>
+                        </details>
+                    </li>
+                    <li>
+                        <details>
+                            <summary>PART 3: Design Compiler Synopsys Setup</summary>
+                            <p>Step 1</p>
+                            <pre>
+Use gvim to open a new file
+<img width="434" alt="Screenshot 2024-05-30 at 1 14 02 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/4597f1e5-0d35-463d-a313-980bab39beb2">
+                            </pre>          
+                            <p>Step 2</p>
+                            <pre>
+Add the following to the file and save
+<img width="891" alt="Screenshot 2024-05-30 at 1 15 36 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/3e6ab3e5-6963-4874-9eb0-0d7564bc6280">
+                            </pre>
+                            <p>Step 3</p>
+                            <pre>
+Enable C Shell
+<img width="266" alt="Screenshot 2024-05-29 at 11 15 11 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/218718b8-1f4c-4c5d-b3ab-d476a4f039e6">
+                            </pre>
+                            <p>Step 4</p>
+                            <pre>
+Invoke DC using 'dc_shell'
+<img width="326" alt="Screenshot 2024-05-29 at 11 16 44 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/1ddf90d6-6063-4aba-9b78-d7a9130302d2">
+<img width="1035" alt="Screenshot 2024-05-29 at 11 17 33 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/5c5cb34f-43d4-459f-978e-eeef164e5dcb">
+                            </pre>
+                            <p>Step 5</p>
+                            <pre>
+Run echo to check target library
+<img width="789" alt="Screenshot 2024-05-30 at 1 17 14 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/7334fef5-3a9f-4c4c-b3af-9f9563294a71">
+Note:
+- Notice that the target library is already set without having to run read_db
+                            </pre>
+                            <p>Step 6</p>
+                            <pre>
+Open the Schematic View of the design
+<img width="766" alt="Screenshot 2024-05-30 at 12 56 46 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/337b99c6-7f60-4fe5-ad1d-a2d50cfed1da">
+<img width="1414" alt="Screenshot 2024-05-30 at 12 57 35 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/7abb8a0e-d20c-4343-afa8-2d5f69250e49">
+                            </pre>
+                            <p>Step 7</p>
+                            <pre>
+Double-Click on the module to view the standard cells
+<img width="1129" alt="Screenshot 2024-05-30 at 12 58 19 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/57cd7f17-18ac-442b-b67e-aeaa5adbd67c">
+                            </pre>
+                        </details>
+                    </li>
+                </ul>
+            </details>
+        </li>
+        <li>
+            <details>
+                <summary>TCL Scripting Lab</summary>
+                <p>Step 1: Basic Commands</p>
+                <pre>
+Run the following commands to understand how to initialize and view variables
+'set i 0' For setting a variable i to a value 0 
+'echo $i' For checking value of i
+'incr i' For incrementing the value of i
+<img width="165" alt="Screenshot 2024-05-31 at 1 30 09 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/5c2790b3-6439-4163-a2ef-c8e348a1a911">
+                </pre>
+                <p>Step 2: Run 'For' Loop</p>
+                <pre>
+Notice the error due to incorrect syntax,
+<img width="427" alt="Screenshot 2024-05-31 at 1 28 53 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/6b152b5f-6e95-4961-97fb-d9983f72a0b5">
+The correct syntax is:
+<img width="401" alt="Screenshot 2024-05-31 at 1 37 41 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/6fa010df-12d3-48d4-91f3-50752522f535">
+The output is:
+<img width="28" alt="Screenshot 2024-05-31 at 1 37 48 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/1149a596-263b-4e3a-9441-38c32a635812">
+                </pre>
+                <p>Step 3: Run 'While' Loop</p>
+                <pre>
+Notice the error due to incorrect syntax,
+<img width="463" alt="Screenshot 2024-05-31 at 1 43 55 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/892ca95e-bb43-4ec7-99f9-b718cce488a5">
+The correct syntax is:
+<img width="249" alt="Screenshot 2024-05-31 at 1 44 52 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/c2707c00-1988-4b32-9232-896b241bdbbe">
+The output is:
+<img width="28" alt="Screenshot 2024-05-31 at 1 37 48 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/2ef02fea-58cb-4b61-93d2-349c767fbf09">
+                </pre>
+                <p>Step 3: Incrementing a variable</p>
+                <pre>
+Another way to increment a value other than the method shown in Step 1 & 2:
+<img width="253" alt="Screenshot 2024-05-31 at 1 49 16 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets//daebf341-0464-4561-8155-4dde2c892758">
+You can verify it by checking the output:
+<img width="24" alt="Screenshot 2024-05-31 at 1 49 45 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/98fb4c55-3777-4b0b-9a5c-de4fa8bf4942">
+                </pre>
+                <p>Step 4: Creating a list</p>
+                <pre>
+Create a list using set command.
+<img width="382" alt="Screenshot 2024-05-31 at 4 05 36 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/340a940d-ab8c-4371-b856-178be9744d3f">
+                </pre>
+                <p>Step 5: Looping through the list</p>
+                <pre>
+Instantiating my_var to each item in the list and printing it out until all the items from the list have been printed
+<img width="28" alt="Screenshot 2024-05-31 at 1 37 48 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/3357d475-d5ce-4259-8b1b-d4d46a187593">
+                </pre>
+                <p>Step 6: Looping through a collection</p>
+                <pre>
+View all AND gates in .db file
+<img width="1434" alt="Screenshot 2024-05-31 at 5 19 00 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/c3209e08-df45-4b3f-bad6-dbfd31172127">
+Instantiate my_var_name as the object name of my_var & print my_var_name
+<img width="581" alt="Screenshot 2024-05-31 at 5 26 37 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/33e5965b-905e-4d76-b4b9-5fbfb71b18a7">
+                </pre>
+                <p>Step 7: Creating a TCL Script from DC</p>
+                <pre>
+Launch gvim from within DC
+<img width="183" alt="Screenshot 2024-05-31 at 9 15 44 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/9262935c-0634-49e9-b7ce-1362fc2365d4">
+Press i to enter 'insert mode' and edit document with few TCL commands to test
+<img width="1282" alt="Screenshot 2024-06-01 at 1 25 23 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/ebbaa3d0-7f7a-4a55-a2e4-b18c1fed3bca">
+Save file as 'myscript.tcl'
+                </pre>
+                <p>Step 8: Executing a TCL Script from DC</p>
+                <pre>
+Source the saved file
+<img width="271" alt="Screenshot 2024-05-31 at 9 29 39 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/6a4b7cf3-b6fd-4373-9667-6837f429c49f">
+View that the output is as expected with all the commands added to myscript.tcl getting executed.
+<img width="1440" alt="Screenshot 2024-06-01 at 1 26 22 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/ecf5c13a-0396-40c4-8627-1ee0272699b9">
+                </pre>
+            </details>
+        </li>
+    </ul>
+</details>
+<!--End of Day 6-->

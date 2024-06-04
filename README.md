@@ -72,6 +72,7 @@ Download the Oracle Virtual Machine  - https://www.virtualbox.org/wiki/Downloads
 </details>
 
 <details>
+	
 <summary>Day 1 - Introudction to Verilog RTL Design and Synthesis </summary>
 
 
@@ -377,7 +378,7 @@ Glitches can manifest in digital circuits due to factors like signal propagation
 
 </details>
 <details>
-    <summary>Day 3: Combinational and Sequential Optimization </summary>
+    <summary>Day 3- Combinational and Sequential Optimization </summary>
     <ul>
         <li>
             <details>
@@ -633,7 +634,7 @@ run command 'show' to view the design
 
 
 <details>
-    <summary>Day 4: Gate Level Simulation, Synthesis Simulation Mismatch, and Blocking & Non-Blocking Statements </summary>
+    <summary>Day 4 - Gate Level Simulation, Synthesis Simulation Mismatch, and Blocking & Non-Blocking Statements </summary>
     <ul>
         <li>
             <details>
@@ -1052,33 +1053,32 @@ How to draw the waveform of the following circuit?
 ![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/cf6875fb-772b-4ea3-93ea-edae230c3902)
 
 
-
-
-
 </details>
 
+
 <details>
-    <summary>Day 6: Introduction to Logic Synthesis</summary>
-    <ul>
-        <li>
-            <details>
-                <summary>Logic Synthesis</summary>
-                <p>What is Logic Synthesis</p>
-                <pre>
+	<summary>Day 6 - Introduction to Logic Synthesis </summary>
+	
+  # Introduction to Logic Synthesis
+    
+	
+## Logic Synthesis
+
+**What is Logic Synthesis**
 - Logic synthesis takes an RTL description of a circuit and converts it into a netlist of logic gates and their connections.
 - HDL Compiler is used to convert RTL to Generic Boolean (without timing info)
 - Design Compiler is used to convert the Generic Boolean into our Target Technology (with timing info)
-                </pre>
-                <p>What is Design Compiler</p>
-                <pre>
+            
+**What is Design Compiler**
+
 - Design Compiler (DC) is a EDA tool used for Synthesis made by Synopsys
 - dc_shell is used as the text interface & Design Vision is used as the graphical interface for the users
 - Uses the .db format for library files
 - .ddc files contain design information which can be used across various Synopsys tools
 - Synopsys Design Constraint (SDC) file contains information about design constraints (power, timing and area) and uses TCL script
-                </pre>
-                <p>Design Compiler Flow</p>
-                <pre>
+             
+**Design Compiler Flow**
+
 |  Set & link .db 
 V  Read .v filed
 |  Read SDC
@@ -1087,15 +1087,16 @@ V  Integrate the Design
 V  Report
 |  Check Quality of Results (qor) files
 V  Write Netlist
-                </pre>
-                <p>Netlist & Libraries</p>
-                <pre>
+              
+**Netlist & Libraries**
+
 - Design is written using standard cells (gates, mux, flops, etc) provided in .db
 - Target Library is the database with standard cell information (area, pin names, timing)
 - Multiple libraries can be appended using link library
-                </pre>
-                <p>Getting Started:</p>
-                <pre>
+  
+**Getting Started:**
+  
+		
 - Target & link libraries must be specified.
 - File formats have to be considered.
 - For GUI:
@@ -1105,250 +1106,302 @@ V  Write Netlist
 - From non-GUI to GUI:
     gui_start/start_gui
 - .synopsys_dc.setup is used for integrating libraries at startup
-                </pre>
-                <p>TCL Tips</p>
-                <pre>
+          
+**TCL Tips**
+              
 - Keep track of bracket types.
 - Referring a variable uses $ at start.
 - Assigning a variable doesn't require $ at start.
-- * is used for matching string of characters
-                </pre>
-            </details>
-        </li>
-        <li>
-            <details>
-                <summary>Design Compiler Introduction</summary>
-                <ul>
-                    <li>
-                        <details>
-                            <summary>PART 1: Invoking DC Basic Setup </summary>
-                            <p>Step 1</p>
-                            <pre>
+- "*" is used for matching string of characters
+
+## Design Compiler Introduction
+
+**PART 1: Invoking DC Basic Setup** 
+
+**Step 1:**
+
 Go to work directory
+
 <img width="272" alt="Screenshot 2024-05-29 at 11 10 10 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/c1898944-c657-4367-9dfe-77669b0735ea">
-                            </pre>
-                            <p>Step 2</p>
-                            <pre>
+
+**Step 2:**
+
 Enable C Shell
+
 <img width="266" alt="Screenshot 2024-05-29 at 11 15 11 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/218718b8-1f4c-4c5d-b3ab-d476a4f039e6">
-                            </pre>          
-                            <p>Step 3</p>
-                            <pre>
+
+**Step 3:**
+
 Invoke DC using 'dc_shell'
+
 <img width="326" alt="Screenshot 2024-05-29 at 11 16 44 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/1ddf90d6-6063-4aba-9b78-d7a9130302d2">
 <img width="1035" alt="Screenshot 2024-05-29 at 11 17 33 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/5c5cb34f-43d4-459f-978e-eeef164e5dcb">
-                            </pre>
-                            <p>Step 4</p>
-                            <pre>
+
+**Step 4:**
+
 Read library
+
 <img width="1095" alt="Screenshot 2024-05-30 at 12 39 11 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/18a875ce-7f44-4c99-ba0c-48f47da0254d">
-                            </pre>
-                            <p>Step 5</p>
-                            <pre>
+
+**Step 5:**
+
 Set target library
+
 <img width="1198" alt="Screenshot 2024-05-29 at 11 38 12 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/f3398dc4-f491-4523-b08d-801678c27e7a">
-                            </pre>
-                            <p>Step 6</p>
-                            <pre>
+
+**Step 6:**
+
 Set link library
+				    
 <img width="1224" alt="Screenshot 2024-05-29 at 11 40 09 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/1b3cacfd-f359-4f30-94e6-c39d9b9433f2">
+
 Note: 
+
 - This step is important to specify the said library for our design.
 - '*' represents the library that is already loaded to DC. This is done to avoid overwriting of existing libraries.
 - If the library was read and set after writing the netlist (Step 7), you can use 'link' after to link the library to the design
+  
 <img width="1314" alt="Screenshot 2024-05-29 at 11 59 30 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/5d833966-4a25-4814-9021-4d700f848ccc">
-                            </pre>
-                            <p>Step 7</p>
-                            <pre>
+
+**Step 7:**
+
 You can use echo to check locations of target library and link library
+
 <img width="953" alt="Screenshot 2024-05-30 at 12 02 34 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/906bda39-e7b9-4c60-8c1f-4f25ee81a205">
-                            </pre>
-                            <p>Step 8</p>
-                            <pre>
+
+**Step 8:**
+
 Read verilog
+
 <img width="1300" alt="Screenshot 2024-05-29 at 11 45 27 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/313fb49e-f4b7-45f9-8ec6-f9dd2589476e">
+
 Note:
+
 - The register information tells us that the design is a 1-bit Flip Flop
-                            </pre>
-                            <p>Step 9</p>
-                            <pre>
+
+**Step 9:**
+
 Compile the design
+
 <img width="1112" alt="Screenshot 2024-05-30 at 12 08 13 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/188ec2ad-4474-4ced-9772-fcf4f292505b">
-                            </pre>
-                            <p>Step 10</p>
-                            <pre>
+
+**Step 10:**
+
 Write verilog
+
 <img width="485" alt="Screenshot 2024-05-29 at 11 51 13 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/6e361556-5c2a-4e1a-a4e5-d71d50614840">
+
 Note:
+
 - -f refers to the format of the file to be written
-                            </pre>
-                            <p>Step 11</p>
-                            <pre>
+ 
+**Step 11:**
+  
 View the written netlist
+
 <img width="263" alt="Screenshot 2024-05-29 at 11 53 29 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/2711f662-f59a-4f7c-9c0d-cec9f95f8a1f">
 <img width="622" alt="Screenshot 2024-05-30 at 12 11 10 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/5b6be879-a9e0-469f-9f12-db9224510c5b">
-                            </pre>
-                        </details>
-                    </li>
-                    <li>
-                        <details>
-                            <summary>PART 2: Intro to Design Vision</summary>
-                            <p>Step 1</p>
-                            <pre>
+
+
+			    
+## PART 2: Intro to Design Vision
+
+**Step 1**
+			    
 Enable C Shell
+
 <img width="266" alt="Screenshot 2024-05-29 at 11 15 11 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/218718b8-1f4c-4c5d-b3ab-d476a4f039e6">
-                            </pre>
-                            <p>Step 2</p>
-                            <pre>
+                          
+**Step 2**
+                         
 Use 'design_vision' to laugh gui format of Design Compiler
+
 <img width="358" alt="Screenshot 2024-05-30 at 12 33 34 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/f7241987-1b33-4b8a-8b02-c2eefe976a03">
 <img width="800" alt="Screenshot 2024-05-30 at 12 34 34 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/6cf70b0e-b2ab-4b47-9f17-c9246d91e070">
-                            </pre>
-                            <p>Step 3</p>
-                            <pre>
+
+**Step 3**
+                           
 Write .ddc in dc_shell
+
 <img width="334" alt="Screenshot 2024-05-30 at 12 44 08 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/0c1efd7b-1df6-441d-80e4-a1db95c0c52c">
-                            </pre>
-                            <p>Step 4</p>
-                            <pre>
+
+**Step 4**
+
 In design_vision, run 'start_gui'
+
 <img width="230" alt="Screenshot 2024-05-30 at 12 46 58 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/55918560-bb8c-4560-b7c9-809843f7e67b">
-                            </pre>
-                            <p>Step 5</p>
-                            <pre>
+
+**Step 5**
+
 Read ddc in Design Vision GUI
+
 <img width="980" alt="Screenshot 2024-05-30 at 12 50 39 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/264a0f84-f367-4811-ad4a-83a2177edd5d">
-                            </pre>
-                            <p>Step 6</p>
-                            <pre>
+                
+**Step 6**
+
 Open the Schematic View of the design
+				    
 <img width="766" alt="Screenshot 2024-05-30 at 12 56 46 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/337b99c6-7f60-4fe5-ad1d-a2d50cfed1da">
 <img width="1414" alt="Screenshot 2024-05-30 at 12 57 35 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/7abb8a0e-d20c-4343-afa8-2d5f69250e49">
-                            </pre>
-                            <p>Step 7</p>
-                            <pre>
+
+**Step 7**
+
 Double-Click on the module to view the standard cells
+
 <img width="1129" alt="Screenshot 2024-05-30 at 12 58 19 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/57cd7f17-18ac-442b-b67e-aeaa5adbd67c">
-                            </pre>
-                        </details>
-                    </li>
-                    <li>
-                        <details>
-                            <summary>PART 3: Design Compiler Synopsys Setup</summary>
-                            <p>Step 1</p>
-                            <pre>
+
+## PART 3: Design Compiler Synopsys Setup
+
+**Step 1**
+
 Use gvim to open a new file
+
 <img width="434" alt="Screenshot 2024-05-30 at 1 14 02 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/4597f1e5-0d35-463d-a313-980bab39beb2">
-                            </pre>          
-                            <p>Step 2</p>
-                            <pre>
+
+**Step 2**
+
 Add the following to the file and save
+
 <img width="891" alt="Screenshot 2024-05-30 at 1 15 36 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/3e6ab3e5-6963-4874-9eb0-0d7564bc6280">
-                            </pre>
-                            <p>Step 3</p>
-                            <pre>
+
+**Step 3**
+
 Enable C Shell
+
 <img width="266" alt="Screenshot 2024-05-29 at 11 15 11 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/218718b8-1f4c-4c5d-b3ab-d476a4f039e6">
-                            </pre>
-                            <p>Step 4</p>
-                            <pre>
+
+**Step 4**
+
 Invoke DC using 'dc_shell'
+				    
 <img width="326" alt="Screenshot 2024-05-29 at 11 16 44 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/1ddf90d6-6063-4aba-9b78-d7a9130302d2">
 <img width="1035" alt="Screenshot 2024-05-29 at 11 17 33 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/5c5cb34f-43d4-459f-978e-eeef164e5dcb">
-                            </pre>
-                            <p>Step 5</p>
-                            <pre>
+
+**Step 5**
+
 Run echo to check target library
+				    
 <img width="789" alt="Screenshot 2024-05-30 at 1 17 14 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/7334fef5-3a9f-4c4c-b3af-9f9563294a71">
+
 Note:
 - Notice that the target library is already set without having to run read_db
-                            </pre>
-                            <p>Step 6</p>
-                            <pre>
+
+**Step 6**
+
 Open the Schematic View of the design
+				    
 <img width="766" alt="Screenshot 2024-05-30 at 12 56 46 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/337b99c6-7f60-4fe5-ad1d-a2d50cfed1da">
 <img width="1414" alt="Screenshot 2024-05-30 at 12 57 35 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/7abb8a0e-d20c-4343-afa8-2d5f69250e49">
-                            </pre>
-                            <p>Step 7</p>
-                            <pre>
+
+**Step 7**
+
 Double-Click on the module to view the standard cells
+				    
 <img width="1129" alt="Screenshot 2024-05-30 at 12 58 19 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/57cd7f17-18ac-442b-b67e-aeaa5adbd67c">
-                            </pre>
-                        </details>
-                    </li>
-                </ul>
-            </details>
-        </li>
-        <li>
-            <details>
-                <summary>TCL Scripting Lab</summary>
-                <p>Step 1: Basic Commands</p>
-                <pre>
+	
+</details>
+ 
+<details>
+	<summary> TCL Scripting Lab </summary>
+
+# TCL Scripting Lab
+
+**Step 1: Basic Commands**
+
 Run the following commands to understand how to initialize and view variables
+
 'set i 0' For setting a variable i to a value 0 
 'echo $i' For checking value of i
 'incr i' For incrementing the value of i
+
 <img width="165" alt="Screenshot 2024-05-31 at 1 30 09 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/5c2790b3-6439-4163-a2ef-c8e348a1a911">
-                </pre>
-                <p>Step 2: Run 'For' Loop</p>
-                <pre>
+               
+**Step 2: Run 'For' Loop**
+                
 Notice the error due to incorrect syntax,
+
 <img width="427" alt="Screenshot 2024-05-31 at 1 28 53 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/6b152b5f-6e95-4961-97fb-d9983f72a0b5">
+
 The correct syntax is:
+
 <img width="401" alt="Screenshot 2024-05-31 at 1 37 41 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/6fa010df-12d3-48d4-91f3-50752522f535">
+
 The output is:
+
 <img width="28" alt="Screenshot 2024-05-31 at 1 37 48 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/1149a596-263b-4e3a-9441-38c32a635812">
-                </pre>
-                <p>Step 3: Run 'While' Loop</p>
-                <pre>
+
+**Step 3: Run 'While' Loop**
+
 Notice the error due to incorrect syntax,
+
 <img width="463" alt="Screenshot 2024-05-31 at 1 43 55 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/892ca95e-bb43-4ec7-99f9-b718cce488a5">
+
 The correct syntax is:
+
 <img width="249" alt="Screenshot 2024-05-31 at 1 44 52 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/c2707c00-1988-4b32-9232-896b241bdbbe">
+
 The output is:
+
 <img width="28" alt="Screenshot 2024-05-31 at 1 37 48 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/2ef02fea-58cb-4b61-93d2-349c767fbf09">
-                </pre>
-                <p>Step 3: Incrementing a variable</p>
-                <pre>
+
+**Step 4: Incrementing a variable**
+
 Another way to increment a value other than the method shown in Step 1 & 2:
+
 <img width="253" alt="Screenshot 2024-05-31 at 1 49 16 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets//daebf341-0464-4561-8155-4dde2c892758">
+
 You can verify it by checking the output:
+
 <img width="24" alt="Screenshot 2024-05-31 at 1 49 45 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/98fb4c55-3777-4b0b-9a5c-de4fa8bf4942">
-                </pre>
-                <p>Step 4: Creating a list</p>
-                <pre>
+
+
+**Step 5: Creating a list**
+
 Create a list using set command.
+
 <img width="382" alt="Screenshot 2024-05-31 at 4 05 36 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/340a940d-ab8c-4371-b856-178be9744d3f">
-                </pre>
-                <p>Step 5: Looping through the list</p>
-                <pre>
+
+**Step 6: Looping through the list**
+
 Instantiating my_var to each item in the list and printing it out until all the items from the list have been printed
+
 <img width="28" alt="Screenshot 2024-05-31 at 1 37 48 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/3357d475-d5ce-4259-8b1b-d4d46a187593">
-                </pre>
-                <p>Step 6: Looping through a collection</p>
-                <pre>
+
+
+**Step 7: Looping through a collection**
+
 View all AND gates in .db file
+
 <img width="1434" alt="Screenshot 2024-05-31 at 5 19 00 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/c3209e08-df45-4b3f-bad6-dbfd31172127">
+
 Instantiate my_var_name as the object name of my_var & print my_var_name
+
 <img width="581" alt="Screenshot 2024-05-31 at 5 26 37 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/33e5965b-905e-4d76-b4b9-5fbfb71b18a7">
-                </pre>
-                <p>Step 7: Creating a TCL Script from DC</p>
-                <pre>
+
+
+**Step 8: Creating a TCL Script from DC**
+
 Launch gvim from within DC
+
 <img width="183" alt="Screenshot 2024-05-31 at 9 15 44 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/9262935c-0634-49e9-b7ce-1362fc2365d4">
+
 Press i to enter 'insert mode' and edit document with few TCL commands to test
+
 <img width="1282" alt="Screenshot 2024-06-01 at 1 25 23 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/ebbaa3d0-7f7a-4a55-a2e4-b18c1fed3bca">
+
 Save file as 'myscript.tcl'
-                </pre>
-                <p>Step 8: Executing a TCL Script from DC</p>
-                <pre>
+
+
+**Step 9: Executing a TCL Script from DC**
+
 Source the saved file
+
 <img width="271" alt="Screenshot 2024-05-31 at 9 29 39 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/6a4b7cf3-b6fd-4373-9667-6837f429c49f">
+
 View that the output is as expected with all the commands added to myscript.tcl getting executed.
+
 <img width="1440" alt="Screenshot 2024-06-01 at 1 26 22 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/ecf5c13a-0396-40c4-8627-1ee0272699b9">
-                </pre>
-            </details>
-        </li>
-    </ul>
-</details>
-<!--End of Day 6-->
+
+  </details>
+
+

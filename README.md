@@ -1122,38 +1122,52 @@ V  Write Netlist
 
 Go to work directory
 
-<img width="272" alt="Screenshot 2024-05-29 at 11 10 10 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/c1898944-c657-4367-9dfe-77669b0735ea">
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/05fd724f-6b7a-4b91-a7c9-d08cf0f2826f)
+
 
 **Step 2:**
 
 Enable C Shell
 
-<img width="266" alt="Screenshot 2024-05-29 at 11 15 11 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/218718b8-1f4c-4c5d-b3ab-d476a4f039e6">
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/ed468576-859b-4aec-a9be-1ac7bb2b786a)
+
 
 **Step 3:**
 
 Invoke DC using 'dc_shell'
 
-<img width="326" alt="Screenshot 2024-05-29 at 11 16 44 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/1ddf90d6-6063-4aba-9b78-d7a9130302d2">
-<img width="1035" alt="Screenshot 2024-05-29 at 11 17 33 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/5c5cb34f-43d4-459f-978e-eeef164e5dcb">
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/e0006db5-dce9-4972-af55-d3affea258f9)
 
 **Step 4:**
 
-Read library
+Read the Design 
 
-<img width="1095" alt="Screenshot 2024-05-30 at 12 39 11 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/18a875ce-7f44-4c99-ba0c-48f47da0254d">
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/fd189762-574c-42d0-b626-39d98ba2c467)
 
+Note:
+
+- The register information tells us that the design is a 1-bit Flip Flop
+- 
 **Step 5:**
 
-Set target library
+Read library
 
-<img width="1198" alt="Screenshot 2024-05-29 at 11 38 12 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/f3398dc4-f491-4523-b08d-801678c27e7a">
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/7bf6ba5d-d903-4ffd-86f2-751fbee19ad3)
 
 **Step 6:**
 
+Set target library
+
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/8d9456a7-e591-4f7a-808e-47ebfc862a6f)
+
+
+**Step 7:**
+
 Set link library
 				    
-<img width="1224" alt="Screenshot 2024-05-29 at 11 40 09 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/1b3cacfd-f359-4f30-94e6-c39d9b9433f2">
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/3ffff2e4-e67e-45d9-82d3-6e82bdd998be)
+
+
 
 Note: 
 
@@ -1161,143 +1175,104 @@ Note:
 - '*' represents the library that is already loaded to DC. This is done to avoid overwriting of existing libraries.
 - If the library was read and set after writing the netlist (Step 7), you can use 'link' after to link the library to the design
   
-<img width="1314" alt="Screenshot 2024-05-29 at 11 59 30 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/5d833966-4a25-4814-9021-4d700f848ccc">
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/29195e36-ae33-4a27-a6c6-5d81188f5bc0)
 
-**Step 7:**
-
-You can use echo to check locations of target library and link library
-
-<img width="953" alt="Screenshot 2024-05-30 at 12 02 34 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/906bda39-e7b9-4c60-8c1f-4f25ee81a205">
 
 **Step 8:**
 
-Read verilog
+You can use echo to check locations of target library and link library
 
-<img width="1300" alt="Screenshot 2024-05-29 at 11 45 27 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/313fb49e-f4b7-45f9-8ec6-f9dd2589476e">
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/fb84601c-ea20-423d-a05e-538e3e0213ad)
 
-Note:
-
-- The register information tells us that the design is a 1-bit Flip Flop
 
 **Step 9:**
 
 Compile the design
 
-<img width="1112" alt="Screenshot 2024-05-30 at 12 08 13 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/188ec2ad-4474-4ced-9772-fcf4f292505b">
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/ecfa5ff2-fcab-486f-816d-54320cf55bf4)
+
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/1d976cf9-7421-4ea4-b89b-8a49d5ecef6f)
+
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/5a2c6fd2-03d3-46a8-82e8-4fcb27105b2e)
+
+
+
 
 **Step 10:**
 
 Write verilog
 
-<img width="485" alt="Screenshot 2024-05-29 at 11 51 13 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/6e361556-5c2a-4e1a-a4e5-d71d50614840">
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/cc2249e8-5f39-48e0-bb51-69916001ec0f)
+
 
 Note:
 
-- -f refers to the format of the file to be written
+- -f refers to the format(verilog) of the file to be written.
  
 **Step 11:**
   
 View the written netlist
 
-<img width="263" alt="Screenshot 2024-05-29 at 11 53 29 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/2711f662-f59a-4f7c-9c0d-cec9f95f8a1f">
-<img width="622" alt="Screenshot 2024-05-30 at 12 11 10 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/5b6be879-a9e0-469f-9f12-db9224510c5b">
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/66c21a3e-bb64-4e3e-b346-95b9e22b4133)
+
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/2487f1dc-b3ff-4064-8040-456244a9beae)
 
 
 			    
 ## PART 2: Intro to Design Vision
 
 **Step 1**
-			    
-Enable C Shell
-
-<img width="266" alt="Screenshot 2024-05-29 at 11 15 11 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/218718b8-1f4c-4c5d-b3ab-d476a4f039e6">
-                          
-**Step 2**
-                         
-Use 'design_vision' to laugh gui format of Design Compiler
-
-<img width="358" alt="Screenshot 2024-05-30 at 12 33 34 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/f7241987-1b33-4b8a-8b02-c2eefe976a03">
-<img width="800" alt="Screenshot 2024-05-30 at 12 34 34 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/6cf70b0e-b2ab-4b47-9f17-c9246d91e070">
-
-**Step 3**
                            
 Write .ddc in dc_shell
 
-<img width="334" alt="Screenshot 2024-05-30 at 12 44 08 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/0c1efd7b-1df6-441d-80e4-a1db95c0c52c">
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/d999cd31-d708-478c-a30a-61cc6ac2dd9d)
+
+**Step 2**
+			    
+Open new tab and enable C Shell
+
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/ed468576-859b-4aec-a9be-1ac7bb2b786a)
+
+                          
+**Step 3**
+                         
+Use 'design_vision' to launch gui format of Design Compiler
+
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/c7194e75-d314-4626-8ed2-9a7a52bd6565)
+
 
 **Step 4**
-
-In design_vision, run 'start_gui'
-
-<img width="230" alt="Screenshot 2024-05-30 at 12 46 58 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/55918560-bb8c-4560-b7c9-809843f7e67b">
-
-**Step 5**
 
 Read ddc in Design Vision GUI
 
-<img width="980" alt="Screenshot 2024-05-30 at 12 50 39 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/264a0f84-f367-4811-ad4a-83a2177edd5d">
-                
-**Step 6**
-
-Open the Schematic View of the design
-				    
-<img width="766" alt="Screenshot 2024-05-30 at 12 56 46 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/337b99c6-7f60-4fe5-ad1d-a2d50cfed1da">
-<img width="1414" alt="Screenshot 2024-05-30 at 12 57 35 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/7abb8a0e-d20c-4343-afa8-2d5f69250e49">
-
-**Step 7**
-
-Double-Click on the module to view the standard cells
-
-<img width="1129" alt="Screenshot 2024-05-30 at 12 58 19 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/57cd7f17-18ac-442b-b67e-aeaa5adbd67c">
-
-## PART 3: Design Compiler Synopsys Setup
-
-**Step 1**
-
-Use gvim to open a new file
-
-<img width="434" alt="Screenshot 2024-05-30 at 1 14 02 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/4597f1e5-0d35-463d-a313-980bab39beb2">
-
-**Step 2**
-
-Add the following to the file and save
-
-<img width="891" alt="Screenshot 2024-05-30 at 1 15 36 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/3e6ab3e5-6963-4874-9eb0-0d7564bc6280">
-
-**Step 3**
-
-Enable C Shell
-
-<img width="266" alt="Screenshot 2024-05-29 at 11 15 11 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/218718b8-1f4c-4c5d-b3ab-d476a4f039e6">
-
-**Step 4**
-
-Invoke DC using 'dc_shell'
-				    
-<img width="326" alt="Screenshot 2024-05-29 at 11 16 44 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/1ddf90d6-6063-4aba-9b78-d7a9130302d2">
-<img width="1035" alt="Screenshot 2024-05-29 at 11 17 33 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/5c5cb34f-43d4-459f-978e-eeef164e5dcb">
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/993077c6-e525-496e-ba38-5e0ce8e7f094)
 
 **Step 5**
 
-Run echo to check target library
+Open the Schematic View of the design and double-click on the module to view the standard cells
 				    
-<img width="789" alt="Screenshot 2024-05-30 at 1 17 14 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/7334fef5-3a9f-4c4c-b3af-9f9563294a71">
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/128e2c23-4b41-44b3-a92d-a3271e1b0d28)
 
-Note:
-- Notice that the target library is already set without having to run read_db
 
-**Step 6**
+**Design Compiler Synopsys Setup**
 
-Open the Schematic View of the design
-				    
-<img width="766" alt="Screenshot 2024-05-30 at 12 56 46 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/337b99c6-7f60-4fe5-ad1d-a2d50cfed1da">
-<img width="1414" alt="Screenshot 2024-05-30 at 12 57 35 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/7abb8a0e-d20c-4343-afa8-2d5f69250e49">
 
-**Step 7**
+Open the file `.synopsys_dc.setup` using gvim. In this file, we can write commands to target and link the library, ensuring that we don't need to set and link the target library manually every time.
 
-Double-Click on the module to view the standard cells
-				    
-<img width="1129" alt="Screenshot 2024-05-30 at 12 58 19 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/57cd7f17-18ac-442b-b67e-aeaa5adbd67c">
+
+
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/32977e52-3883-43fa-b7bb-639019991e78)
+
+
+
+To verify if this works, let's invoke the DC shell and echo our target and link libraries.
+
+
+
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/19d5fa37-213a-492f-8f6b-7bb22ea870a6)
+
+
+
 	
 </details>
  
@@ -1310,97 +1285,75 @@ Double-Click on the module to view the standard cells
 
 Run the following commands to understand how to initialize and view variables
 
-'set i 0' For setting a variable i to a value 0 
-'echo $i' For checking value of i
+'set i 5' For setting a variable i to a value 5 
+'echo $i or puts $i' For checking value of i
 'incr i' For incrementing the value of i
 
-<img width="165" alt="Screenshot 2024-05-31 at 1 30 09 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/5c2790b3-6439-4163-a2ef-c8e348a1a911">
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/752afc67-4e5f-441e-a52c-b8a11207a042)
+
                
 **Step 2: Run 'For' Loop**
+
                 
-Notice the error due to incorrect syntax,
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/ce149b55-1f4c-4ca5-91d6-810e3a00ee0b)
 
-<img width="427" alt="Screenshot 2024-05-31 at 1 28 53 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/6b152b5f-6e95-4961-97fb-d9983f72a0b5">
-
-The correct syntax is:
-
-<img width="401" alt="Screenshot 2024-05-31 at 1 37 41 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/6fa010df-12d3-48d4-91f3-50752522f535">
-
-The output is:
-
-<img width="28" alt="Screenshot 2024-05-31 at 1 37 48 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/1149a596-263b-4e3a-9441-38c32a635812">
 
 **Step 3: Run 'While' Loop**
 
-Notice the error due to incorrect syntax,
-
-<img width="463" alt="Screenshot 2024-05-31 at 1 43 55 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/892ca95e-bb43-4ec7-99f9-b718cce488a5">
-
-The correct syntax is:
-
-<img width="249" alt="Screenshot 2024-05-31 at 1 44 52 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/c2707c00-1988-4b32-9232-896b241bdbbe">
-
-The output is:
-
-<img width="28" alt="Screenshot 2024-05-31 at 1 37 48 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/2ef02fea-58cb-4b61-93d2-349c767fbf09">
-
-**Step 4: Incrementing a variable**
-
-Another way to increment a value other than the method shown in Step 1 & 2:
-
-<img width="253" alt="Screenshot 2024-05-31 at 1 49 16 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets//daebf341-0464-4561-8155-4dde2c892758">
-
-You can verify it by checking the output:
-
-<img width="24" alt="Screenshot 2024-05-31 at 1 49 45 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/98fb4c55-3777-4b0b-9a5c-de4fa8bf4942">
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/d6633c9a-cab2-4760-b461-70575cef3605)
 
 
-**Step 5: Creating a list**
+
+**Step 4: Creating a list**
 
 Create a list using set command.
 
-<img width="382" alt="Screenshot 2024-05-31 at 4 05 36 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/340a940d-ab8c-4371-b856-178be9744d3f">
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/ba50215b-7ed6-4dce-891a-c3d547b462e7)
+
 
 **Step 6: Looping through the list**
 
-Instantiating my_var to each item in the list and printing it out until all the items from the list have been printed
-
-<img width="28" alt="Screenshot 2024-05-31 at 1 37 48 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/3357d475-d5ce-4259-8b1b-d4d46a187593">
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/1c00b3f9-e4f0-4699-8ffb-2f7baf2b740a)
 
 
 **Step 7: Looping through a collection**
 
 View all AND gates in .db file
 
-<img width="1434" alt="Screenshot 2024-05-31 at 5 19 00 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/c3209e08-df45-4b3f-bad6-dbfd31172127">
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/b2c05b88-bbc1-4b95-8cfa-9baf5ab63ca6)
+
 
 Instantiate my_var_name as the object name of my_var & print my_var_name
 
-<img width="581" alt="Screenshot 2024-05-31 at 5 26 37 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/33e5965b-905e-4d76-b4b9-5fbfb71b18a7">
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/0f26a26f-8be1-42ce-8ca8-43c97ad669ee)
+
+
+Note: get_lib_cells, get_object_name and fireach_in_collection are only used in Synopsys.
 
 
 **Step 8: Creating a TCL Script from DC**
 
 Launch gvim from within DC
 
-<img width="183" alt="Screenshot 2024-05-31 at 9 15 44 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/9262935c-0634-49e9-b7ce-1362fc2365d4">
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/a4ebd9cd-da52-4d12-aa12-d48658468cbb)
+
 
 Press i to enter 'insert mode' and edit document with few TCL commands to test
 
-<img width="1282" alt="Screenshot 2024-06-01 at 1 25 23 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/ebbaa3d0-7f7a-4a55-a2e4-b18c1fed3bca">
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/1e7508ae-5513-4bf4-a000-95a457ee00a9)>
 
-Save file as 'myscript.tcl'
+Save file as you would like to, in this case I saved it as testing.tcl
 
 
 **Step 9: Executing a TCL Script from DC**
 
 Source the saved file
 
-<img width="271" alt="Screenshot 2024-05-31 at 9 29 39 PM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/6a4b7cf3-b6fd-4373-9667-6837f429c49f">
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/5e9b63e8-307d-44a1-be45-cce2e055e30e)>
 
 View that the output is as expected with all the commands added to myscript.tcl getting executed.
 
-<img width="1440" alt="Screenshot 2024-06-01 at 1 26 22 AM" src="https://github.com/c-dhanush-p/SFAL-VSD/assets/170220133/ecf5c13a-0396-40c4-8627-1ee0272699b9">
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/d526ccc5-adbb-4eff-b524-9e4662e4c80b)
 
   </details>
 

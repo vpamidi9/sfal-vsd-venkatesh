@@ -22,9 +22,9 @@ This is a unique opportunity to transform my passion into expertise and advance 
 ## Day To Day Progress
 
 <details>
-    <summary>Day 0 - System Set Up and Tools Installation</summary>
+    <summary>🛠️ Day 0 - System Set Up and Tools Installation</summary>
     
-## Day 0: System Set Up and Tools Installation
+## System Set Up and Tools Installation
 
 **Instructions on how to install tools:**
 
@@ -80,9 +80,9 @@ $sudo apt install gtkwave
 </details>
 
 <details>
-    <summary>Day 1 - Introduction to Verilog RTL Design and Synthesis</summary>
+    <summary>🛠️ Day 1 - Introduction to Verilog RTL Design and Synthesis</summary>
 
-## Day 1: Introduction to Verilog RTL Design and Synthesis
+## Introduction to Verilog RTL Design and Synthesis
 
 ### Introduction to iVerilog OpenSource Simulator
 
@@ -222,9 +222,9 @@ yosys> show
 </details>
 
 <details>
-	<summary>Day 2 - Timing libs, Hierarchical vs Flat Synthesis and Efficient Flop Coding Styles </summary>
+	<summary>🛠️Day 2 - Timing libs, Hierarchical vs Flat Synthesis and Efficient Flop Coding Styles </summary>
 
-## Day 2: Timing libs, Hierarchical vs Flat Synthesis and Efficient Flop Coding Styles
+## Timing libs, Hierarchical vs Flat Synthesis and Efficient Flop Coding Styles
 
 ## Introduction to timing.lib
 
@@ -397,7 +397,7 @@ Glitches can manifest in digital circuits due to factors like signal propagation
 </details>
 
 <details>
-    <summary>Day 3- Combinational and Sequential Optimization</summary>
+    <summary>🛠️Day 3- Combinational and Sequential Optimization</summary>
     <ul>
         <li>
             <details>
@@ -600,7 +600,7 @@ Glitches can manifest in digital circuits due to factors like signal propagation
 
 
 <details>
-    <summary>Day 4 - Gate Level Simulation, Synthesis Simulation Mismatch, and Blocking & Non-Blocking Statements </summary>
+    <summary>🛠️ Day 4 - Gate Level Simulation, Synthesis Simulation Mismatch, and Blocking & Non-Blocking Statements </summary>
     <ul>
         <li>
             <details>

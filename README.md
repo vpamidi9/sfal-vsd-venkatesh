@@ -652,6 +652,7 @@ run command 'show' to view the design
 </details>
 
 
+
 <details>
     <summary>Day 4 - Gate Level Simulation, Synthesis Simulation Mismatch, and Blocking & Non-Blocking Statements </summary>
     <ul>
@@ -898,482 +899,281 @@ Observe the behavior of GLS of blocking_caveat due to Simulation Mismatch
 <!--End of Day 4-->
 
 
+
+
 <details>
-
-<summary>Day 5 - Design for Testability (DFT) </summary>
+  <summary>🛠️ Day 5 - Design for Testability (DFT)</summary>
  
-**What is DFT?**
+# **Design for Testability (DFT)**
 
-Design for Testability (DFT) in VLSI refers to a set of techniques and methodologies implemented in the design phase of ICs to ensure that they can be tested effectively after manufacturing. The goal of DFT is to enhance the testability of a design, allowing for the detection and diagnosis of faults, thereby improving yield, reliability, and quality of the ICs.
+### **What is DFT?**
 
-Why DFT?
+Design for Testability (DFT) in VLSI involves techniques to ensure ICs can be effectively tested post-manufacturing, improving yield, reliability, and quality.
 
-DFT is essential for ensuring high-quality, reliable, and cost-effective ICs, enabling efficient manufacturing, debugging, and compliance with industry standards, and supporting the testing of increasingly complex designs.
+### **Why DFT?**
 
-We have 3 main levels of testing after a chip is being fabricated- 
+DFT is essential for:
+- Ensuring high-quality, reliable ICs
+- Efficient manufacturing and debugging
+- Meeting industry standards
+- Supporting testing of complex designs
 
-Wafer-Level Testing: To test individual dies (chips) on a wafer before they are cut and packaged.
+### **Testing Levels:**
+1. **Wafer-Level Testing:** Tests individual dies on a wafer.
+2. **Package-Level Testing (Die-Level):** Tests ICs post-packaging.
+3. **System-Level Testing (Board-Level):** Tests ICs within complete systems.
 
-Package-Level Testing (Die-Level Testing): To test the ICs after they have been packaged but before they are integrated into the final product.
+### **Pros and Cons of DFT:**
 
-System-Level Testing (Board-Level Testing): To test the ICs as part of a complete system or printed circuit board (PCB) to ensure they work correctly in the final application.
+**Pros:**
+- Enhanced Fault Detection
+- Improved Product Quality and Reliability
+- Cost Reduction
+- Increased Yield
+- Simplified Debugging and Diagnosis
 
-We use DFT at the beginning of the design flow exactly during Synthesis.
+**Cons:**
+- Increased Design Complexity
+- Area and Power Overhead
+- Performance Impact
+- Test Development Time
+- Cost of Test Equipment
 
-Pros and Cons of DFT:
+### **Basic Terminologies in DFT:**
 
-Pros - 
-1. Enhanced Fault Detection
-2. Improved Product Quality and Reliability
-3. Cost Reduction
-4. Increased Yield
-5. Simplified Debugging and Diagnosis
+- **Controllability:** Ease of setting a specific internal node to a desired logic value.
+- **Observability:** Ability to observe internal states and outputs.
+- **Fault:** An unintended defect causing incorrect behavior.
+- **Error:** Deviation from expected behavior or functionality.
+- **Failure:** Undesirable outcome during testing indicating a defect.
+- **Fault Coverage:** Percentage of detectable faults in a circuit.
+- **Defect Level:** Severity of defects and corresponding measures during testing.
 
-Cons -
-1. Increased Design Complexity
-2. Area and Power Overhead
-3. Performance Impact
-4. Test Development Time
-5. Cost of Test Equipment
+### **DFT Techniques:**
 
-Basic terminologies in DFT:
+![DFT Techniques](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/a731deb7-aac1-4d9a-8397-90830b5f05ff)
 
-Controllability: It refers to the ease with which a specific internal node or signal within a digital circuit can be set to a desired logic value (0 or 1) through the primary inputs of the circuit. High controllability means that it is relatively easy to control the node's value, whereas low controllability indicates that it is difficult.
+### **Scan Flip-Flops:**
 
-Observability: It refers to the ability to observe the internal states and outputs of a circuit to verify its correct operation and diagnose faults. It is a crucial concept in testing and debugging.
+A scan flip-flop is used in digital circuits for testing and debugging, enabling access to its input and output in scan mode.
 
-Fault: It refers to an unintended defect or anomaly in a digital circuit that causes it to behave incorrectly. Faults can arise from various sources such as manufacturing defects, design errors, or environmental stresses. Identifying and diagnosing these faults is a primary goal of DFT.
+![Scan Flip-Flop](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/c43e74d8-2587-400b-bbcf-57ddf0601da8)
 
-Error: It refers to any deviation or discrepancy from the expected behavior or functionality related to testing, test patterns, or test results.
+### **Scan Chain Techniques:**
 
-Failure: It refers to an undesirable outcome or behavior during the testing process that indicates a defect or fault in the IC being tested.
+1. **Scan Chain Configuration:**
+   - **Serial Connectivity:** Scan flip-flops connected in series.
+   - **Scan-In and Scan-Out:** Test patterns loaded through SI and read through SO.
 
-Fault coverage: It measures the percentage of potential faults within a circuit that can be detected by the applied test patterns. Higher fault coverage indicates a more comprehensive and effective testing strategy.
+2. **Shift Operation:**
+   - **Shift Mode:** Serially loads test patterns into the scan chain.
+   - **Test Pattern Application:** ATPG tools generate and load test patterns for fault detection.
 
-Defect Level: It refers to the severity or criticality of defects that can occur in an IC and the corresponding measures taken to detect and address these defects during testing. 
+3. **Benefits:**
+   - **Improved Testability:** Direct access to internal states.
+   - **Observability and Controllability:** Better control and observation during testing.
+   - **Efficient Debugging:** Allows observation and analysis of internal signals.
 
-DFT techniques:
+4. **Implementation Considerations:**
+   - **Scan Chain Insertion:** Inserted during synthesis using DFT-aware tools.
+   - **Test Pattern Generation:** ATPG tools generate test patterns for fault coverage.
 
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/a731deb7-aac1-4d9a-8397-90830b5f05ff)
+### **ATE Functionality:**
 
-Scan flip-flops:
+Automatic Test Equipment (ATE) is used for testing and validating ICs and PCBs. It integrates ATPG for generating test patterns and applies them to the device under test.
 
-A scan flip-flop, also known as a scan element or scan cell, is a specific type of flip-flop used in digital circuits for testing and debugging purposes, particularly in Design for Testability (DFT) methodologies. 
+![ATE Functionality](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/d1922705-9d20-41b2-8f0a-33597c34d472)
 
-Functionality - 
+### **DFT Compiler Overview:**
 
-Normal Operation:
+![DFT Compiler Overview](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/00dee519-6ff3-4ccb-b087-591b6b242121)
 
-In normal operation, a scan flip-flop behaves like a standard D flip-flop or T flip-flop, depending on its design.
-It stores binary data (0 or 1) based on the clock signal and input data, similar to regular flip-flops used in sequential logic.
+![DFT Compiler](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/177f6250-e888-4787-876a-f816713a3424)
 
-Scan Mode:
+### **Scan Chain Length:**
 
-When a circuit enters scan mode (also called test mode or scan-in/scan-out mode), the behavior of scan flip-flops changes.
-In scan mode, the scan flip-flop allows direct access to its input and output, bypassing the normal data path.
+The length of scan chains varies based on design complexity and testing requirements. Optimal length balances test coverage, test time, data volume, and manufacturability.
 
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/c43e74d8-2587-400b-bbcf-57ddf0601da8)
+### **Waveform Drawing:**
 
-Scan chain techniques:
+For drawing the waveform of a given circuit:
 
-Scan chain techniques are a key aspect of Design for Testability (DFT) in digital circuits, especially for sequential logic elements like flip-flops. They involve connecting multiple scan flip-flops in a chain to facilitate efficient testing and fault diagnosis. Here's an overview of scan chain techniques:
-
-1. Scan Chain Configuration
-
-Serial Connectivity:
-
-Scan flip-flops are connected in series, forming a scan chain or shift register configuration.
-Each scan flip-flop has a dedicated scan input (S) and scan output (Q') for serial data shifting.
-Scan-In and Scan-Out:
-
-The first scan flip-flop in the chain receives test patterns through its scan input (S), referred to as the scan-in (SI) pin.
-The last scan flip-flop in the chain provides the shifted output through its scan output (Q') pin, known as the scan-out (SO) pin.
-
-2. Shift Operation
-
-Shift Mode:
-
-During testing, the circuit enters scan mode, where test patterns are serially loaded into the scan chain.
-The shift operation involves clocking the scan chain to shift test patterns or data through each scan flip-flop in the chain.
-
-Test Pattern Application:
-
-Test patterns generated by Automatic Test Pattern Generation (ATPG) tools or other test sources are loaded into the scan chain serially.
-This allows efficient application of test patterns to the circuit for fault detection and diagnosis.
-
-3. Benefits of Scan Chain Techniques
-
-Improved Testability:
-
-Scan chain techniques enhance the testability of sequential logic elements by providing direct access to internal states.
-They enable thorough testing for manufacturing defects, functional verification, and fault coverage analysis.
-
-Observability and Controllability:
-
-Scan chains improve observability (ability to observe internal signals) and controllability (ability to control internal states) during testing.
-They facilitate the testing of sequential paths, feedback loops, and hard-to-reach nodes that are challenging to test using traditional methods.
-
-Efficient Debugging:
-
-During debugging and fault diagnosis, scan chains allow designers to observe and analyze internal signals at different stages of the chain.
-This enables efficient identification and localization of faults, aiding in debugging efforts and reducing time-to-market.
-
-Support for DFT Techniques:
-
-Scan chains are used in conjunction with other DFT techniques such as Built-In Self-Test (BIST), boundary scan (JTAG), and test pattern generation (ATPG) to achieve comprehensive test coverage.
-They form the backbone of DFT strategies for digital circuits, especially in complex designs and integrated systems.
-
-
-Implementation Considerations
-
-Scan Chain Insertion:
-
-Scan flip-flops and scan chains are inserted into the design during the synthesis phase using DFT-aware synthesis tools.
-Proper placement and routing of scan chains are crucial to minimize area overhead and ensure signal integrity.
-
-Test Pattern Generation:
-
-ATPG tools generate test patterns targeting the scan chains to achieve desired fault coverage and test quality.
-Scan chain configuration and test pattern application are verified through simulation and validation processes.
-
-ATE functionality - 
-
-Automatic Test Equipment (ATE) is a specialized electronic device used in the testing and validation of integrated circuits (ICs), printed circuit boards (PCBs), and electronic systems.
-
-Test Pattern Generation
-
-ATPG Integration:
-
-ATE systems integrate Automatic Test Pattern Generation (ATPG) software or algorithms to generate test patterns for various types of faults.
-ATPG tools create patterns targeting specific fault models (e.g., stuck-at faults, transition faults) to achieve high fault coverage.
-
-Pattern Application:
-
-ATE systems apply generated test patterns to the device under test (DUT), such as ICs or PCBs, using specialized test probes or interfaces.
-Test patterns are applied serially or in parallel, depending on the test requirements and capabilities of the ATE system.
-
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/d1922705-9d20-41b2-8f0a-33597c34d472)
-
-DFT compiler overview - 
-
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/00dee519-6ff3-4ccb-b087-591b6b242121)
-
-
-
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/177f6250-e888-4787-876a-f816713a3424)
-
-
-How long can a Scan chain can be?
-
- Scan chains in modern designs can range from a few scan elements to several hundred or even thousands, depending on the complexity of the design and the specific testing requirements. Designers often perform simulations and analysis to determine the optimal scan chain length that balances test coverage, test time, data volume, and manufacturability considerations. Working closely with ATE vendors and considering industry best practices can also help in determining the appropriate scan chain length for a given design.
-
-How to draw the waveform of the following circuit?
-
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/cf6875fb-772b-4ea3-93ea-edae230c3902)
-
+![Waveform](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/cf6875fb-772b-4ea3-93ea-edae230c3902)
 
 </details>
 
 
 <details>
-	<summary>Day 6 - Introduction to Logic Synthesis </summary>
-	
-  # Introduction to Logic Synthesis
-    
-	
+  <summary>🛠️Day 6 - Introduction to Logic Synthesis</summary>
+
+# Introduction to Logic Synthesis
+
 ## Logic Synthesis
 
-**What is Logic Synthesis**
-- Logic synthesis takes an RTL description of a circuit and converts it into a netlist of logic gates and their connections.
-- HDL Compiler is used to convert RTL to Generic Boolean (without timing info)
-- Design Compiler is used to convert the Generic Boolean into our Target Technology (with timing info)
-            
-**What is Design Compiler**
+### What is Logic Synthesis?
+- Converts RTL description of a circuit into a netlist of logic gates and their connections.
+- **HDL Compiler**: Converts RTL to Generic Boolean (without timing info).
+- **Design Compiler**: Converts Generic Boolean into Target Technology (with timing info).
 
-- Design Compiler (DC) is a EDA tool used for Synthesis made by Synopsys
-- dc_shell is used as the text interface & Design Vision is used as the graphical interface for the users
-- Uses the .db format for library files
-- .ddc files contain design information which can be used across various Synopsys tools
-- Synopsys Design Constraint (SDC) file contains information about design constraints (power, timing and area) and uses TCL script
-             
-**Design Compiler Flow**
+### What is Design Compiler?
+- **Design Compiler (DC)**: EDA tool by Synopsys for Synthesis.
+- **Interfaces**: `dc_shell` (text), Design Vision (graphical).
+- **File Formats**:
+  - `.db`: Library files.
+  - `.ddc`: Design information, used across various Synopsys tools.
+  - **SDC**: Design constraints (power, timing, area), uses TCL script.
 
-|  Set & link .db 
-V  Read .v filed
-|  Read SDC
-V  Integrate the Design
-|  Synthesize
-V  Report
-|  Check Quality of Results (qor) files
-V  Write Netlist
-              
-**Netlist & Libraries**
+### Design Compiler Flow
 
-- Design is written using standard cells (gates, mux, flops, etc) provided in .db
-- Target Library is the database with standard cell information (area, pin names, timing)
-- Multiple libraries can be appended using link library
-  
-**Getting Started:**
-  
-		
-- Target & link libraries must be specified.
-- File formats have to be considered.
-- For GUI:
-    design_vision
-- For non-GUI:
-    dc_shell
-- From non-GUI to GUI:
-    gui_start/start_gui
-- .synopsys_dc.setup is used for integrating libraries at startup
-          
-**TCL Tips**
-              
-- Keep track of bracket types.
-- Referring a variable uses $ at start.
-- Assigning a variable doesn't require $ at start.
-- "*" is used for matching string of characters
+1. Set & link .db
+2. Read .v file
+3. Read SDC
+4. Integrate the Design
+5. Synthesize
+6. Report
+7. Check Quality of Results (qor) files
+8. Write Netlist
+
+### Netlist & Libraries
+
+- Design is written using standard cells (gates, mux, flops, etc.) in `.db`.
+- **Target Library**: Database with standard cell information (area, pin names, timing).
+- Multiple libraries can be appended using link library.
+
+### Getting Started
+
+- **Specify Libraries**: Target & link libraries.
+- **File Formats**:
+  - **GUI**: `design_vision`
+  - **Non-GUI**: `dc_shell`
+  - **Switching to GUI**: `gui_start/start_gui`
+- `.synopsys_dc.setup`: Used for integrating libraries at startup.
+
+### TCL Tips
+
+- Track bracket types.
+- Use `$` to refer a variable.
+- No `$` needed when assigning a variable.
+- `"*"`: Matches string of characters.
 
 ## Design Compiler Introduction
 
-**PART 1: Invoking DC Basic Setup** 
+### PART 1: Invoking DC Basic Setup
 
-**Step 1:**
+1. **Go to work directory**: ![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/05fd724f-6b7a-4b91-a7c9-d08cf0f2826f)
+2. **Enable C Shell**: ![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/ed468576-859b-4aec-a9be-1ac7bb2b786a)
+3. **Invoke DC using `dc_shell`**: ![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/e0006db5-dce9-4972-af55-d3affea258f9)
+4. **Read the Design**: ![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/fd189762-574c-42d0-b626-39d98ba2c467)
+   - Note: The register information indicates a 1-bit Flip Flop.
+5. **Read library**: ![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/7bf6ba5d-d903-4ffd-86f2-751fbee19ad3)
+6. **Set target library**: ![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/8d9456a7-e591-4f7a-808e-47ebfc862a6f)
+7. **Set link library**: ![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/3ffff2e4-e67e-45d9-82d3-6e82bdd998be)
+   - Note: Important to specify the library for design. `*` represents already loaded library.
+8. **Check library locations with echo**: ![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/fb84601c-ea20-423d-a05e-538e3e0213ad)
+9. **Compile the design**: ![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/ecfa5ff2-fcab-486f-816d-54320cf55bf4)
+   ![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/1d976cf9-7421-4ea4-b89b-8a49d5ecef6f)
+   ![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/5a2c6fd2-03d3-46a8-82e8-4fcb27105b2e)
+10. **Write verilog**: ![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/cc2249e8-5f39-48e0-bb51-69916001ec0f)
+    - Note: `-f` refers to the format (verilog) of the file to be written.
+11. **View the written netlist**: ![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/66c21a3e-bb64-4e3e-b346-95b9e22b4133)
+    ![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/2487f1dc-b3ff-4064-8040-456244a9beae)
 
-Go to work directory
-
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/05fd724f-6b7a-4b91-a7c9-d08cf0f2826f)
-
-
-**Step 2:**
-
-Enable C Shell
-
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/ed468576-859b-4aec-a9be-1ac7bb2b786a)
-
-
-**Step 3:**
-
-Invoke DC using 'dc_shell'
-
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/e0006db5-dce9-4972-af55-d3affea258f9)
-
-**Step 4:**
-
-Read the Design 
-
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/fd189762-574c-42d0-b626-39d98ba2c467)
-
-Note:
-
-- The register information tells us that the design is a 1-bit Flip Flop
-- 
-**Step 5:**
-
-Read library
-
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/7bf6ba5d-d903-4ffd-86f2-751fbee19ad3)
-
-**Step 6:**
-
-Set target library
-
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/8d9456a7-e591-4f7a-808e-47ebfc862a6f)
-
-
-**Step 7:**
-
-Set link library
-				    
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/3ffff2e4-e67e-45d9-82d3-6e82bdd998be)
-
-
-
-Note: 
-
-- This step is important to specify the said library for our design.
-- '*' represents the library that is already loaded to DC. This is done to avoid overwriting of existing libraries.
-- If the library was read and set after writing the netlist (Step 7), you can use 'link' after to link the library to the design
-  
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/29195e36-ae33-4a27-a6c6-5d81188f5bc0)
-
-
-**Step 8:**
-
-You can use echo to check locations of target library and link library
-
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/fb84601c-ea20-423d-a05e-538e3e0213ad)
-
-
-**Step 9:**
-
-Compile the design
-
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/ecfa5ff2-fcab-486f-816d-54320cf55bf4)
-
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/1d976cf9-7421-4ea4-b89b-8a49d5ecef6f)
-
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/5a2c6fd2-03d3-46a8-82e8-4fcb27105b2e)
-
-
-
-
-**Step 10:**
-
-Write verilog
-
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/cc2249e8-5f39-48e0-bb51-69916001ec0f)
-
-
-Note:
-
-- -f refers to the format(verilog) of the file to be written.
- 
-**Step 11:**
-  
-View the written netlist
-
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/66c21a3e-bb64-4e3e-b346-95b9e22b4133)
-
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/2487f1dc-b3ff-4064-8040-456244a9beae)
-
-
-			    
 ## PART 2: Intro to Design Vision
 
-**Step 1**
-                           
-Write .ddc in dc_shell
+1. **Write .ddc in dc_shell**: ![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/d999cd31-d708-478c-a30a-61cc6ac2dd9d)
+2. **Open new tab and enable C Shell**: ![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/ed468576-859b-4aec-a9be-1ac7bb2b786a)
+3. **Launch Design Compiler in GUI mode**: `design_vision`
+   ![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/c7194e75-d314-4626-8ed2-9a7a52bd6565)
+4. **Read .ddc in Design Vision GUI**: ![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/993077c6-e525-496e-ba38-5e0ce8e7f094)
+5. **Open Schematic View and double-click to view standard cells**: ![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/128e2c23-4b41-44b3-a92d-a3271e1b0d28)
 
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/d999cd31-d708-478c-a30a-61cc6ac2dd9d)
+### Design Compiler Synopsys Setup
 
-**Step 2**
-			    
-Open new tab and enable C Shell
+1. **Open `.synopsys_dc.setup` using gvim**: Write commands to target and link the library.
+   ![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/32977e52-3883-43fa-b7bb-639019991e78)
+2. **Verify by invoking the DC shell and echoing libraries**: ![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/19d5fa37-213a-492f-8f6b-7bb22ea870a6)
 
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/ed468576-859b-4aec-a9be-1ac7bb2b786a)
-
-                          
-**Step 3**
-                         
-Use 'design_vision' to launch gui format of Design Compiler
-
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/c7194e75-d314-4626-8ed2-9a7a52bd6565)
-
-
-**Step 4**
-
-Read ddc in Design Vision GUI
-
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/993077c6-e525-496e-ba38-5e0ce8e7f094)
-
-**Step 5**
-
-Open the Schematic View of the design and double-click on the module to view the standard cells
-				    
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/128e2c23-4b41-44b3-a92d-a3271e1b0d28)
-
-
-**Design Compiler Synopsys Setup**
-
-
-Open the file `.synopsys_dc.setup` using gvim. In this file, we can write commands to target and link the library, ensuring that we don't need to set and link the target library manually every time.
-
-
-
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/32977e52-3883-43fa-b7bb-639019991e78)
-
-
-
-To verify if this works, let's invoke the DC shell and echo our target and link libraries.
-
-
-
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/19d5fa37-213a-492f-8f6b-7bb22ea870a6)
-
-
-
-	
 </details>
  
 <details>
-	<summary> TCL Scripting Lab </summary>
+  <summary>🔧 TCL Scripting Lab</summary>
 
 # TCL Scripting Lab
 
-**Step 1: Basic Commands**
+Welcome to the TCL Scripting Lab! Follow these steps to get started with basic and advanced TCL commands.
 
-Run the following commands to understand how to initialize and view variables
+## Step 1: Basic Commands
 
-'set i 5' For setting a variable i to a value 5 
-'echo $i or puts $i' For checking value of i
-'incr i' For incrementing the value of i
+Initialize and view variables:
 
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/752afc67-4e5f-441e-a52c-b8a11207a042)
+- **Set a Variable:**
+  ```tcl
+  set i 5
+  ```
+- **View Variable:**
+  ```tcl
+  echo $i
+  # or
+  puts $i
+  ```
+- **Increment Variable:**
+  ```tcl
+  incr i
+  ```
 
-               
-**Step 2: Run 'For' Loop**
+![Basic Commands](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/752afc67-4e5f-441e-a52c-b8a11207a042)
 
-                
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/ce149b55-1f4c-4ca5-91d6-810e3a00ee0b)
+## Step 2: Run 'For' Loop
 
+Execute a 'for' loop to iterate over a range of values.
 
-**Step 3: Run 'While' Loop**
+![For Loop](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/ce149b55-1f4c-4ca5-91d6-810e3a00ee0b)
 
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/d6633c9a-cab2-4760-b461-70575cef3605)
+## Step 3: Run 'While' Loop
 
+Use a 'while' loop to execute commands as long as a condition is true.
 
+![While Loop](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/d6633c9a-cab2-4760-b461-70575cef3605)
 
-**Step 4: Creating a list**
+## Step 4: Creating a List
 
-Create a list using set command.
+Create a list using the `set` command.
 
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/ba50215b-7ed6-4dce-891a-c3d547b462e7)
+![Creating a List](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/ba50215b-7ed6-4dce-891a-c3d547b462e7)
 
+## Step 5: Looping through the List
 
-**Step 6: Looping through the list**
+Iterate over the elements of a list.
 
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/1c00b3f9-e4f0-4699-8ffb-2f7baf2b740a)
+![Looping through List](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/1c00b3f9-e4f0-4699-8ffb-2f7baf2b740a)
 
+## Step 6: Looping through a Collection
 
-**Step 7: Looping through a collection**
+View all AND gates in a .db file and instantiate variables.
 
-View all AND gates in .db file
+![Looping through Collection](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/b2c05b88-bbc1-4b95-8cfa-9baf5ab63ca6)
 
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/b2c05b88-bbc1-4b95-8cfa-9baf5ab63ca6)
+> Note: `get_lib_cells`, `get_object_name`, and `foreach_in_collection` are used in Synopsys.
 
+## Step 7: Creating a TCL Script from DC
 
-Instantiate my_var_name as the object name of my_var & print my_var_name
+Launch `gvim` from within DC and edit documents with TCL commands.
 
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/0f26a26f-8be1-42ce-8ca8-43c97ad669ee)
+![Creating TCL Script](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/a4ebd9cd-da52-4d12-aa12-d48658468cbb)
 
+Press `i` to enter 'insert mode' and edit your document. Save the file as `testing.tcl`.
 
-Note: get_lib_cells, get_object_name and fireach_in_collection are only used in Synopsys.
+## Step 8: Executing a TCL Script from DC
 
+Source the saved file to execute it.
 
-**Step 8: Creating a TCL Script from DC**
+![Executing TCL Script](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/5e9b63e8-307d-44a1-be45-cce2e055e30e)
 
-Launch gvim from within DC
+Check the output to ensure all commands in `myscript.tcl` are executed correctly.
 
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/a4ebd9cd-da52-4d12-aa12-d48658468cbb)
+![Output](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/d526ccc5-adbb-4eff-b524-9e4662e4c80b)
 
+</details>
 
-Press i to enter 'insert mode' and edit document with few TCL commands to test
-
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/1e7508ae-5513-4bf4-a000-95a457ee00a9)>
-
-Save file as you would like to, in this case I saved it as testing.tcl
-
-
-**Step 9: Executing a TCL Script from DC**
-
-Source the saved file
-
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/5e9b63e8-307d-44a1-be45-cce2e055e30e)>
-
-View that the output is as expected with all the commands added to myscript.tcl getting executed.
-
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/d526ccc5-adbb-4eff-b524-9e4662e4c80b)
-
-  </details>
 
 

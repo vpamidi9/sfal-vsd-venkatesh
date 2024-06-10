@@ -22,7 +22,7 @@ This is a unique opportunity to transform my passion into expertise and advance 
 ## Day To Day Progress
 
 <details>
-    <summary>🛠️ Day 0 - System Set Up and Tools Installation</summary>
+    <summary>🛠️ System Set Up and Tools Installation</summary>
     
 ## System Set Up and Tools Installation
 
@@ -80,7 +80,7 @@ $sudo apt install gtkwave
 </details>
 
 <details>
-    <summary>🛠️ Day 1 - Introduction to Verilog RTL Design and Synthesis</summary>
+    <summary>🛠️ Introduction to Verilog RTL Design and Synthesis</summary>
 
 ## Introduction to Verilog RTL Design and Synthesis
 
@@ -222,7 +222,7 @@ yosys> show
 </details>
 
 <details>
-	<summary>🛠️Day 2 - Timing libs, Hierarchical vs Flat Synthesis and Efficient Flop Coding Styles </summary>
+	<summary>🛠️ Timing libs, Hierarchical vs Flat Synthesis and Efficient Flop Coding Styles </summary>
 
 ## Timing libs, Hierarchical vs Flat Synthesis and Efficient Flop Coding Styles
 
@@ -397,7 +397,7 @@ Glitches can manifest in digital circuits due to factors like signal propagation
 </details>
 
 <details>
-    <summary>🛠️Day 3- Combinational and Sequential Optimization</summary>
+    <summary>🛠️ Combinational and Sequential Optimization</summary>
     <ul>
         <li>
             <details>
@@ -600,7 +600,7 @@ Glitches can manifest in digital circuits due to factors like signal propagation
 
 
 <details>
-    <summary>🛠️ Day 4 - Gate Level Simulation, Synthesis Simulation Mismatch, and Blocking & Non-Blocking Statements </summary>
+    <summary>🛠️ Gate Level Simulation, Synthesis Simulation Mismatch, and Blocking & Non-Blocking Statements </summary>
     <ul>
         <li>
             <details>
@@ -848,7 +848,7 @@ Observe the behavior of GLS of blocking_caveat due to Simulation Mismatch
 
 
 <details>
-  <summary>🛠️ Day 5 - Design for Testability (DFT)</summary>
+  <summary>🛠️ Design for Testability (DFT)</summary>
  
 # **Design for Testability (DFT)**
 
@@ -950,7 +950,7 @@ For drawing the waveform of a given circuit:
 
 
 <details>
-  <summary>🛠️Day 6 - Introduction to Logic Synthesis</summary>
+  <summary>🛠️ Introduction to Logic Synthesis</summary>
 
 # Introduction to Logic Synthesis
 

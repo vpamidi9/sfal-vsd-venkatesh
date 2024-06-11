@@ -1252,7 +1252,10 @@ A PLL typically consists of the following components:
 
 A PLL may also include a frequency divider in its feedback loop to create an output that is a multiple of the reference frequency instead of one that is exactly equal to it.
 
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/89da8a13-d883-4a9b-b9b0-c3f7230ee252)
+
+
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/78a02602-6eac-4448-941f-598b2c212274)
+
 
 
 ## Why Off-Chip Clocks Can't Be Used All the Time?
@@ -1287,13 +1290,125 @@ A Digital-to-Analog Converter (DAC) converts a digital input signal into an anal
 
 ### Types of DACs
 - **Weighted Resistor DAC**: Uses resistors with weighted values to convert the binary input into an analog output.
+
+  ![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/7969a5fa-6bb4-49c7-ba92-7bd2dc074439)
+  
+  
+
 - **R-2R Ladder DAC**: Utilizes a repetitive structure of resistors with values of R and 2R to achieve the conversion.
 
+  ![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/3b134b8b-dd13-4b1a-b30b-71335d60e010)
+
+
 In our VSDBabySoC design, we are using a 10-bit DAC.
+
+</details>
+
+<details>
+	<summary>VSDBabySoC Modelling</summary>
+
+ # VSDBabySoC Modelling Overview
+
+## What is Modelling?
+
+Modelling and Simulation (M&S) involves the use of physical or logical representations of systems to generate data that informs decisions and predictions. This approach is particularly prevalent in the VLSI domain where it aids in design, analysis, verification, and validation of electronic systems.
+
+## Purpose of Modelling
+
+System models are crafted to:
+- Support the analysis and specification of systems.
+- Aid in system design and architectural planning.
+- Facilitate system verification and validation.
+- Enhance communication related to system details and functionality.
+
+## Modelling the VSDBabySoC
+
+### System Overview
+
+The VSDBabySoC is modeled to integrate and simulate the interactions between various IP cores within a system on a chip (SoC), which includes:
+- **Initial Inputs**: Entry signals fed into the VSDBabySoC module.
+- **Phase-Locked Loop (PLL)**: Responsible for generating the appropriate clock signals for the system operations.
+- **RVMYTH Processor**: Utilizes the clock signals to execute instructions and generate values.
+- **Digital-to-Analog Converter (DAC)**: Converts the digital signals produced by the RVMYTH into analog output signals.
+
+### Components
+1. **RVMYTH**: A digital processing unit modeled using Hardware Description Language (HDL).
+2. **PLL**: An analog component that generates stable clock signals.
+3. **DAC**: An analog component that converts digital signals into analog outputs.
+
+### Challenges in Modelling Mixed Signal Blocks
+
+While digital blocks like RVMYTH can be easily modeled and simulated using HDLs such as Verilog, analog components like DACs and PLLs present a unique challenge as Verilog cannot directly synthesize analog designs. To overcome this, we use `real` data-types in Verilog to simulate analog functionalities and verify their logical correctness.
+
+### Repositories Used as References
+- [RVMYTH Repository](https://github.com/shivanishah269/risc-v-core)
+- [PLL Repository](https://github.com/vsdip/rvmyth_avsdpll_interface)
+- [DAC Repository](https://github.com/vsdip/rvmyth_avsddac_interface)
+
+### Tools and Process for Modelling
+RVMYTH is developed using TL-Verilog. To integrate it into our SoC model, we use tools like SandPiper SaaS to compile and transform TL-Verilog code into standard Verilog.
+
+#### Step-by-Step Installation and Setup
+1. **Install Required Packages**
+   ```bash
+   pip3 install pyyaml click sandpiper-saas
+   ```
+2. **Clone the VSDBabySoC Repository**
+   ```bash
+   git clone https://github.com/manili/VSDBabySoC.git
+    cd VSDBabySoC
+   ```
+
+3. **Compile and Simulate the SoC Design**
+   ```bash
+   sandpiper-saas -i ./src/module/*.tlv -o rvmyth.v --bestsv --noline -p verilog --outdir ./src/module/
+   ```
+   **sandpiper-saas** is used to to translate .tlv (transaction level verilog) files to .v (verilog) files.
+
+   **Navigate to the VSDBabySoC directory and compile the design using Icarus Verilog**
+   
+   ```bash
+   iverilog -o output/pre_synth_sim.out -DPRE_SYNTH_SIM src/module/testbench.v -I src/include -I src/module
+   ```
+
+5. **Run the Simulation**
+   Change to the output directory and execute the simulation to generate the VCD file:
+   ```bash
+   cd output
+   ./pre_synth_sim.out
+   ```
+
+6. **Viewing the Waveform**
+   Open the simulation waveform in GTKWave for analysis:
+   ```bash
+   gtkwave pre_synth_sim.out
+   ```
+<img width="1500" alt="image" src="https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/8a18adc6-70b2-42fc-bc65-8e8f39cf8320">
+
+
+<img width="1500" alt="image" src="https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/04905917-6988-463e-afe8-d5c55592f645">
+
+
+
+
+## Understanding the Simulation Waveform
+
+The simulation waveform provides insights into various signals within the VSDBabySoC module:
+
+- **CLK**: The input clock signal to the RVMYTH core, generated by the PLL.
+- **reset**: An input reset signal to the RVMYTH core, sourced externally.
+- **OUT**: The output signal from the VSDBabySoC module, typically provided by the DAC. Due to simulation constraints, this appears as a digital signal but represents an analog value in a real application.
+- **RV_TO_DAC[9:0]**: A 10-bit output from the RVMYTH core's register #17, representing data sent to the DAC.
+- **OUT (Real Data Type)**: This represents an analog output signal from the DAC, simulated as a real data type in Verilog.
+
+### Key Points
+
+- **Signal Origin**: The CLK and reset signals are crucial for the operational timing and initialization of the RVMYTH core.
+- **Output Analysis**: The OUT signal, as well as RV_TO_DAC, show how digital values are processed and converted into analog outputs within the system, reflecting the functionality of digital-to-analog conversion.
+- **Real Data Type Usage**: This simulation uses Verilog's real data types to mimic the behavior of analog signals, providing a closer approximation to how the system would perform in a real-world scenario.
 
 
 
 
 </details>
-
 

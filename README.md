@@ -1121,5 +1121,179 @@ Check the output to ensure all commands in `myscript.tcl` are executed correctly
 
 </details>
 
+<details>
+	<summary>Introduction to SoC </summary>
+
+ 
+# System on Chip (SoC)
+
+## What is SoC?
+
+A System on Chip (SoC) is an integrated circuit (IC) that consolidates all components of a computer or other electronic systems into a single chip. These components typically include a central processing unit (CPU), memory, input/output ports, and secondary storage – all on a single substrate. SoCs are used in mobile devices, embedded systems, and increasingly in PCs and servers due to their compactness and efficiency.
+
+## Advantages of SoC
+
+1. **Compact Size**: SoCs integrate multiple components into a single chip, significantly reducing the overall size of the system.
+2. **Power Efficiency**: With all components on a single chip, power consumption is reduced due to shorter interconnections and optimized power management.
+3. **Performance**: Integration leads to faster communication between components, enhancing overall system performance.
+4. **Cost-Effective**: Reducing the number of separate components and interconnects can lower manufacturing and assembly costs.
+5. **Reliability**: Fewer components and interconnections mean fewer potential points of failure, increasing system reliability.
+
+## Disadvantages of SoC
+
+1. **Design Complexity**: Integrating multiple components on a single chip increases design complexity, requiring sophisticated tools and methodologies.
+2. **Development Cost**: The initial development and design of SoCs can be costly, involving advanced fabrication processes.
+3. **Limited Flexibility**: Once designed and manufactured, modifying or upgrading an SoC can be challenging compared to discrete component systems.
+4. **Thermal Management**: High integration density can lead to thermal issues, requiring advanced cooling solutions.
+
+## Examples of SoC
+
+1. **Apple A14 Bionic**: Used in iPhones and iPads.
+2. **Qualcomm Snapdragon 888**: Commonly used in high-end Android smartphones.
+3. **NVIDIA Tegra X1**: Used in devices like the Nintendo Switch and various automotive applications.
+4. **Samsung Exynos 2100**: Used in Samsung's Galaxy S21 series.
+5. **Broadcom BCM2837**: Found in the Raspberry Pi 3.
+
+## Popular Applications of SoC
+
+1. **Mobile Devices**: Smartphones, tablets, and smartwatches.
+2. **Embedded Systems**: IoT devices, automotive control systems, and industrial automation.
+3. **Consumer Electronics**: Smart TVs, set-top boxes, and gaming consoles.
+4. **Computing Devices**: Laptops, desktops, and servers.
+5. **Networking Equipment**: Routers, switches, and modems.
+
+## Types of SoC
+
+1. **Application-Specific SoC (ASIC)**: Customized for specific applications like graphics processing or AI acceleration.
+2. **Programmable SoC (PSoC)**: Combines programmable logic with traditional SoC components.
+3. **Standard SoC**: General-purpose SoCs used in a wide range of applications, such as those found in mobile devices.
+
+## SoC Design Flow
+
+1. **Specification and Planning**:
+    - Define the system requirements, including performance, power, area, and functionality.
+    - Choose the target applications and markets.
+
+2. **Architecture Design**:
+    - Develop the overall architecture, including CPU, GPU, memory, and peripherals.
+    - Define the interconnect scheme and data flow.
+
+3. **Component Selection**:
+    - Choose standard IP cores (e.g., processors, memory controllers) or design custom components.
+    - Ensure compatibility and integration capability of all components.
+
+4. **Integration and Verification**:
+    - Integrate the chosen components into a unified design.
+    - Perform extensive verification using simulation, emulation, and formal methods to ensure functionality and performance.
+
+5. **Physical Design**:
+    - Perform synthesis to convert the high-level design into a gate-level netlist.
+    - Conduct floorplanning, placement, and routing to create the physical layout of the chip.
+    - Optimize for power, performance, and area (PPA).
+
+6. **Fabrication and Testing**:
+    - Send the final design to a semiconductor foundry for fabrication.
+    - Perform post-fabrication testing to ensure the chip meets specifications.
+
+7. **Software Development**:
+    - Develop and optimize software to run on the SoC, including drivers, operating systems, and applications.
+    - Ensure seamless integration between hardware and software components.
+  
+      ![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/684603bf-947f-4242-ac51-3f752b4b735f)
+
+
+## SoC Structure
+
+1. **Processing Elements**: CPUs, GPUs, and DSPs that handle computation.
+2. **Memory Components**: SRAM, DRAM, and cache memory for data storage.
+3. **Interconnects**: Buses, crossbars, and networks-on-chip (NoCs) for communication between components.
+4. **Peripherals**: Input/output controllers, timers, and communication interfaces (e.g., USB, Ethernet).
+5. **Power Management**: Circuits to manage power distribution and consumption.
+6. **Security Modules**: Hardware encryption and secure boot capabilities.
+7. **Analog Components**: ADCs, DACs, and other mixed-signal elements.
+
+## Conclusion
+
+System on Chip (SoC) technology offers significant advantages in terms of size, power efficiency, performance, and cost. However, it also presents challenges in design complexity, development cost, flexibility, and thermal management. Effective SoC design requires careful planning, integration, verification, and optimization to meet the desired specifications and achieve market success.
+
+</details>
+
+<details>
+	
+ <summary>Introduction to VSDBabySoC</summary>
+ 
+# VSDBabySoC
+
+## Overview
+
+VSDBabySoC is a compact and robust RISCV-based System on Chip. The primary goal of designing this small SoC is to integrate and test three open-source IP cores together for the first time and to calibrate its analog components. VSDBabySoC includes an RVMYTH microprocessor, an 8x Phase-Locked Loop (PLL) for generating a stable clock, and a 10-bit Digital-to-Analog Converter (DAC) for communication with other analog devices.
+
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/76536a0c-2f25-488f-b73d-30d1210b3476)
+
+## BabySoC Components
+
+### RVMYTH
+- **RVMYTH**: The RVMYTH core is a simple RISC V-based CPU designed for educational purposes and small-scale applications. It provides a practical example of a RISC-V processor implementation.
+
+### PLL
+- **Phase-Locked Loop (PLL)**: A phase-locked loop or PLL is a control system that generates an output signal whose phase is related to the phase of an input signal. PLLs are widely used for synchronization purposes, including clock generation and distribution.
+
+### DAC
+- **Digital-to-Analog Converter (DAC)**: A DAC is a system that converts a digital signal into an analog signal. DACs are widely used in modern communication systems, enabling the generation of digitally-defined transmission signals.
+
+## What is a PLL?
+
+A phase-locked loop (also phase lock loop or PLL) is a system that generates an output signal whose phase is related to its input. The two signals will have the same frequency and either no phase difference or a constant phase difference between them.
+
+A PLL typically consists of the following components:
+- **Phase Detector**: Compares the reference signal with the oscillator frequency and outputs an error signal.
+- **Loop Filter**: Usually a low-pass filter that generates an error voltage from the error signal.
+- **Voltage-Controlled Oscillator (VCO)**: Adjusts the oscillator frequency to lock to the input frequency, producing an output frequency equal to the input frequency with a constant phase shift.
+
+A PLL may also include a frequency divider in its feedback loop to create an output that is a multiple of the reference frequency instead of one that is exactly equal to it.
+
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/89da8a13-d883-4a9b-b9b0-c3f7230ee252)
+
+
+## Why Off-Chip Clocks Can't Be Used All the Time?
+
+Using off-chip clocks for all on-chip operations in VLSI design is often impractical due to several key factors:
+
+### Clock Distribution Delays
+The clock signal needs to be distributed to a multitude of blocks on the chip. If a single off-chip clock source is used, the long wires required for distribution can introduce significant delays.
+
+### Clock Jitter
+Off-chip clocks are more susceptible to clock jitter, which can degrade the performance and reliability of the system.
+
+### Different Frequency Requirements
+Various blocks on the chip may require different clock frequencies. For example, one block might need 200 MHz while another needs 100 MHz. It is challenging to accommodate these varying frequency requirements with a single off-chip clock source.
+
+### Clock Accuracy (ppm)
+Quartz crystals used for clock generation have a specified accuracy in parts per million (ppm). A higher ppm error implies greater deviation from the desired frequency, impacting timing precision in electronic systems.
+
+### Frequency Stability
+Frequency stability denotes the maximum frequency variation over the operating temperature range. Crystals with higher ppm errors may exhibit significant frequency variations with temperature changes, affecting the reliability of timing references, especially in extreme temperature conditions.
+
+### Total Frequency Error
+The total frequency error of a crystal is the sum of errors from frequency tolerance, frequency stability, and aging. A higher ppm error in any of these components can lead to a larger total frequency error, affecting the crystal's overall accuracy in maintaining precise timing references.
+
+## Digital-to-Analog Converter (DAC)
+
+A Digital-to-Analog Converter (DAC) converts a digital input signal into an analog output signal. The digital signal is represented by a binary code, a combination of bits 0 and 1.
+
+### Components of a DAC
+- **Binary Inputs**: The number of binary inputs of a DAC is generally a power of two.
+- **Analog Output**: A single output representing the analog signal.
+
+### Types of DACs
+- **Weighted Resistor DAC**: Uses resistors with weighted values to convert the binary input into an analog output.
+- **R-2R Ladder DAC**: Utilizes a repetitive structure of resistors with values of R and 2R to achieve the conversion.
+
+In our VSDBabySoC design, we are using a 10-bit DAC.
+
+
+
+
+</details>
 
 

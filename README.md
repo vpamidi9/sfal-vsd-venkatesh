@@ -1445,6 +1445,8 @@ The term "gate level" refers to the netlist view of a circuit, typically produce
 
 By conducting both pre-synthesis and post-synthesis simulations, designers can ensure that the VSDBabySoC operates correctly from both a functional and a timing perspective, thus significantly reducing the risk of costly revisions and silicon respins.
 
+---
+
 # Synthesis Process for VSDBabySoC
 
 To synthesize the VSDBabySoC design, we need to convert the standard cell libraries into a `.db` format that can be used by synthesis tools such as Synopsys Design Compiler. Here's how you can accomplish this using the Synopsys Library Compiler (lc_shell):
@@ -1503,7 +1505,7 @@ write_lib sky130_fd_sc_hd__tt_025C_1v80 -format db  -output sky130_fd_sc_hd__tt_
 
 This process will generate a `.db` file, which is a binary format that can be read by Synopsys tools for further synthesis and analysis steps. This file will be essential for the synthesis of the VSDBabySoC, as it contains all necessary information about the standard cells used in the design, including their timing, power, and area characteristics.
 
-
+---
 
 ## Synthesis Commands
 
@@ -1616,6 +1618,7 @@ The purpose of the `compile_ultra` command is to perform a high-effort synthesis
   
 <img width="1324" alt="image" src="https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/3e5de126-f883-431b-8ccd-768c9b03d353">
 
+---
 
 ### Writing Out the Netlist
 
@@ -1653,6 +1656,7 @@ This command is often used in electronic design automation (EDA) tools such as s
 
 <img width="1324" alt="image" src="https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/1f2eb488-b28e-47d9-bbdc-798217f3217b">
 
+---
 
 ## Post-Synthesis Simulation Commands
 
@@ -1701,6 +1705,42 @@ iverilog -DFUNCTIONAL -DUNIT_DELAY=#1 -o ./output/post_synth_sim.out ./src/gls_m
 ### Purpose of the Command
 The purpose of this command is to compile various Verilog source files, including primitives, standard cells, synthesized netlist, specific modules (PLL and DAC), and a testbench, into a single simulation executable. This executable (`post_synth_sim.out`) can then be run to simulate the post-synthesis behavior of the design, including the functionality of the individual modules and the overall system, as described by the testbench. The `-DFUNCTIONAL` and `-DUNIT_DELAY=#1` flags are used to control the simulation mode and timing characteristics.
 
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/0ef482dd-4bbf-439e-916a-009a70f9fe77)
+
+
+From the snippet, it appears we encountered errors during the elaboration phase of our Verilog simulation with Icarus Verilog. The errors indicate that specific ports (`GND`, `VDD`, `VSSA`, and `VDDA`) are not found in the modules `pll` and `dac`:
+
+```
+./output/vsdbabysoc_net.v:5479: error: port `GND` is not a port of pll.
+./output/vsdbabysoc_net.v:5479: error: port `VDD` is not a port of pll.
+./output/vsdbabysoc_net.v:5481: error: port `VSSA` is not a port of dac.
+./output/vsdbabysoc_net.v:5481: error: port `VDDA` is not a port of dac.
+4 error(s) during elaboration.
+```
+
+### Resolution Steps
+
+1. **Verify Module Declarations**:
+   - Ensure that the `pll` and `dac` modules in their respective Verilog files (`avsdpll.v` and `avsddac.v`) have the correct port declarations, including `GND`, `VDD`, `VSSA`, and `VDDA`.
+
+2. **Check Connectivity in Netlist**:
+   - Verify that the synthesized netlist (`vsdbabysoc_net.v`) correctly connects these ports to the `pll` and `dac` modules.
+
+3. **Cross-Check with Library Files**:
+   - Ensure that the ports `GND`, `VDD`, `VSSA`, and `VDDA` are defined in the corresponding library files (`avsdpll.lib` and `avsddac.lib` files) and match those expected by the synthesized netlist.
+
+4. **Modify Verilog Files**:
+   - If the ports are indeed missing, we can add them to the module declarations.
+
+After modifying the Verilog files, we can re-run your simulation command:
+
+```bash
+iverilog -DFUNCTIONAL -DUNIT_DELAY=#1 -o ./output/post_synth_sim.out ./src/gls_model/primitives.v ./src/gls_model/sky130_fd_sc_hd.v ./output/vsdbabysoc_net.v ./src/module/avsdpll.v ./src/module/avsddac.v ./src/module/testbench.v
+```
+
+By ensuring the correct port declarations are present in our Verilog source files, we should resolve the elaboration errors and successfully simulate your design. If the issues persist, double-check the module instantiations in the netlist file and ensure all connections are properly defined.
+
+
 ### Run the Simulation
 
 Navigate to the output directory and run the simulation executable to generate the `dump.vcd` file.
@@ -1718,26 +1758,27 @@ Use GTKWave to visualize the simulation results stored in `dump.vcd`.
 gtkwave dump.vcd
 ```
 
+
 ## Observing the Results
 
-As we can observe in the image below, our post-synthesis (top) and pre-synthesis (bottom) simulation results are the same:
+The images below show that our post-synthesis (top) and pre-synthesis (bottom) simulation results are identical, confirming the functional equivalence of the design before and after synthesis.
 
-**Post-Synthesis:**
+ **Post-Synthesis:**
 
-<img width="1512" alt="image" src="https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/d977ee32-04c1-40af-b8c3-f7711d300a2f">
+![Post-Synthesis Image 1](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/d977ee32-04c1-40af-b8c3-f7711d300a2f)
 
+![Post-Synthesis Image 2](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/9b4efa1a-57c7-49a2-81a0-98c202d275f1)
 
-<img width="1512" alt="image" src="https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/9b4efa1a-57c7-49a2-81a0-98c202d275f1">
+ **Pre-Synthesis:**
 
-**Pre-Synthesis:**
+![Pre-Synthesis Image 1](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/8a18adc6-70b2-42fc-bc65-8e8f39cf8320)
 
-<img width="1500" alt="image" src="https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/8a18adc6-70b2-42fc-bc65-8e8f39cf8320">
-
-
-<img width="1500" alt="image" src="https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/04905917-6988-463e-afe8-d5c55592f645">
-
+![Pre-Synthesis Image 2](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/04905917-6988-463e-afe8-d5c55592f645)
 
 *Post-synthesis simulation waveform (top) and pre-synthesis simulation waveform (bottom).*
+
+---
+
 
 ## Summary
 

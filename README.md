@@ -1504,4 +1504,110 @@ write_lib sky130_fd_sc_hd__tt_025C_1v80 -format db  -output sky130_fd_sc_hd__tt_
 This process will generate a `.db` file, which is a binary format that can be read by Synopsys tools for further synthesis and analysis steps. This file will be essential for the synthesis of the VSDBabySoC, as it contains all necessary information about the standard cells used in the design, including their timing, power, and area characteristics.
 
 
+
+## Synthesis Commands
+
+The following commands are used in the Synopsys Design Compiler environment to prepare and execute the synthesis of the VSDBabySoC design:
+
+### Setting Libraries
+
+- **Target Library**
+  ```bash
+  set target_library "/home/venkatesh/VSDBabySoC/src/lib/sky130_fd_sc_hd__tt_025C_1v80.db"
+  ```
+- **Link Libraries**
+  ```bash
+  set link_library {* /home/venkatesh/VSDBabySoC/src/lib/sky130_fd_sc_hd__tt_025C_1v80.db /home/venkatesh/VSDBabySoC/src/lib/avsdpll.db /home/venkatesh/VSDBabySoC/src/lib/avsddac.db}
+  ```
+
+### Setting Search Path
+
+Specifies where the tool should look for design modules and files.
+
+```bash
+set search_path {/home/venkatesh/VSDBabySoC/src/include /home/venkatesh/VSDBabySoC/src/module}
+```
+
+### Reading Design Files
+
+Loads all relevant design files and sets the top-level design.
+
+```bash
+read_file {sandpiper_gen.vh sandpiper.vh sp_default.vh sp_verilog.vh clk_gate.v rvmyth.v rvmyth_gen.v vsdbabysoc.v} -autoread -top vsdbabysoc
+```
+<img width="1324" alt="image" src="https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/f0f03d16-4837-476d-8af2-3c44c68ce701">
+
+
+
+### Linking and Compilation
+
+- **Linking**
+  ```bash
+  link
+  ```
+
+<img width="1324" alt="image" src="https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/9bdaa4c5-7b16-4c4f-91b9-3b63d473816b">
+
+
+  This command links the design with the libraries and resolves all instantiations.
+
+- **Ultra Compilation**
+  ```bash
+  compile_ultra
+  ```
+  
+<img width="1324" alt="image" src="https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/3e5de126-f883-431b-8ccd-768c9b03d353">
+
+### Writing Out the Netlist
+
+Outputs the synthesized netlist in Verilog format to the specified location.
+
+```bash
+write_file -format verilog -hierarchy -output /home/venkatesh/VSDBabySoC/output/vsdbabysoc_net.v
+```
+<img width="1324" alt="image" src="https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/1f2eb488-b28e-47d9-bbdc-798217f3217b">
+
+
+## Post-Synthesis Simulation Commands
+
+Execute the following commands in the `/VSDBabySoC` directory to perform the post-synthesis simulation:
+
+### Compile the Design
+
+Use `iverilog` to compile the design files, specifying functional and unit delay definitions. This command generates the simulation executable `post_synth_sim.out`.
+
+```bash
+iverilog -DFUNCTIONAL -DUNIT_DELAY=#1 -o ./output/post_synth_sim.out ./src/gls_model/primitives.v ./src/gls_model/sky130_fd_sc_hd.v ./output/vsdbabysoc_net.v ./src/module/avsdpll.v ./src/module/avsddac.v ./src/module/testbench.v
+```
+
+### Run the Simulation
+
+Navigate to the output directory and run the simulation executable to generate the `dump.vcd` file.
+
+```bash
+cd output
+./post_synth_sim.out
+```
+
+### Open the Simulation Waveform
+
+Use GTKWave to visualize the simulation results stored in `dump.vcd`.
+
+```bash
+gtkwave dump.vcd
+```
+
+## Observing the Results
+
+As we can observe in the image below, our post-synthesis (top) and pre-synthesis (bottom) simulation results are the same:
+
+![Simulation Waveform Comparison](path_to_image)
+
+*Post-synthesis simulation waveform (top) and pre-synthesis simulation waveform (bottom).*
+
+## Summary
+
+These steps validate that the post-synthesis behavior of the VSDBabySoC design matches the pre-synthesis expectations, ensuring the correctness of the synthesis process.
+
+
 </details>

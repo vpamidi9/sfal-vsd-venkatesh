@@ -1460,13 +1460,13 @@ cd /home/venkatesh/VSDBabySoC/src/lib
 ### Reading the Library
 Load the library file into the Library Compiler:
 ```bash
-read_lib sky130_fd_sc_hd__tt_025C_1v80.lib
+read_lib avsddac.lib
 ```
 
 ### Writing to `.db` Format
 Convert the library to `.db` format using the `write_lib` command:
 ```bash
-write_lib -format db sky130_fd_sc_hd__tt_025C_1v80 -output sky130_fd_sc_hd__tt_025C_1v80.db
+write_lib -format db avsddac -output avsddac.db
 ```
 
 This process will generate a `.db` file, which is a binary format that can be read by Synopsys tools for further synthesis and analysis steps. This file will be essential for the synthesis of the VSDBabySoC, as it contains all necessary information about the standard cells used in the design, including their timing, power, and area characteristics.

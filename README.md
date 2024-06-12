@@ -1601,7 +1601,20 @@ gtkwave dump.vcd
 
 As we can observe in the image below, our post-synthesis (top) and pre-synthesis (bottom) simulation results are the same:
 
-![Simulation Waveform Comparison](path_to_image)
+**Post-Synthesis:**
+
+<img width="1512" alt="image" src="https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/d977ee32-04c1-40af-b8c3-f7711d300a2f">
+
+
+<img width="1512" alt="image" src="https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/9b4efa1a-57c7-49a2-81a0-98c202d275f1">
+
+**Pre-Synthesis:**
+
+<img width="1500" alt="image" src="https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/8a18adc6-70b2-42fc-bc65-8e8f39cf8320">
+
+
+<img width="1500" alt="image" src="https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/04905917-6988-463e-afe8-d5c55592f645">
+
 
 *Post-synthesis simulation waveform (top) and pre-synthesis simulation waveform (bottom).*
 

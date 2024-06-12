@@ -1408,7 +1408,68 @@ The simulation waveform provides insights into various signals within the VSDBab
 - **Real Data Type Usage**: This simulation uses Verilog's real data types to mimic the behavior of analog signals, providing a closer approximation to how the system would perform in a real-world scenario.
 
 
+</details>
+
+<details>
+	<summary> BabySoC Post-Synthesis Simulation/Gate Level Simulation </summary>
+
+ # VSDBabySoC Simulation Guide
+
+## Importance of Pre-Synthesis and Post-Synthesis Simulation
+
+### Why Pre-Synthesis Simulation?
+
+Pre-synthesis simulation, often referred to as RTL simulation, is crucial for verifying the functional correctness of a design before the synthesis process. This type of simulation:
+
+- **Focuses on Functionality**: It checks the logic functionality according to the design and code written, without the influence of physical constraints and delays.
+- **Verifies Design Intent**: Ensures that the written code behaves as expected in a zero-delay environment, where events typically occur precisely at the active clock edge.
+- **Detects Logical Errors**: Helps identify issues in the design logic before moving on to the more complex stage of synthesis, making debugging simpler and less costly.
+
+### Why Post-Synthesis Simulation?
+
+Post-synthesis simulation, also known as gate-level simulation (GLS), is performed after the synthesis process and includes delays and physical characteristics:
+
+- **Includes Gate Delays**: This simulation incorporates the actual delays of gates and interconnects modeled in the synthesized netlist, providing a more accurate depiction of circuit behavior under real conditions.
+- **Verifies Timing and Functionality**: It helps to detect both functional and timing errors introduced during the synthesis process, such as setup and hold violations.
+- **Confirms Implementation Fidelity**: Ensures that the synthesis process has faithfully translated the RTL design into a gate-level netlist without altering its intended functionality.
+- **Checks for Mismatches**: Identifies mismatches that might occur due to incorrect operator usage or unintended latch inference, which are not apparent in RTL simulation.
+- **Dynamic Behavior Verification**: Gate-level simulation is critical for verifying dynamic behaviors of the circuit, such as clock gating and power-on reset, which cannot be accurately checked using static timing analysis alone.
+
+### GLS: A Brief Introduction
+
+The term "gate level" refers to the netlist view of a circuit, typically produced after logic synthesis. This view includes:
+
+- **Netlist**: A complete connection list consisting of gates and IP models that exhibit both functional and timing behavior.
+- **Simulation Modes**: While GLS can be performed with zero delay, it is commonly executed in unit delay mode or full timing mode to reflect real operational conditions.
+- **Enhanced Confidence**: Performing GLS boosts confidence in the physical implementation of a design, ensuring that it meets all specified operational and performance criteria.
+
+By conducting both pre-synthesis and post-synthesis simulations, designers can ensure that the VSDBabySoC operates correctly from both a functional and a timing perspective, thus significantly reducing the risk of costly revisions and silicon respins.
+
+# Synthesis Process for VSDBabySoC
+
+To synthesize the VSDBabySoC design, we need to convert the standard cell libraries into a `.db` format that can be used by synthesis tools such as Synopsys Design Compiler. Here's how you can accomplish this using the Synopsys Library Compiler (lc_shell):
+
+## Step-by-Step Guide to Convert Libraries to `.db` Format
+
+### Setting Up Your Environment
+Ensure you are in the correct directory where the libraries are stored:
+```bash
+cd /home/venkatesh/VSDBabySoC/src/lib
+```
+
+### Reading the Library
+Load the library file into the Library Compiler:
+```bash
+read_lib sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+
+### Writing to `.db` Format
+Convert the library to `.db` format using the `write_lib` command:
+```bash
+write_lib -format db sky130_fd_sc_hd__tt_025C_1v80 -output sky130_fd_sc_hd__tt_025C_1v80.db
+```
+
+This process will generate a `.db` file, which is a binary format that can be read by Synopsys tools for further synthesis and analysis steps. This file will be essential for the synthesis of the VSDBabySoC, as it contains all necessary information about the standard cells used in the design, including their timing, power, and area characteristics.
 
 
 </details>
-

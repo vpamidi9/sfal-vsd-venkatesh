@@ -1468,6 +1468,38 @@ Convert the library to `.db` format using the `write_lib` command:
 ```bash
 write_lib -format db avsddac -output avsddac.db
 ```
+<img width="1324" alt="image" src="https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/22c23f84-11a2-4ff7-9fba-69566841003f">
+
+
+
+### Reading the Library
+Load the library file into the Library Compiler:
+```bash
+read_lib avsdpll.lib
+```
+
+### Writing to `.db` Format
+Convert the library to `.db` format using the `write_lib` command:
+```bash
+write_lib avsdpll -format db -output avsdpll.db
+```
+<img width="1092" alt="image" src="https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/a60b45f9-e55b-4f87-9483-648ab6a06a91">
+
+
+### Reading the Library
+Load the library file into the Library Compiler:
+```bash
+read_lib sky130_fd_sc_hd__tt_025C_1v80.lib
+```
+
+### Writing to `.db` Format
+Convert the library to `.db` format using the `write_lib` command:
+```bash
+write_lib sky130_fd_sc_hd__tt_025C_1v80 -format db  -output sky130_fd_sc_hd__tt_025C_1v80.db
+```
+
+<img width="1323" alt="image" src="https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/0fac3f1d-1d25-4249-aa09-26d71b3276a7">
+
 
 This process will generate a `.db` file, which is a binary format that can be read by Synopsys tools for further synthesis and analysis steps. This file will be essential for the synthesis of the VSDBabySoC, as it contains all necessary information about the standard cells used in the design, including their timing, power, and area characteristics.
 

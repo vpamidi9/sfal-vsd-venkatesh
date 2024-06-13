@@ -2038,6 +2038,7 @@ echo "All .lib files are converted to .db format and stored in $db_dir."
    ```sh
    lc_shell source convert_libs_to_db.tcl
    ```
+<img width="1023" alt="image" src="https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/a3afce27-f9bf-49d4-a50a-7f55aaf2170f">
 
 ### Conclusion
 

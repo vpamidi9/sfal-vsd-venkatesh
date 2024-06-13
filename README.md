@@ -1784,5 +1784,65 @@ The images below show that our post-synthesis (top) and pre-synthesis (bottom) s
 
 These steps validate that the post-synthesis behavior of the VSDBabySoC design matches the pre-synthesis expectations, ensuring the correctness of the synthesis process.
 
+</details>
 
+
+<details>
+	<summary>Synopsys DC and Timing Analysis</summary>
+
+ # Understanding PVT Corners in Semiconductor Design
+
+## Table of Contents
+1. [Introduction](#introduction)
+2. [What is PVT?](#what-is-pvt)
+3. [PVT Corners](#pvt-corners)
+4. [Why Corners?](#why-corners)
+5. [Conclusion](#conclusion)
+
+## Introduction
+In semiconductor design, ensuring the reliability and performance of integrated circuits (ICs) across various conditions is crucial. This README provides an overview of PVT (Process, Voltage, Temperature) corners, explaining what they are, their importance, and why they are used in design and testing.
+
+## What is PVT?
+PVT stands for Process, Voltage, and Temperature, three critical parameters that influence the behavior and performance of semiconductor devices. 
+
+- **Process**: Refers to variations in the manufacturing process. No two chips are exactly the same due to slight differences in the fabrication process.
+- **Voltage**: Refers to the operating voltage supplied to the device. Variations in supply voltage can affect the performance and power consumption of the IC.
+- **Temperature**: Refers to the operating temperature of the device. Temperature changes can impact the speed, leakage, and overall functionality of the semiconductor.
+
+
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/91e8ccab-56a7-4cd4-9678-96107aada0b8)
+
+
+## PVT Corners
+PVT corners are specific combinations of the extreme values of Process, Voltage, and Temperature used to simulate and test the performance of semiconductor devices under worst-case scenarios. These corners help in predicting the behavior of ICs in real-world conditions.
+
+### Common PVT Corners:
+1. **SS (Slow-Slow)**: Both the NMOS and PMOS transistors are slow. Represents the worst-case scenario for speed.
+2. **FF (Fast-Fast)**: Both the NMOS and PMOS transistors are fast. Represents the best-case scenario for speed.
+3. **TT (Typical-Typical)**: Represents typical or nominal process conditions.
+4. **SF (Slow-Fast)**: NMOS is slow, and PMOS is fast.
+5. **FS (Fast-Slow)**: NMOS is fast, and PMOS is slow.
+
+### Voltage and Temperature Extremes:
+- **Voltage Corners**: Nominal voltage, maximum voltage (e.g., +10% of nominal), and minimum voltage (e.g., -10% of nominal).
+- **Temperature Corners**: Typical operating temperature (e.g., 25°C), high temperature (e.g., 125°C), and low temperature (e.g., -40°C).
+
+By combining these extremes, designers create various PVT corners, such as:
+- **SS, Nominal Voltage, High Temperature**
+- **FF, Max Voltage, Low Temperature**
+- **TT, Min Voltage, Typical Temperature**
+
+## Why Corners?
+PVT corners are essential for several reasons:
+
+1. **Reliability**: Ensures the IC operates correctly under different environmental and manufacturing conditions.
+2. **Performance Verification**: Validates that the IC meets speed, power, and functionality requirements across all conditions.
+3. **Yield Improvement**: Helps in identifying potential failure points, thereby improving the overall yield of the manufacturing process.
+4. **Optimization**: Assists in optimizing the design for power, performance, and area by understanding the limits of the IC's operation.
+
+## Conclusion
+Understanding and testing against PVT corners is a critical aspect of semiconductor design. It ensures that ICs are robust, reliable, and perform as expected in a wide range of conditions. By simulating these worst-case scenarios, designers can mitigate risks and enhance the overall quality and performance of their products.
+
+
+---
 </details>

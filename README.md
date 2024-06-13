@@ -1972,6 +1972,16 @@ wget -P /home/venkatesh/VSDBabySoC/src/timing_libs https://raw.githubusercontent
 
 Use the following TCL script to automate the conversion of `.lib` files to `.db` files. The script reads each `.lib` file from the source directory and writes the corresponding `.db` file to the target directory.
 
+**Syntax to convert .lib to .db for each**
+
+```sh
+cd /home/venkatesh/VSDBabySoC/src/lib_files
+lc_shell
+read_lib sky130_fd_sc_hd__ff_100C_1v65.lib
+write_lib sky130_fd_sc_hd__ff_100C_1v65 -format db -output sky130_fd_sc_hd__ff_100C_1v65.db
+```
+To process multiple `.lib` files manually would be very time-consuming, so I automated the conversion using a TCL script.
+
 #### TCL Script
 
 ```tcl

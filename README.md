@@ -1929,4 +1929,118 @@ By analyzing the performance of a CMOS inverter across various PVT corners, we c
 
 
 ---
+
+# Converting Timing Libraries from .lib to .db
+
+
+## Steps
+
+### 1. Download Timing Libraries
+
+Download the timing libraries from the GitHub repository to the specified path on your local machine.
+
+#### Download Path
+
+`/home/venkatesh/VSDBabySoC/src/lib_files`
+
+#### GitHub Repository
+
+[SkyWater PDK Libraries - SKY130 High Density Standard Cells](https://github.com/efabless/skywater-pdk-libs-sky130_fd_sc_hd/tree/master/timing)
+
+You can download the files manually or use the following command:
+
+```sh
+wget -P /home/venkatesh/VSDBabySoC/src/timing_libs https://raw.githubusercontent.com/efabless/skywater-pdk-libs-sky130_fd_sc_hd/master/timing/sky130_fd_sc_hd__ff_100C_1v65.lib
+wget -P /home/venkatesh/VSDBabySoC/src/timing_libs https://raw.githubusercontent.com/efabless/skywater-pdk-libs-sky130_fd_sc_hd/master/timing/sky130_fd_sc_hd__ff_n40C_1v76.lib
+wget -P /home/venkatesh/VSDBabySoC/src/timing_libs https://raw.githubusercontent.com/efabless/skywater-pdk-libs-sky130_fd_sc_hd/master/timing/sky130_fd_sc_hd__ss_n40C_1v28.lib
+wget -P /home/venkatesh/VSDBabySoC/src/timing_libs https://raw.githubusercontent.com/efabless/skywater-pdk-libs-sky130_fd_sc_hd/master/timing/sky130_fd_sc_hd__ss_n40C_1v60.lib
+wget -P /home/venkatesh/VSDBabySoC/src/timing_libs https://raw.githubusercontent.com/efabless/skywater-pdk-libs-sky130_fd_sc_hd/master/timing/sky130_fd_sc_hd__ff_100C_1v95.lib
+wget -P /home/venkatesh/VSDBabySoC/src/timing_libs https://raw.githubusercontent.com/efabless/skywater-pdk-libs-sky130_fd_sc_hd/master/timing/sky130_fd_sc_hd__ff_n40C_1v95.lib
+wget -P /home/venkatesh/VSDBabySoC/src/timing_libs https://raw.githubusercontent.com/efabless/skywater-pdk-libs-sky130_fd_sc_hd/master/timing/sky130_fd_sc_hd__ss_n40C_1v35.lib
+wget -P /home/venkatesh/VSDBabySoC/src/timing_libs https://raw.githubusercontent.com/efabless/skywater-pdk-libs-sky130_fd_sc_hd/master/timing/sky130_fd_sc_hd__ss_n40C_1v76.lib
+wget -P /home/venkatesh/VSDBabySoC/src/timing_libs https://raw.githubusercontent.com/efabless/skywater-pdk-libs-sky130_fd_sc_hd/master/timing/sky130_fd_sc_hd__ff_n40C_1v56.lib
+wget -P /home/venkatesh/VSDBabySoC/src/timing_libs https://raw.githubusercontent.com/efabless/skywater-pdk-libs-sky130_fd_sc_hd/master/timing/sky130_fd_sc_hd__ss_100C_1v40.lib
+wget -P /home/venkatesh/VSDBabySoC/src/timing_libs https://raw.githubusercontent.com/efabless/skywater-pdk-libs-sky130_fd_sc_hd/master/timing/sky130_fd_sc_hd__ss_n40C_1v40.lib
+wget -P /home/venkatesh/VSDBabySoC/src/timing_libs https://raw.githubusercontent.com/efabless/skywater-pdk-libs-sky130_fd_sc_hd/master/timing/sky130_fd_sc_hd__tt_025C_1v80.lib
+wget -P /home/venkatesh/VSDBabySoC/src/timing_libs https://raw.githubusercontent.com/efabless/skywater-pdk-libs-sky130_fd_sc_hd/master/timing/sky130_fd_sc_hd__ff_n40C_1v65.lib
+wget -P /home/venkatesh/VSDBabySoC/src/timing_libs https://raw.githubusercontent.com/efabless/skywater-pdk-libs-sky130_fd_sc_hd/master/timing/sky130_fd_sc_hd__ss_100C_1v60.lib
+wget -P /home/venkatesh/VSDBabySoC/src/timing_libs https://raw.githubusercontent.com/efabless/skywater-pdk-libs-sky130_fd_sc_hd/master/timing/sky130_fd_sc_hd__ss_n40C_1v44.lib
+wget -P /home/venkatesh/VSDBabySoC/src/timing_libs https://raw.githubusercontent.com/efabless/skywater-pdk-libs-sky130_fd_sc_hd/master/timing/sky130_fd_sc_hd__tt_100C_1v80.lib
+```
+
+### 2. Convert .lib Files to .db Files
+
+Use the following TCL script to automate the conversion of `.lib` files to `.db` files. The script reads each `.lib` file from the source directory and writes the corresponding `.db` file to the target directory.
+
+#### TCL Script
+
+```tcl
+# Base directory where .lib files are located
+set base_dir /home/venkatesh/VSDBabySoC/src/lib_files
+
+# Directory to store the converted .db files
+set db_dir /home/venkatesh/VSDBabySoC/src/db_files # ( Already created a db_files directory)
+
+
+
+# List of .lib files to be converted
+set lib_files {
+    sky130_fd_sc_hd__ff_100C_1v65.lib
+    sky130_fd_sc_hd__ff_n40C_1v76.lib
+    sky130_fd_sc_hd__ss_n40C_1v28.lib
+    sky130_fd_sc_hd__ss_n40C_1v60.lib
+    sky130_fd_sc_hd__ff_100C_1v95.lib
+    sky130_fd_sc_hd__ff_n40C_1v95.lib
+    sky130_fd_sc_hd__ss_n40C_1v35.lib
+    sky130_fd_sc_hd__ss_n40C_1v76.lib
+    sky130_fd_sc_hd__ff_n40C_1v56.lib
+    sky130_fd_sc_hd__ss_100C_1v40.lib
+    sky130_fd_sc_hd__ss_n40C_1v40.lib
+    sky130_fd_sc_hd__tt_025C_1v80.lib
+    sky130_fd_sc_hd__ff_n40C_1v65.lib
+    sky130_fd_sc_hd__ss_100C_1v60.lib
+    sky130_fd_sc_hd__ss_n40C_1v44.lib
+    sky130_fd_sc_hd__tt_100C_1v80.lib
+}
+
+# Loop through each .lib file and convert to .db format
+foreach lib_file $lib_files {
+    # Construct the full path to the .lib file
+    set lib_path $base_dir/$lib_file
+    
+    # Extract the base name (without extension) for output file naming
+    set base_name [file rootname $lib_file]
+    
+    # Read the .lib file
+    read_lib $lib_path
+    
+    # Write the .db file to the db_files directory
+    write_lib $base_name -format db -output "$db_dir/${base_name}.db"
+}
+
+# Print completion message
+echo "All .lib files are converted to .db format and stored in $db_dir."
+```
+
+<img width="1023" alt="image" src="https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/9a4be7d6-fbef-42a4-801b-921eb69007b9">
+
+
+### Instructions to Run the TCL Script
+
+1. **Ensure Directories Exist**:
+   - Verify that the `/home/venkatesh/VSDBabySoC/src/lib_files` directory contains the downloaded `.lib` files.
+   - The script will create the `/home/venkatesh/VSDBabySoC/src/db_files` directory if it does not exist.
+
+2. **Save the Script**:
+   Save the script as `convert_libs_to_db.tcl`.
+
+3. **Execute the Script in LC Shell**:
+   ```sh
+   lc_shell source convert_libs_to_db.tcl
+   ```
+
+### Conclusion
+
+By following these steps, you will download the required timing libraries and convert them from `.lib` to `.db` format using the provided automated TCL script. This process simplifies the handling of timing libraries, ensuring they are ready for use in your design workflows.
+
 </details>

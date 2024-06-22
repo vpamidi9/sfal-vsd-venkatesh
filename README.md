@@ -2052,8 +2052,52 @@ echo "All .lib files are converted to .db format and stored in $db_dir."
 <img width="930" alt="image" src="https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/d42ed010-7250-49ef-81e7-176dc0d6cd42">
 
 
-### Conclusion
+# VSDBabySoC Synthesis Process
 
-By following these steps, you will download the required timing libraries and convert them from `.lib` to `.db` format using the provided automated TCL script. This process simplifies the handling of timing libraries, ensuring they are ready for use in your design workflows.
+## Synthesis Commands
+
+### Step-by-Step Process for ff_100C_1v65
+
+```bash
+set target_library /home/venkatesh/VSDBabySoC/src/db_files/sky130_fd_sc_hd__ff_100C_1v65.db
+set link_library {* /home/venkatesh/VSDBabySoC/src/db_files/sky130_fd_sc_hd__ff_100C_1v65.db  /home/venkatesh/VSDBabySoC/src/lib/avsdpll.db /home/venkatesh/VSDBabySoC/src/lib/avsddac.db}
+set search_path {/home/venkatesh/VSDBabySoC/src/include /home/venkatesh/VSDBabySoC/src/module}
+
+read_file {sandpiper_gen.vh sandpiper.vh sp_default.vh sp_verilog.vh clk_gate.v rvmyth.v rvmyth_gen.v vsdbabysoc.v} -autoread -top vsdbabysoc
+link
+read_sdc /home/venkatesh/VSDBabySoC/src/sdc/vsdbabysoc_synthesis.sdc
+compile_ultra
+write_file -format verilog -hierarchy -output /home/venkatesh/VSDBabySoC/output/vsdbabysoc_net_ff_100C_1v65.v
+report_qor > ../report/timing_report_ff_100C_1v65.txt
+
+get_attribute [get_timing_paths -delay_type max -max_paths 1] slack
+get_attribute [get_timing_paths -delay_type min -max_paths 1] slack
+```
+
+Repeat the above commands for every `.db` file by adjusting the `target_library` and `output` paths accordingly.
+
+## Graphical Representation of WNS and WHS with Respect to PVT Corners
+
+The data is plotted to visualize the Worst Negative Slack (WNS) and Worst Hold Slack (WHS) across different PVT (Process, Voltage, Temperature) corners:
+
+<img width="272" alt="image" src="https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/a4bf9b3d-a7a7-4138-9117-1c963e339e13">
+
+
+### Visualization
+
+The graph below provides a visual comparison of the Worst Negative Slack (WNS) and Worst Hold Slack (WHS) across different PVT conditions:
+
+
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/dba45bc3-7f53-4603-9e62-d84b73e77008)
+
+
+
+
+The plot provides a clear visual comparison of WNS and WHS across different PVT conditions, helping to identify the conditions where timing issues might occur.
+
+
+## Conclusion
+
+By following these steps, you will download the required timing libraries and convert them from `.lib` to `.db` format using the provided automated TCL script. This process simplifies the handling of timing libraries, ensuring they are ready for use in your design workflows. Additionally, performing synthesis and timing analysis using different PVT corners allows for a comprehensive understanding of the design's performance under various conditions. The graphical representation of WNS and WHS aids in identifying potential timing issues and optimizing the design accordingly.
 
 </details>

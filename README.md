@@ -2088,7 +2088,8 @@ The data is plotted to visualize the Worst Negative Slack (WNS) and Worst Hold S
 The graph below provides a visual comparison of the Worst Negative Slack (WNS) and Worst Hold Slack (WHS) across different PVT conditions:
 
 
-![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/dba45bc3-7f53-4603-9e62-d84b73e77008)
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/45da0dc4-53c9-42ed-a679-96e20ba92850)
+
 
 
 

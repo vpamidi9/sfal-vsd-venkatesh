@@ -2102,3 +2102,338 @@ The plot provides a clear visual comparison of WNS and WHS across different PVT 
 By following these steps, you will download the required timing libraries and convert them from `.lib` to `.db` format using the provided automated TCL script. This process simplifies the handling of timing libraries, ensuring they are ready for use in your design workflows. Additionally, performing synthesis and timing analysis using different PVT corners allows for a comprehensive understanding of the design's performance under various conditions. The graphical representation of WNS and WHS aids in identifying potential timing issues and optimizing the design accordingly.
 
 </details>
+
+<details>
+	<summary>VSDBabySoC: Floorplanning and Power Planning</summary>
+	
+ ### Physical Design Flow 
+
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/c0551561-d567-4423-a6e0-3a6f776198ec)
+
+
+
+# Physical Design Flow for VSDBabySoC
+
+Physical Design is the process of translating the gate-level netlist into a physical layout. This layout consists of various metal shapes and sizes that can be drawn onto masks and manufactured on the silicon wafer.
+
+The Physical Design process can be broken down into multiple stages, as illustrated below. It is often an iterative process where a number of optimizations are performed at each step to meet the design performance, area, and power requirements.
+
+## Floorplanning
+
+**Floorplanning** is the first step of physical design. The design is partitioned into various smaller subsystems based on the system architecture and design requirements. Floorplanning determines the aspect ratio and area of the layout. Here we create the placement rows for standard cells and fix the placement of I/Os around the boundary. Any macros in the design are also placed during the floorplan stage.
+
+### Key Aspects of Floorplanning
+- **Inputs**: Gate level netlist (.v), Physical & Logical Libraries (.lefs & .libs), Synopsys design constraints (.sdc), RC Tech File (TLU+ file), Technology File (.tf), Physical Partitioning information, and Floorplanning Parameters.
+- **Outputs**: Die/Core Area, IO Pad Information, Placed Macros Information, Standard Cell Placement Areas, Power Grid Design, and Blockages.
+
+### Types of Floorplan Techniques
+1. **Abutted Floorplan**: Channel-less placement of blocks with no gaps.
+2. **Non-Abutted Floorplan**: Blocks are placed with gaps and connected through routing nets.
+3. **Mix of Both**: Combines abutted and non-abutted techniques.
+
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/76ca6fa7-3a6b-48b1-906e-c6ee8671ab8a)
+
+
+### Floorplan Steps
+1. Define Width and Height
+2. IO Pin Placement
+3. Power Planning
+4. Macro Placement
+5. Standard Cell Row Creation
+6. Blockages Definition
+
+![Floorplanning Image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/a7840b37-9a89-4e92-89d5-71db9e1594b2)
+
+## Logic Placement
+
+**Logic Placement** involves placing all the standard cells in the design at legal locations. After placement, EDA tools perform several optimizations to improve placement and reduce congestion.
+
+### Example
+- **Inputs**: Floorplan outputs, design constraints.
+- **Outputs**: Placed standard cells, optimized layout.
+
+## Clock Tree Synthesis (CTS)
+
+During Floorplanning & placement, the clock is considered an ideal network. **CTS** creates a clock network to distribute the clock signal to all flops, achieving zero/minimum skew.
+
+### Example
+- **Inputs**: Placed standard cells.
+- **Outputs**: Clock tree network, buffers, and inverters.
+
+## Routing
+
+Once standard cells are placed and the clock network is synthesized, all the connecting data nets are laid out on the metal layers. **Routing** involves connecting these nets, followed by optimizations based on design timing requirements.
+
+### Example
+- **Inputs**: Placed standard cells, clock tree network.
+- **Outputs**: Routed nets, optimized design.
+
+## Timing Analysis & Signoff
+
+After routing, **Static Timing Analysis (STA)** is performed. This step breaks down the design into timing paths, calculates signal propagation delays, and checks for timing violations.
+
+### Example
+- **Inputs**: Routed design.
+- **Outputs**: Timing reports, identified violations, optimized design for timing.
+
+## Physical Verification & Signoff
+
+After routing, the layout must be verified to ensure correct electrical and logical functionality. **Physical Verification** includes various checks like DRC, LVS, ERC, and more.
+
+### Example
+- **Inputs**: Final routed design.
+- **Outputs**: Verified design, GDSII/OASIS file for fabrication.
+
+
+## Power Planning
+
+**Power planning** creates a power distribution network (PDN) to provide power to all chip components. It ensures stable voltage, avoids electromigration and self-heating, and meets IR drop targets.
+
+
+### Power Distribution Hierarchy
+1. **Power Pads**: Bring power from outside the chip.
+2. **Power Rings**: Around the core area.
+3. **Power Stripes**: Distribute power across the core.
+4. **Power Rails**: Connect power stripes to standard cells.
+
+### Key Steps in Power Planning
+1. **Calculating power pins required**.
+2. **Determining power rings, stripes, and rails**.
+3. **Sizing power rings and stripes**.
+4. **Analyzing and mitigating IR drop**.
+
+### Lab - Floorplanning of VSDBabySoC
+
+#### Downloading Physical Design Collaterals
+
+Clone the repositories to get the necessary technology and setup files:
+
+```bash
+git clone https://github.com/efabless/skywater-pdk-libs-sky130_fd_sc_hd/tree/master
+git clone https://github.com/bharath19-gs/synopsys_ICC2flow_130nm
+git clone https://github.com/kunalg123/icc2_workshop_collaterals
+```
+
+The Interconnect Technology Format (ITF) file is crucial for physical design. It contains information about conductor and dielectric layers, including:
+- Thickness, minimum width, and minimum spacing of each conductor layer.
+- Sheet resistance (RPSQ) of each conductor layer.
+- Thickness and dielectric constant (ER) of each dielectric layer.
+- Resistivity (RHO) and area (AREA) of each via layer.
+
+To convert the `.itf` file to `.tluplus` format, use the following commands:
+```bash
+cd /home/venkatesh/VSDBabySoC/synopsys_ICC2flow_130nm/synopsys_skywater_flow_nominal/itf_files
+grdgenxo -itf2TLUPlus -i skywater130.nominal.itf -o skywater130.nominal.tluplus
+```
+The `grdgenxo` command is part of the Synopsys tool suite and is specifically used for generating grid data files, such as TLU+ (Table Lookup) files, from Interconnect Technology Format (ITF) files. The command's name likely stands for **Grid Generator Extended Output** or something similar, reflecting its function of generating extended output files that are essential for accurate physical design and analysis in electronic design automation (EDA).
+
+Here’s a detailed explanation of its components and typical usage:
+
+### Components of `grdgenxo`
+
+1. **Grid Generation:**
+   The primary function of `grdgenxo` is to generate grid data that describes the electrical characteristics of the interconnect layers (metal layers and dielectrics) in a semiconductor process.
+
+2. **Input Format - ITF:**
+   The input to `grdgenxo` is usually an ITF (Interconnect Technology Format) file. This file contains detailed descriptions of the metal layers, including thickness, width, spacing, resistance per square (RPSQ), and dielectric properties.
+
+3. **Output Format - TLU+:**
+   The output is typically a TLU+ file, which provides a detailed table lookup for resistance and capacitance values across different conditions. These files are used by place-and-route tools and other EDA software to model the interconnects accurately.
+
+### Typical Usage
+
+- **Conversion Command:**
+  The command to convert an ITF file to a TLU+ file typically looks like this:
+
+  ```bash
+  grdgenxo -itf2TLUPlus -i <input.itf> -o <output.tluplus>
+  ```
+
+  Here, `-itf2TLUPlus` specifies the type of conversion, `-i` specifies the input ITF file, and `-o` specifies the output TLU+ file.
+
+### Example Workflow
+
+1. **Prepare ITF File:**
+   Ensure that the ITF file, which contains the technology-specific parameters for the metal and dielectric layers, is ready. This file should include details such as thickness, minimum width, minimum spacing, resistance per square, and dielectric constants.
+
+2. **Run the Command:**
+   Execute the `grdgenxo` command to generate the TLU+ file.
+
+   ```bash
+   grdgenxo -itf2TLUPlus -i skywater130.nominal.itf -o skywater130.nominal.tluplus
+   ```
+
+3. **Verify Output:**
+   Check the output directory for the generated TLU+ file and verify its contents to ensure it includes the expected resistance and capacitance data.
+
+4. **Integration with EDA Tools:**
+   Use the generated TLU+ file in your physical design flow. Tools like Synopsys ICC2, Cadence Innovus, or others will use this file for accurate modeling of interconnects during placement, routing, and timing analysis.
+
+### Summary
+
+- **grdgenxo**: A command-line utility used for generating grid data files, particularly TLU+ files, from ITF files.
+- **ITF File**: Input file containing detailed descriptions of metal layers and dielectric properties.
+- **TLU+ File**: Output file providing a table lookup for resistance and capacitance values, used by EDA tools for accurate interconnect modeling.
+
+By using `grdgenxo`, designers can ensure that their physical design tools have precise interconnect models, leading to improved performance, reliability, and manufacturability of the integrated circuits.
+
+
+### Synthesis Flow for VSDBabySoC
+
+The synthesis flow converts the high-level RTL design into a gate-level netlist. Below are the steps and commands used for synthesizing the VSDBabySoC design.
+
+1. **Set the Target Library**: Specify the target library that contains the standard cell definitions.
+    ```tcl
+    set target_library /home/venkatesh/VSDBabySoC/src/db_files/sky130_fd_sc_hd__tt_025C_1v80.db
+    ```
+
+2. **Set the Link Library**: Define the libraries needed for linking, including the target library and additional libraries.
+    ```tcl
+    set link_library {* /home/venkatesh/VSDBabySoC/src/db_files/sky130_fd_sc_hd__tt_025C_1v80.db  /home/venkatesh/VSDBabySoC/src/lib/avsdpll.db /home/venkatesh/VSDBabySoC/src/lib/avsddac.db}
+    ```
+
+3. **Set the Search Path**: Define the paths where the synthesis tool should search for include files and modules.
+    ```tcl
+    set search_path {/home/venkatesh/VSDBabySoC/src/include /home/venkatesh/VSDBabySoC/src/module}
+    ```
+
+4. **Read the Design Files**: Read the Verilog files that make up the design.
+    ```tcl
+    read_file {sandpiper_gen.vh sandpiper.vh sp_default.vh sp_verilog.vh clk_gate.v rvmyth.v rvmyth_gen.v vsdbabysoc.v} -autoread -top vsdbabysoc
+    ```
+
+5. **Link the Design**: Link the design to ensure all references are resolved.
+    ```tcl
+    link
+    ```
+
+6. **Read the SDC File**: Read the Synopsys Design Constraints (SDC) file to apply timing constraints.
+    ```tcl
+    read_sdc /home/venkatesh/VSDBabySoC/src/sdc/vsdbabysoc_synthesis.sdc
+    ```
+
+7. **Compile the Design**: Perform the synthesis to generate the gate-level netlist.
+    ```tcl
+    compile_ultra
+    ```
+
+8. **Write the Netlist**: Write the synthesized netlist to a Verilog file.
+    ```tcl
+    write_file -format verilog -hierarchy -output /home/venkatesh/VSDBabySoC/output/vsdbabysoc_net_tt_025C_1v80.v
+    ```
+
+9. **Generate Reports**: Create reports for Quality of Results (QoR), power, and area.
+    ```tcl
+    report_qor > ./report/timing_post_synth.txt
+    report_power > ./report/power_post_synth.rpt
+    report_area > ./report/area_post_synth.rpt
+    ```
+
+10. **Write the Design**: Save the design in DDC format.
+    ```tcl
+    write -f ddc -out /home/venkatesh/VSDBabySoC/output/vsdbabysoc.ddc
+    ```
+
+---
+
+By following these steps, the VSDBabySoC design is synthesized, and various reports are generated to evaluate the quality, power, and area of the synthesized design. This synthesis flow ensures that the design is optimized and ready for further stages in the physical design process.
+
+
+### Schematics VSDBabySoC
+
+
+<img width="1512" alt="image" src="https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/104fba22-e5d2-462e-a609-88314ab362f5">
+
+---
+
+<img width="1512" alt="image" src="https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/637e8b9b-f3e7-4b79-836c-68ab8e4c83e7">
+
+---
+
+<img width="1512" alt="image" src="https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/7a39b122-b320-4292-b7db-506876cee75b">
+
+
+---
+
+<img width="1512" alt="image" src="https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/23cf7a01-34fc-4f6e-9a42-d36e6e07b9db">
+
+---
+
+<img width="1512" alt="image" src="https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/927bfa59-c45f-4c4c-b8d8-af2d4159882a">
+
+---
+
+<img width="1512" alt="image" src="https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/275be4c9-bedb-4ad9-96b7-d308a921e57b">
+
+---
+
+# VSDBabySoC: Physical Design Collaterals and Floorplan Options
+
+
+## Collaterals Setup
+
+The collaterals can be set up in the following files located at `/home/venkatesh/VSDBabySoC/scripts/PD_flow/`:
+
+- `compile_pg_example.tcl`
+- `init_design.mcmm_example.auto_expanded.tcl`
+- `init_design.read_parasitic_tech_example.tcl`
+- `init_design.tech_setup.tcl`
+- `pns_example.tcl`
+- `top.tcl`
+- `write_block_data.tcl`
+
+## Floorplan Options
+
+### Initialize Floorplan
+```tcl
+initialize_floorplan -core_utilization 0.45 -core_offset {5}
+```
+
+### Command Breakdown
+
+- **initialize_floorplan**: This is the main command used to initialize the floorplan of the chip. The floorplan is a layout plan that determines the placement of various components within the chip.
+
+- **-core_utilization 0.45**: This option specifies the core utilization factor, which is the percentage of the core area that will be occupied by the standard cells (logic cells) after placement. In this case, 45% of the core area will be used for placing standard cells, and the remaining 55% will be left as whitespace. This whitespace is used to avoid congestion, facilitate routing, and improve timing.
+
+- **-core_offset {5}**: This option sets the offset or margin around the core area. The core offset is the distance between the boundary of the core area and the boundary of the chip or die. Here, the offset is set to 5 units (the specific unit may depend on the design environment, such as micrometers).
+
+### Summary
+The command `initialize_floorplan -core_utilization 0.45 -core_offset {5}` initializes the floorplan for the chip with the following settings:
+- The core area will have 45% utilization by standard cells.
+- There will be a margin of 5 units around the core area.
+
+### Create Keepout Margin
+```tcl
+create_keepout_margin -type hard -outer {2 2 2 2} [get_cells -physical_context -filter design_type==macro]
+```
+
+
+### Command Breakdown
+
+- **create_keepout_margin**: This is the main command used to create a keepout margin. A keepout margin is a designated area around certain cells where other cells are not allowed to be placed. This helps to avoid congestion and routing issues.
+
+- **-type hard**: This option specifies the type of keepout margin. A hard keepout margin is a strict restriction, meaning no other cells can be placed within this margin under any circumstances.
+
+- **-outer {2 2 2 2}**: This option sets the size of the keepout margin around the cell. The values `{2 2 2 2}` represent the margin size on the left, right, top, and bottom of the cell, respectively. In this case, a margin of 2 units is created on all sides of the cell.
+
+- **[get_cells -physical_context -filter design_type==macro]**: This part of the command specifies the target cells to which the keepout margin will be applied. 
+  - **get_cells**: Retrieves the cells that match the given criteria.
+  - **-physical_context**: Ensures the cells are considered within their physical context in the layout.
+  - **-filter design_type==macro**: Filters the cells to select only those whose design type is `macro`. Macros are large functional blocks such as memory arrays, processors, or other complex units.
+
+### Summary
+The command `create_keepout_margin -type hard -outer {2 2 2 2} [get_cells -physical_context -filter design_type==macro]` creates a hard keepout margin with the following settings:
+- A strict (hard) keepout margin is applied.
+- The margin size is 2 units on each side (left, right, top, and bottom) of the target cells.
+- The target cells are those with the design type `macro`.
+
+This command helps to prevent other cells from being placed too close to the macros, reducing congestion and routing complexity, and ultimately improving the overall quality of the physical design.
+
+---
+
+By following these guidelines, you can ensure that the physical design collaterals and floorplan options for the VSDBabySoC project are properly set up, leading to a more efficient design process and improved outcomes.
+
+</details>
+
+
+

@@ -2372,7 +2372,7 @@ By following these steps, the VSDBabySoC design is synthesized, and various repo
 
 ## Collaterals Setup
 
-The collaterals can be set up in the following files located at `/home/venkatesh/VSDBabySoC/scripts/PD_flow/`:
+The collaterals can be set up in the following files located at `/home/venkatesh/VSDBabySoC/icc2_workshop_collaterals/standaloneFlow/`:
 
 - `compile_pg_example.tcl`
 - `init_design.mcmm_example.auto_expanded.tcl`

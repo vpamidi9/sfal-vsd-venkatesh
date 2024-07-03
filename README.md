@@ -2142,7 +2142,9 @@ The Physical Design process can be broken down into multiple stages, as illustra
 5. Standard Cell Row Creation
 6. Blockages Definition
 
-![Floorplanning Image](https://github.com/Subhasis-Sahu/SFAL-VSD/assets/165357439/a7840b37-9a89-4e92-89d5-71db9e1594b2)
+
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/176980af-1e0b-456a-9827-a689996591b3)
+
 
 ## Logic Placement
 
@@ -2201,6 +2203,9 @@ After routing, the layout must be verified to ensure correct electrical and logi
 2. **Determining power rings, stripes, and rails**.
 3. **Sizing power rings and stripes**.
 4. **Analyzing and mitigating IR drop**.
+
+
+![image](https://github.com/vpamidi9/sfal-vsd-venkatesh/assets/122497575/cd8656e1-97c4-44cb-81ed-375cf3c9a2fa)
 
 ### Lab - Floorplanning of VSDBabySoC
 

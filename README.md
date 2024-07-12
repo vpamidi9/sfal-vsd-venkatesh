@@ -2434,6 +2434,12 @@ The command `create_keepout_margin -type hard -outer {2 2 2 2} [get_cells -physi
 
 This command helps to prevent other cells from being placed too close to the macros, reducing congestion and routing complexity, and ultimately improving the overall quality of the physical design.
 
+
+<img width="1013" alt="image" src="https://github.com/user-attachments/assets/b50af49a-789a-433a-a42b-c96a59e13b57">
+
+
+
+
 ---
 
 By following these guidelines, you can ensure that the physical design collaterals and floorplan options for the VSDBabySoC project are properly set up, leading to a more efficient design process and improved outcomes.

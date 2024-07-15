@@ -2435,6 +2435,14 @@ The command `create_keepout_margin -type hard -outer {2 2 2 2} [get_cells -physi
 This command helps to prevent other cells from being placed too close to the macros, reducing congestion and routing complexity, and ultimately improving the overall quality of the physical design.
 
 
+<img width="926" alt="image" src="https://github.com/user-attachments/assets/ecef5773-19cd-4a42-bebf-addc3bfa0320">
+
+
+<img width="1435" alt="image" src="https://github.com/user-attachments/assets/98e8a8d6-ac75-4350-910d-a192d72eeccf">
+
+
+
+
 <img width="1013" alt="image" src="https://github.com/user-attachments/assets/b50af49a-789a-433a-a42b-c96a59e13b57">
 
 

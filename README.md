@@ -2387,11 +2387,67 @@ The collaterals can be set up in the following files located at `/home/venkatesh
 - `top.tcl`
 - `write_block_data.tcl`
 
+
+
+
+
+### Modifications in `top.tcl`
+
+
+  ![top.tcl - Graphic 1](https://github.com/user-attachments/assets/85ed3e0d-20d7-446b-94f0-a72a5c8175e6)
+
+
+  ![top.tcl - Graphic 2](https://github.com/user-attachments/assets/a3694b0f-1f33-453f-8c19-62125f4b8317)
+
+
+  ![top.tcl - Graphic 3](https://github.com/user-attachments/assets/aebbf70f-3232-4d05-8610-85bd6491af85)
+
+
+  ![top.tcl - Graphic 4](https://github.com/user-attachments/assets/3bc90fa4-63e5-4ca6-bc26-0f376d6022db)
+
+
+  ![top.tcl - Graphic 5](https://github.com/user-attachments/assets/dbf57242-3175-4821-88a6-fe9eb8d23360)
+
+### Modifications in `icc2_common_setup.tcl`
+
+
+  ![icc2_common_setup.tcl - Graphic 1](https://github.com/user-attachments/assets/d3118ca6-3cae-4361-be4c-db841ff51da1)
+
+
+  ![icc2_common_setup.tcl - Graphic 2](https://github.com/user-attachments/assets/6ca6ebb4-9d96-4b15-8cd5-ed734e9b7ec4)
+
+
+  ![icc2_common_setup.tcl - Graphic 3](https://github.com/user-attachments/assets/cb2d6350-d751-4abc-a0e6-0017b5fd521a)
+  ![icc2_common_setup.tcl - Graphic 4](https://github.com/user-attachments/assets/eda22bf1-a1fe-418f-96bc-5ae0e42481a2)
+  ![icc2_common_setup.tcl - Graphic 5](https://github.com/user-attachments/assets/7bf1df9e-f4ce-4ffc-baf7-3624f2ac589a)
+  ![icc2_common_setup.tcl - Graphic 6](https://github.com/user-attachments/assets/ff4fef1d-0c1b-4ad3-9591-ae09a6319cff)
+
+### Changes in `init_design.read_parasitic_tech_example.tcl`
+
+
+  ![init_design.read_parasitic_tech_example.tcl](https://github.com/user-attachments/assets/49f2d88f-29ce-4785-a8fe-d38640a73b16)
+
+### Changes in `init_design.mcmm_example.auto_expanded.tcl`
+
+  ![init_design.mcmm_example.auto_expanded.tcl](https://github.com/user-attachments/assets/e38879d8-5e5a-4e61-9b6b-819b347fc5df)
+
+### Changes to `pns_example.tcl`
+
+  ![pns_example.tcl](https://github.com/user-attachments/assets/73f518e4-a5cd-4d92-a7ac-6f766bdd126e)
+
+### Modifications in `icc2_dp_setup.tcl`
+
+  ![icc2_dp_setup.tcl - Graphic 1](https://github.com/user-attachments/assets/880c597b-1dba-4eea-b564-081c98380330)
+  ![icc2_dp_setup.tcl - Graphic 2](https://github.com/user-attachments/assets/dc902ab1-b86e-4c18-8a47-eddb73c83f13)
+  ![icc2_dp_setup.tcl - Graphic 3](https://github.com/user-attachments/assets/3556831d-add1-4101-be70-287f3a81b283)
+
+
+
 ## Floorplan Options
 
 ### Initialize Floorplan
 ```tcl
-initialize_floorplan -core_utilization 0.45 -core_offset {5}
+initialize_floorplan -core_utilization 0.3 -core_offset {5}
 ```
 
 ### Command Breakdown

@@ -2490,8 +2490,45 @@ The command `create_keepout_margin -type hard -outer {2 2 2 2} [get_cells -physi
 
 This command helps to prevent other cells from being placed too close to the macros, reducing congestion and routing complexity, and ultimately improving the overall quality of the physical design.
 
+# Invoking ICC2 and Performing Floorplan
+
+
+## Steps
+
+1. **Navigate to the Current Directory**
+   - Open a terminal.
+   - Change to the directory where the ICC2 workshop collaterals are located:
+     ```bash
+     cd /home/venkatesh/VSDBabySoC/icc2_workshop_collaterals/standaloneFlow
+     ```
+
+2. **Invoke ICC2 Shell**
+   - Start the ICC2 shell by running the following command in the terminal:
+     ```bash
+     icc2_shell
+     ```
+
+3. **Source the `top.tcl` Script**
+   - Once inside the ICC2 shell, source the `top.tcl` script to begin the floorplanning process:
+     ```tcl
+     source top.tcl
+     ```
+
+## Notes
+
+- Ensure that all required environment variables are set correctly before starting the process.
+- Verify that the `top.tcl` script and all referenced files are present in the specified directory.
+- Review the `top.tcl` script to understand the specific floorplan configurations and constraints being applied.
+
+
+
+<img width="1508" alt="image" src="https://github.com/user-attachments/assets/3a317907-43ff-4750-93b2-8b2d7192663c">
+
+
 
 <img width="926" alt="image" src="https://github.com/user-attachments/assets/ecef5773-19cd-4a42-bebf-addc3bfa0320">
+
+
 
 
 <img width="1435" alt="image" src="https://github.com/user-attachments/assets/98e8a8d6-ac75-4350-910d-a192d72eeccf">

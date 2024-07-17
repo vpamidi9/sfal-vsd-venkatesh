@@ -2441,109 +2441,1135 @@ The collaterals can be set up in the following files located at `/home/venkatesh
   ![icc2_dp_setup.tcl - Graphic 2](https://github.com/user-attachments/assets/dc902ab1-b86e-4c18-8a47-eddb73c83f13)
   ![icc2_dp_setup.tcl - Graphic 3](https://github.com/user-attachments/assets/3556831d-add1-4101-be70-287f3a81b283)
 
+---
+
+# Executing every stage in top.tcl to undertand the flow
+
+<img width="1508" alt="Pasted Graphic" src="https://github.com/user-attachments/assets/7f921565-d224-4f0c-af49-2973bd56682a">
 
 
-## Floorplan Options
+<img width="1508" alt="image" src="https://github.com/user-attachments/assets/0d659339-b093-4583-931e-4f70393f18bd">
 
-### Initialize Floorplan
-```tcl
-initialize_floorplan -core_utilization 0.3 -core_offset {5}
-```
+**Additoionally we can see changes in gui in every stage**
 
-### Command Breakdown
+<img width="1508" alt="image" src="https://github.com/user-attachments/assets/7f2b942f-fc0c-4dcd-b847-7b07ab7b4d3d">
 
-- **initialize_floorplan**: This is the main command used to initialize the floorplan of the chip. The floorplan is a layout plan that determines the placement of various components within the chip.
 
-- **-core_utilization 0.45**: This option specifies the core utilization factor, which is the percentage of the core area that will be occupied by the standard cells (logic cells) after placement. In this case, 45% of the core area will be used for placing standard cells, and the remaining 55% will be left as whitespace. This whitespace is used to avoid congestion, facilitate routing, and improve timing.
+## Explanation of Commands
 
-- **-core_offset {5}**: This option sets the offset or margin around the core area. The core offset is the distance between the boundary of the core area and the boundary of the chip or die. Here, the offset is set to 5 units (the specific unit may depend on the design environment, such as micrometers).
+### Sourcing Setup Scripts
+
+1. **Source `icc2_common_setup.tcl` with Echo**
+   ```tcl
+   source -echo /home/venkatesh/VSDBabySoC/icc2_workshop_collaterals/standaloneFlow/icc2_common_setup.tcl
+   ```
+   - This command sources the `icc2_common_setup.tcl` script with the `-echo` option, which prints each command executed by the script to the terminal. This is useful for debugging and verifying the commands being run.
+
+2. **Source `icc2_dp_setup.tcl` with Echo**
+   ```tcl
+   source -echo /home/venkatesh/VSDBabySoC/icc2_workshop_collaterals/standaloneFlow/icc2_dp_setup.tcl
+   ```
+   - Similar to the previous command, this sources the `icc2_dp_setup.tcl` script with the `-echo` option for transparency and debugging purposes.
+
+### Conditional Deletion of Design Library
+
+3. **Check if the Design Library Exists and Delete It**
+   ```tcl
+   if {[file exists ${WORK_DIR}/$DESIGN_LIBRARY]} {
+      file delete -force ${WORK_DIR}/${DESIGN_LIBRARY}
+   }
+   ```
+   - This conditional block checks if the design library directory exists in the `WORK_DIR`.
+   - If it exists, it forcefully deletes the directory using `file delete -force`. This ensures that any previous design library is removed before creating a new one.
+
+### NDM Library Creation
+
+4. **Create Library Command Setup**
+   ```tcl
+   set create_lib_cmd "create_lib ${WORK_DIR}/$DESIGN_LIBRARY"
+   ```
+   - This sets up the base command for creating the design library. The command `create_lib` is used to create a new library in the specified `WORK_DIR` with the name `DESIGN_LIBRARY`.
+
+5. **Append Technology File or Technology Library**
+   ```tcl
+   if {[file exists [which $TECH_FILE]]} {
+      lappend create_lib_cmd -tech $TECH_FILE ;# recommended
+   } elseif {$TECH_LIB != ""} {
+      lappend create_lib_cmd -use_technology_lib $TECH_LIB ;# optional
+   }
+   ```
+   - This block conditionally appends options to the `create_lib_cmd` based on the existence of the technology file or technology library.
+   - If the `TECH_FILE` exists, it appends `-tech $TECH_FILE` to use the technology file.
+   - If the `TECH_LIB` variable is not empty, it appends `-use_technology_lib $TECH_LIB` to use the specified technology library.
+
+6. **Append Reference Libraries**
+   ```tcl
+   lappend create_lib_cmd -ref_libs $REFERENCE_LIBRARY
+   ```
+   - This appends the `-ref_libs` option with the `REFERENCE_LIBRARY` to the `create_lib_cmd`. The reference library is used as a basis for creating the new library.
+
+7. **Print the Create Library Command**
+   ```tcl
+   puts "RM-info : $create_lib_cmd"
+   ```
+   - This prints the complete `create_lib_cmd` to the terminal for informational and debugging purposes.
+
+8. **Evaluate and Execute the Create Library Command**
+   ```tcl
+   eval ${create_lib_cmd}
+   ```
+   - This executes the `create_lib_cmd` using the `eval` command, which parses and runs the complete command string that has been constructed.
+
+These commands collectively initialize and configure the design environment by sourcing necessary setup scripts, conditionally removing any existing design libraries, and creating a new library with specified technology and reference libraries.
+
+---
+
+<img width="1508" alt="image" src="https://github.com/user-attachments/assets/d215b260-6744-46a1-880c-47e799de4b23">
+
+
+<img width="1508" alt="image" src="https://github.com/user-attachments/assets/6eb8cf0e-56f6-4e18-a931-12dfce6fda77">
+
+
+<img width="1508" alt="image" src="https://github.com/user-attachments/assets/c02d5060-5884-40d8-a7fa-820b73afd0dd">
+
+
+## Explanation of Commands
+
+### Reading Synthesized Verilog
+
+1. **Conditionally Read Verilog Outline or Full Chip Verilog**
+   ```tcl
+   if {$DP_FLOW == "hier" && $BOTTOM_BLOCK_VIEW == "abstract"} {
+      # Read in the DESIGN_NAME outline.  This will create the outline
+      puts "RM-info : Reading verilog outline (${VERILOG_NETLIST_FILES})"
+      read_verilog_outline -design ${DESIGN_NAME}/${INIT_DP_LABEL_NAME} -top ${DESIGN_NAME} ${VERILOG_NETLIST_FILES}
+   } else {
+      # Read in the full DESIGN_NAME.  This will create the DESIGN_NAME view in the database
+      puts "RM-info : Reading full chip verilog (${VERILOG_NETLIST_FILES})"
+      read_verilog -design ${DESIGN_NAME}/${INIT_DP_LABEL_NAME} -top ${DESIGN_NAME} ${VERILOG_NETLIST_FILES}
+   }
+   ```
+   - This block checks if the design planning flow (`DP_FLOW`) is hierarchical (`hier`) and if the bottom block view is abstract (`abstract`).
+   - If true, it reads the Verilog outline using the `read_verilog_outline` command, creating the design outline.
+   - Otherwise, it reads the full chip Verilog using the `read_verilog` command, creating the complete design view in the database.
+   - The `${VERILOG_NETLIST_FILES}` contains the file paths to the synthesized Verilog files, and `${DESIGN_NAME}` and `${INIT_DP_LABEL_NAME}` specify the design and initialization labels.
+
+### Technology Setup for Routing Layer Direction, Offset, Site Default, and Site Symmetry
+
+2. **Set Up Technology Information**
+   ```tcl
+   if {$TECH_FILE != "" || ($TECH_LIB != "" && !$TECH_LIB_INCLUDES_TECH_SETUP_INFO)} {
+      if {[file exists [which $TCL_TECH_SETUP_FILE]]} {
+         puts "RM-info : Sourcing [which $TCL_TECH_SETUP_FILE]"
+         source -echo $TCL_TECH_SETUP_FILE
+      } elseif {$TCL_TECH_SETUP_FILE != ""} {
+         puts "RM-error : TCL_TECH_SETUP_FILE($TCL_TECH_SETUP_FILE) is invalid. Please correct it."
+      }
+   }
+   ```
+   - This block sets up technology information if a technology file (`TECH_FILE`) is specified or if a technology library (`TECH_LIB`) is used but does not include the necessary setup information.
+   - If the `TCL_TECH_SETUP_FILE` exists, it is sourced using the `source -echo` command, and the file's path is printed to the terminal.
+   - If the `TCL_TECH_SETUP_FILE` does not exist or is invalid, an error message is printed.
+
+### Specifying a Tcl Script to Read TLU+ Files
+
+3. **Read Parasitic Technology Setup**
+   ```tcl
+   if {[file exists [which $TCL_PARASITIC_SETUP_FILE]]} {
+      puts "RM-info : Sourcing [which $TCL_PARASITIC_SETUP_FILE]"
+      source -echo $TCL_PARASITIC_SETUP_FILE
+   } elseif ($TCL_PARASITIC_SETUP_FILE != "") {
+      puts "RM-error : TCL_PARASITIC_SETUP_FILE($TCL_PARASITIC_SETUP_FILE) is invalid. Please correct it."
+   } else {
+      puts "RM-info : No TLU plus files sourced, Parasitic library containing TLU+ must be included in library reference list"
+   }
+   ```
+   - This block specifies a Tcl script to read in TLU+ files, which are used for parasitic extraction.
+   - If the `TCL_PARASITIC_SETUP_FILE` exists, it is sourced using the `source -echo` command, and the file's path is printed to the terminal.
+   - If the `TCL_PARASITIC_SETUP_FILE` does not exist or is invalid, an error message is printed.
+   - If no TLU+ files are sourced, a message is printed indicating that a parasitic library containing TLU+ must be included in the library reference list.
+
+These commands collectively handle the reading of synthesized Verilog files, setting up technology information, and sourcing parasitic technology setup scripts, ensuring a complete and accurate design setup for further processing.
+
+---
+
+<img width="1508" alt="image" src="https://github.com/user-attachments/assets/15b0b9f3-1d0f-4241-9788-78fbbfb33f13">
+
+<img width="1512" alt="image" src="https://github.com/user-attachments/assets/9301922e-a9cb-4a43-8e64-d7b563a80247">
+
+
+<img width="1512" alt="image" src="https://github.com/user-attachments/assets/6e7ae189-3472-4813-a4a5-5da4e28edbb4">
+
+
+## Explanation of Commands
+
+### Routing Settings
+
+1. **Set Maximum Routing Layer**
+   ```tcl
+   if {$MAX_ROUTING_LAYER != ""} {
+      set_ignored_layers -max_routing_layer $MAX_ROUTING_LAYER
+   }
+   ```
+   - This command checks if the `MAX_ROUTING_LAYER` variable is set (not an empty string).
+   - If it is set, it specifies the maximum routing layer to be used in the design by calling the `set_ignored_layers` command with the `-max_routing_layer` option.
+
+2. **Set Minimum Routing Layer**
+   ```tcl
+   if {$MIN_ROUTING_LAYER != ""} {
+      set_ignored_layers -min_routing_layer $MIN_ROUTING_LAYER
+   }
+   ```
+   - This command checks if the `MIN_ROUTING_LAYER` variable is set (not an empty string).
+   - If it is set, it specifies the minimum routing layer to be used in the design by calling the `set_ignored_layers` command with the `-min_routing_layer` option.
+
+### Check Design: Pre-Floorplanning
+
+3. **Check Design**
+   ```tcl
+   if {$CHECK_DESIGN} {
+      redirect -file ${REPORTS_DIR_INIT_DP}/check_design.pre_floorplan {
+         check_design -ems_database check_design.pre_floorplan.ems -checks dp_pre_floorplan
+      }
+   }
+   ```
+   - This command block checks if the `CHECK_DESIGN` variable is set to true.
+   - If it is true, it runs the `check_design` command to perform a design check before floorplanning.
+   - The `redirect` command is used to save the output of the `check_design` command to a file located at `${REPORTS_DIR_INIT_DP}/check_design.pre_floorplan`.
+   - The `check_design` command is run with the `-ems_database` option to specify an EMS database file (`check_design.pre_floorplan.ems`) and the `-checks dp_pre_floorplan` option to specify the pre-floorplanning checks.
+
+These commands ensure that the routing layer constraints are set and that the design is checked for issues before proceeding with the floorplanning stage. The checks are redirected to a specified file for review and documentation.
+
+---
+
+<img width="1512" alt="image" src="https://github.com/user-attachments/assets/5b0d5333-dbd9-4f81-a79d-18dc4cde2a6c">
+
+
+<img width="1512" alt="image" src="https://github.com/user-attachments/assets/8b8be95c-7ad8-48d0-aec3-dbc5c89def48">
+
+
+<img width="1403" alt="Pasted Graphic" src="https://github.com/user-attachments/assets/7f0b0c14-e4f1-46ad-a9e3-ac231ff064c0">
+
+
+## Explanation of Commands
+
+### Floorplanning
+
+1. **Initialize Floorplan with Core Utilization and Offset**
+   ```tcl
+   initialize_floorplan -core_utilization 0.3 -core_offset {5}
+   ```
+   - This command initializes the floorplan with a specified core utilization and offset.
+   - `-core_utilization 0.3` sets the core area utilization to 30%.
+   - `-core_offset {5}` sets the offset from the core boundary to 5 units on all sides.
+
+2. **Create Keepout Margin**
+   ```tcl
+   create_keepout_margin -type hard -outer {2 2 2 2} [get_cells -physical_context -filter design_type==macro]
+   ```
+   - This command creates a hard keepout margin around specified cells.
+   - `-type hard` specifies the keepout margin type as hard, meaning no cells can be placed within this margin.
+   - `-outer {2 2 2 2}` sets the outer margins to 2 units on all sides.
+   - `[get_cells -physical_context -filter design_type==macro]` selects cells that are macros to apply the keepout margin around them.
+
+3. **Save Library**
+   ```tcl
+   save_lib -all
+   ```
+   - This command saves all the libraries currently in use.
+   - `-all` specifies that all libraries should be saved.
 
 ### Summary
-The command `initialize_floorplan -core_utilization 0.45 -core_offset {5}` initializes the floorplan for the chip with the following settings:
-- The core area will have 45% utilization by standard cells.
-- There will be a margin of 5 units around the core area.
 
-### Create Keepout Margin
-```tcl
-create_keepout_margin -type hard -outer {2 2 2 2} [get_cells -physical_context -filter design_type==macro]
-```
+These commands are used to set up and initialize the floorplan for the design. The `initialize_floorplan` command sets the core utilization and offset, ensuring that the core area is properly defined. The `create_keepout_margin` command creates a hard keepout margin around macro cells to prevent other cells from being placed too close to them, ensuring proper spacing and avoiding placement issues. Finally, the `save_lib -all` command saves all libraries to preserve the current state of the design and its configurations.
+
+----
+
+<img width="1512" alt="image" src="https://github.com/user-attachments/assets/0320325a-6580-4570-b0fa-70cc17ee7a6e">
+
+<img width="1243" alt="image" src="https://github.com/user-attachments/assets/d08b6218-055f-4e99-805b-a9255af7d06c">
+
+<img width="1512" alt="image" src="https://github.com/user-attachments/assets/c939f257-a855-4f6e-bc86-8b15cd348b0d">
 
 
-### Command Breakdown
 
-- **create_keepout_margin**: This is the main command used to create a keepout margin. A keepout margin is a designated area around certain cells where other cells are not allowed to be placed. This helps to avoid congestion and routing issues.
+## Explanation of Commands
 
-- **-type hard**: This option specifies the type of keepout margin. A hard keepout margin is a strict restriction, meaning no other cells can be placed within this margin under any circumstances.
+### Power and Ground (PG) Pin Connections
 
-- **-outer {2 2 2 2}**: This option sets the size of the keepout margin around the cell. The values `{2 2 2 2}` represent the margin size on the left, right, top, and bottom of the cell, respectively. In this case, a margin of 2 units is created on all sides of the cell.
+1. **Print Information Message**
+   ```tcl
+   puts "RM-info : Running connect_pg_net -automatic on all blocks"
+   ```
+   - This command prints an information message to the terminal, indicating that the `connect_pg_net -automatic` command is being run on all blocks.
+   - `puts` is used to display messages in Tcl.
 
-- **[get_cells -physical_context -filter design_type==macro]**: This part of the command specifies the target cells to which the keepout margin will be applied. 
-  - **get_cells**: Retrieves the cells that match the given criteria.
-  - **-physical_context**: Ensures the cells are considered within their physical context in the layout.
-  - **-filter design_type==macro**: Filters the cells to select only those whose design type is `macro`. Macros are large functional blocks such as memory arrays, processors, or other complex units.
+2. **Connect PG Nets Automatically**
+   ```tcl
+   connect_pg_net -automatic -all_blocks
+   ```
+   - This command connects power and ground (PG) nets automatically for all blocks in the design.
+   - `-automatic` specifies that the connections should be made automatically based on predefined rules.
+   - `-all_blocks` indicates that the command should apply to all blocks in the design.
+
+3. **Save Block with Specific Label**
+   ```tcl
+   save_block -force -label ${PRE_SHAPING_LABEL_NAME}
+   ```
+   - This command saves the current state of the block with a specific label.
+   - `-force` ensures that the block is saved even if there are warnings or if the block already exists.
+   - `-label ${PRE_SHAPING_LABEL_NAME}` assigns the specified label to the saved block, allowing it to be easily identified later.
+
+4. **Save All Libraries**
+   ```tcl
+   save_lib -all
+   ```
+   - This command saves all the libraries currently in use.
+   - `-all` specifies that all libraries should be saved.
 
 ### Summary
-The command `create_keepout_margin -type hard -outer {2 2 2 2} [get_cells -physical_context -filter design_type==macro]` creates a hard keepout margin with the following settings:
-- A strict (hard) keepout margin is applied.
-- The margin size is 2 units on each side (left, right, top, and bottom) of the target cells.
-- The target cells are those with the design type `macro`.
 
-This command helps to prevent other cells from being placed too close to the macros, reducing congestion and routing complexity, and ultimately improving the overall quality of the physical design.
+These commands are used to connect the power and ground (PG) nets for all blocks in the design and to save the current state of the blocks and libraries. The `connect_pg_net -automatic -all_blocks` command ensures that all blocks have their PG nets connected automatically based on predefined rules. The `save_block -force -label ${PRE_SHAPING_LABEL_NAME}` command saves the current state of the block with a specific label, allowing it to be easily referenced later. Finally, the `save_lib -all` command saves all libraries to preserve the current state of the design and its configurations.
 
-# Invoking ICC2 and Performing Floorplan
+---
+
+## Explanation of Verilog Code of SKY130_FD_SC_HD__CONB_1_FUNCTIONAL_V
 
 
-## Steps
-
-1. **Navigate to the Current Directory**
-   - Open a terminal.
-   - Change to the directory where the ICC2 workshop collaterals are located:
-     ```bash
-     cd /home/venkatesh/VSDBabySoC/icc2_workshop_collaterals/standaloneFlow
-     ```
-
-2. **Invoke ICC2 Shell**
-   - Start the ICC2 shell by running the following command in the terminal:
-     ```bash
-     icc2_shell
-     ```
-
-3. **Source the `top.tcl` Script**
-   - Once inside the ICC2 shell, source the `top.tcl` script to begin the floorplanning process:
-     ```tcl
-     source top.tcl
-     ```
-
-## Notes
-
-- Ensure that all required environment variables are set correctly before starting the process.
-- Verify that the `top.tcl` script and all referenced files are present in the specified directory.
-- Review the `top.tcl` script to understand the specific floorplan configurations and constraints being applied.
+<img width="1419" alt="image" src="https://github.com/user-attachments/assets/bb390e04-2771-4116-bf51-85be85b77e90">
 
 
 
-<img width="1508" alt="image" src="https://github.com/user-attachments/assets/3a317907-43ff-4750-93b2-8b2d7192663c">
-
-
-
-<img width="926" alt="image" src="https://github.com/user-attachments/assets/ecef5773-19cd-4a42-bebf-addc3bfa0320">
+<img width="861" alt="image" src="https://github.com/user-attachments/assets/df03ca09-2198-421b-9e8e-00b87a96b2b7">
 
 
 
 
-<img width="1435" alt="image" src="https://github.com/user-attachments/assets/98e8a8d6-ac75-4350-910d-a192d72eeccf">
+### Header and Guard Clauses
+
+1. **Header and Guard Clauses**
+   ```verilog
+   `ifndef SKY130_FD_SC_HD__CONB_1_FUNCTIONAL_V
+   `define SKY130_FD_SC_HD__CONB_1_FUNCTIONAL_V
+   ```
+   - The `ifndef` directive checks if `SKY130_FD_SC_HD__CONB_1_FUNCTIONAL_V` is not defined.
+   - If it is not defined, the `define` directive defines `SKY130_FD_SC_HD__CONB_1_FUNCTIONAL_V`.
+   - This is used to prevent multiple inclusions of the same file, known as an include guard.
+
+### Documentation and Timescale
+
+2. **Documentation and Timescale**
+   ```verilog
+   /**
+    * conb: Constant value, low, high outputs.
+    *
+    * Verilog simulation functional model.
+    */
+
+   `timescale 1ns / 1ps
+   `default_nettype none
+   ```
+   - The comment block describes the module `conb` as having constant value low and high outputs.
+   - `timescale 1ns / 1ps` specifies the time unit and precision for the simulation (1 nanosecond unit and 1 picosecond precision).
+   - `default_nettype none` enforces that all nets must be explicitly declared, helping to avoid implicit net declarations which can lead to errors.
+
+### Module Definition
+
+3. **Module Definition**
+   ```verilog
+   `celldefine
+   module sky130_fd_sc_hd__conb_1 (
+       HI,
+       LO
+   );
+   ```
+   - `celldefine` marks the beginning of a cell definition, useful for CAD tools.
+   - The module `sky130_fd_sc_hd__conb_1` is defined with two output ports: `HI` and `LO`.
+
+### Module Ports and Internal Logic
+
+4. **Module Ports and Internal Logic**
+   ```verilog
+       // Module ports
+       output HI;
+       output LO;
+
+       //       Name       Output
+       pullup   pullup0   (HI    );
+       pulldown pulldown0 (LO    );
+   ```
+   - `output HI;` and `output LO;` declare `HI` and `LO` as output ports.
+   - `pullup pullup0 (HI);` connects a pullup resistor to the `HI` output, ensuring it is constantly driven high.
+   - `pulldown pulldown0 (LO);` connects a pulldown resistor to the `LO` output, ensuring it is constantly driven low.
+
+### End of Module and Guard Clause
+
+5. **End of Module and Guard Clause**
+   ```verilog
+   endmodule
+   `endcelldefine
+
+   `default_nettype wire
+   ```
+   - `endmodule` marks the end of the module definition.
+   - `endcelldefine` marks the end of the cell definition.
+   - `default_nettype wire` resets the default net type to `wire`.
+
+### Include Guard End
+
+6. **Include Guard End**
+   ```verilog
+   `endif // SKY130_FD_SC_HD__CONB_1_FUNCTIONAL_V
+   ```
+   - `endif` marks the end of the include guard, ensuring that the code between `ifndef` and `endif` is only included once.
+
+### Summary
+
+This Verilog code defines a module `sky130_fd_sc_hd__conb_1` with two outputs: `HI` and `LO`. The `HI` output is connected to a pullup resistor, making it constantly high, while the `LO` output is connected to a pulldown resistor, making it constantly low. The code includes guard clauses to prevent multiple inclusions and uses the `celldefine` directive for CAD tool compatibility. The timescale and default nettype are specified to ensure precise simulation behavior and explicit net declarations.
+
+
+Making an output always low or high can be useful in various scenarios within digital design and circuit applications. Here are some reasons why you might want to have an output always low:
+
+### Reasons for an Output Always Low
+
+1. **Default State or Initialization:**
+   - In some designs, certain signals need to be initialized to a known state. Setting an output to always low ensures that the connected components start in a known state, preventing unpredictable behavior at power-up or reset.
+
+2. **Control Signals:**
+   - Constant low signals can be used as control signals to disable or enable certain parts of a circuit. For example, a constant low might be used to keep a specific part of the circuit inactive until another condition is met.
+
+3. **Logic Level Reference:**
+   - Providing a constant low (or ground) signal can be useful as a reference for other components or circuits that need a steady low voltage reference.
+
+4. **Testing and Debugging:**
+   - During the testing phase, it might be necessary to force certain signals to a known state to isolate and debug parts of a circuit. A constant low output can be used to test how the circuit behaves under specific conditions.
+
+5. **Unused Pins:**
+   - Unused inputs on certain chips might need to be tied to a logic low to prevent them from floating, which can cause unpredictable behavior due to noise.
+
+6. **Power Management:**
+   - In power management scenarios, a constant low signal can be used to disable parts of a circuit, reducing power consumption when those parts are not needed.
+
+### Example Use Case
+
+Let's consider a scenario where you might need an output to always be low:
+
+- **Reset Signal:** In many digital circuits, there is a reset signal that needs to be held low to reset the state of various flip-flops and other sequential elements. By providing a constant low signal, you can ensure that all parts of the circuit are properly reset before starting normal operation.
+
+
+### Summary
+
+Having an output always set to low is useful for initializing states, providing control signals, referencing logic levels, and various other scenarios in digital design. It ensures predictable and stable behavior in circuits where a known low state is required.
+
+Choosing whether to keep an output always low or high depends on the specific requirements and context of your design. Both have their uses and advantages. Here's a comparison to help determine which might be best in different scenarios:
+
+### Keeping Output Always Low
+
+#### Advantages:
+1. **Default State Initialization:**
+   - Ensures certain components or signals start in a known low state, which might be required for proper initialization.
+
+2. **Disabling Components:**
+   - Can be used to disable certain parts of the circuit, ensuring they remain inactive until needed.
+
+3. **Power Management:**
+   - Often, keeping certain signals low can reduce power consumption, as some components consume less power in a low state.
+
+4. **Ground Reference:**
+   - Provides a stable ground reference for other parts of the circuit.
+
+#### Use Cases:
+- Reset signals that need to initialize the state of components.
+- Control signals to keep parts of the circuit inactive.
+- Unused inputs that need to be tied low to prevent floating.
+
+### Keeping Output Always High
+
+#### Advantages:
+1. **Enabling Components:**
+   - Can be used to enable certain parts of the circuit, ensuring they remain active or ready to operate.
+
+2. **Default State Initialization:**
+   - Ensures certain components or signals start in a known high state, which might be required for proper initialization.
+
+3. **Voltage Reference:**
+   - Provides a stable high voltage reference for other parts of the circuit.
+
+#### Use Cases:
+- Signals that need to be high to enable certain functionalities.
+- Control signals to keep parts of the circuit active.
+- Initialization signals that need to start in a high state.
+
+### Comparison and Decision Criteria
+
+1. **Component Requirements:**
+   - Some components may require a high or low signal to be in a specific state (enabled, disabled, initialized).
+
+2. **Power Consumption:**
+   - Consider the power implications. Some designs might be more power-efficient with signals set to low, while others might not have a significant difference.
+
+3. **Design Logic:**
+   - Based on the logic design, determine whether the circuit operates correctly and efficiently with a constant high or low signal.
+
+4. **Safety and Stability:**
+   - Evaluate which state (high or low) ensures greater stability and safety for the overall circuit operation.
+
+### Example Scenarios
+
+1. **Reset Signal:**
+   - Typically, reset signals are active low, meaning a low signal resets the circuit. In this case, having an output always low could be useful during initialization but would need to be controllable.
+
+2. **Enable Signal:**
+   - Many enable signals are active high, meaning a high signal enables the circuit. Here, having an output always high might be beneficial for default enable states.
+
+### Conclusion
+
+Neither always low nor always high is inherently better; the choice depends on the specific needs of your circuit and design. Here are some guiding points:
+- **Use always low** if you need to initialize or disable components, provide a ground reference, or manage power efficiently.
+- **Use always high** if you need to enable components, provide a voltage reference, or ensure certain signals start in an active state.
+
+Ultimately, evaluate your specific design requirements and choose the state that best aligns with your circuit's functionality and performance goals.
+
+---
+<img width="1469" alt="image" src="https://github.com/user-attachments/assets/4df029a5-8724-4e32-b066-acd79e1a7c12">
+
+
+<img width="1469" alt="image" src="https://github.com/user-attachments/assets/abf26f1e-8ddf-4063-b90c-e58cb6f694d3">
+
+
+
+<img width="1469" alt="image" src="https://github.com/user-attachments/assets/9415a1dd-1fbf-4abe-94ea-6531e09d04e2">
+
+
+## Explanation of Commands
+
+### Memory Placement
+
+1. **Check for Hard Macros and Report Constraints**
+   ```tcl
+   if [sizeof_collection [get_cells -hier -filter is_hard_macro==true -quiet]] {
+      set all_macros [get_cells -hier -filter is_hard_macro==true]
+      # Check top-level
+      report_macro_constraints -allowed_orientations -preferred_location -alignment_grid -align_pins_to_tracks $all_macros > $REPORTS_DIR_PLACEMENT/report_macro_constraints.rpt
+   }
+   ```
+   - This block checks if there are any hard macros in the design.
+   - `get_cells -hier -filter is_hard_macro==true -quiet` retrieves all hard macros in the hierarchical design. The `sizeof_collection` function returns the number of hard macros found.
+   - If any hard macros are found, the list of all hard macros is stored in the `all_macros` variable.
+   - The `report_macro_constraints` command generates a report for macro constraints, including allowed orientations, preferred locations, alignment grid, and pin alignment to tracks. The report is saved to a file specified by `$REPORTS_DIR_PLACEMENT/report_macro_constraints.rpt`.
+
+2. **Place Macros at User-Defined Locations**
+   ```tcl
+   if {$USE_INCREMENTAL_DATA && [file exists $OUTPUTS_DIR/preferred_macro_locations.tcl]} {
+      source $OUTPUTS_DIR/preferred_macro_locations.tcl
+   }
+   ```
+   - This block checks if the `USE_INCREMENTAL_DATA` variable is true and if the file `preferred_macro_locations.tcl` exists in the `$OUTPUTS_DIR` directory.
+   - If both conditions are met, the `preferred_macro_locations.tcl` file is sourced, applying user-defined macro placement locations.
+
+### Summary
+
+These commands handle the placement of memory and hard macros in the design. The first block checks for the presence of hard macros and generates a report detailing their constraints and preferred locations. The second block applies user-defined macro placements if incremental data is being used and the corresponding Tcl file exists. This approach ensures that macros are placed according to design constraints and user preferences, facilitating efficient and optimal placement in the floorplan.
+
+---
+
+
+<img width="1473" alt="image" src="https://github.com/user-attachments/assets/29c508d7-fd69-4b7f-8a5d-cbc5e001023c">
+
+
+## Explanation of Commands
+
+### Configure Placement
+
+1. **Set HOST_OPTIONS Based on DISTRIBUTED Flag**
+   ```tcl
+   if {$DISTRIBUTED} {
+      set HOST_OPTIONS "-host_options block_script"
+   } else {
+      set HOST_OPTIONS ""
+   }
+   ```
+   - This block checks if the `DISTRIBUTED` variable is set to true.
+   - If `DISTRIBUTED` is true, it sets the `HOST_OPTIONS` variable to `-host_options block_script`.
+   - If `DISTRIBUTED` is false, it sets `HOST_OPTIONS` to an empty string.
+
+2. **Set CMD_OPTIONS with HOST_OPTIONS**
+   ```tcl
+   set CMD_OPTIONS "-floorplan $HOST_OPTIONS"
+   ```
+   - This command sets the `CMD_OPTIONS` variable.
+   - It combines the `-floorplan` option with the value of `HOST_OPTIONS`.
+   - If `HOST_OPTIONS` is set (e.g., `-host_options block_script`), `CMD_OPTIONS` will include this setting.
+   - If `HOST_OPTIONS` is empty, `CMD_OPTIONS` will only include `-floorplan`.
+
+### Summary
+
+These commands configure the placement settings for the design based on whether the `DISTRIBUTED` flag is set. If the design is distributed, it adds specific host options to the command options. Otherwise, it proceeds with default settings. The `CMD_OPTIONS` variable is then constructed to include the necessary options for floorplanning, ensuring that the appropriate configurations are applied based on the `DISTRIBUTED` flag.
+
+---
+
+<img width="1118" alt="image" src="https://github.com/user-attachments/assets/0c1b3c58-19d2-40ae-bd50-dc8f59e0f1d4">
+
+
+<img width="1493" alt="image" src="https://github.com/user-attachments/assets/3bd85bb1-3391-4f9d-abd3-d88ba8e3326f">
+
+
+## Explanation of Commands
+
+### Read Parasitic Files
+
+1. **Check and Source Parasitic Setup File**
+   ```tcl
+   if {[file exists [which $TCL_PARASITIC_SETUP_FILE]]} {
+      puts "RM-info : Sourcing [which $TCL_PARASITIC_SETUP_FILE]"
+      source -echo $TCL_PARASITIC_SETUP_FILE
+   } elseif {$TCL_PARASITIC_SETUP_FILE != ""} {
+      puts "RM-error : TCL_PARASITIC_SETUP_FILE($TCL_PARASITIC_SETUP_FILE) is invalid. Please correct it."
+   } else {
+      puts "RM-info : No TLU plus files sourced, Parasitic library containing TLU+ must be included in library reference list"
+   }
+   ```
+   - This block handles the sourcing of the parasitic setup file for the design.
+   
+2. **File Existence Check and Sourcing**
+   ```tcl
+   if {[file exists [which $TCL_PARASITIC_SETUP_FILE]]} {
+      puts "RM-info : Sourcing [which $TCL_PARASITIC_SETUP_FILE]"
+      source -echo $TCL_PARASITIC_SETUP_FILE
+   }
+   ```
+   - This command checks if the `TCL_PARASITIC_SETUP_FILE` exists using the `file exists` and `which` commands.
+   - If the file exists, it prints an informational message indicating that the file is being sourced.
+   - The `source -echo` command sources the `TCL_PARASITIC_SETUP_FILE`, printing each command executed by the script for debugging purposes.
+
+3. **Invalid File Check**
+   ```tcl
+   elseif {$TCL_PARASITIC_SETUP_FILE != ""} {
+      puts "RM-error : TCL_PARASITIC_SETUP_FILE($TCL_PARASITIC_SETUP_FILE) is invalid. Please correct it."
+   }
+   ```
+   - If the `TCL_PARASITIC_SETUP_FILE` variable is not empty but the file does not exist, it prints an error message indicating that the file is invalid and needs correction.
+
+4. **No File Specified**
+   ```tcl
+   else {
+      puts "RM-info : No TLU plus files sourced, Parasitic library containing TLU+ must be included in library reference list"
+   }
+   ```
+   - If the `TCL_PARASITIC_SETUP_FILE` variable is empty, it prints an informational message indicating that no TLU+ files were sourced and that a parasitic library containing TLU+ must be included in the library reference list.
+
+### Summary
+
+These commands manage the process of reading parasitic setup files for the design. They check if the specified parasitic setup file exists and, if so, source it with detailed output for debugging. If the file is specified but does not exist, an error message is printed. If no file is specified, an informational message is printed, indicating the need for a parasitic library containing TLU+ in the library reference list. This ensures that the design has the necessary parasitic information for accurate timing and signal integrity analysis.
+
+---
+
+<img width="1302" alt="image" src="https://github.com/user-attachments/assets/02fe8b49-4c78-4943-ba3b-e3c3bdac538f">
+
+
+<img width="949" alt="image" src="https://github.com/user-attachments/assets/61c5ca96-a885-4a16-bf3e-d70b36ed1bab">
+
+
+<img width="796" alt="image" src="https://github.com/user-attachments/assets/8061a509-876b-4774-9011-4ae4f38b85df">
+
+
+<img width="1129" alt="Pasted Graphic 1" src="https://github.com/user-attachments/assets/b784de9c-274e-427d-bccc-e57e56c019c3">
+
+
+<img width="1439" alt="Pasted Graphic 2" src="https://github.com/user-attachments/assets/5e4d0805-255e-432d-917d-190dcc049c8f">
+
+
+
+<img width="1439" alt="Pasted Graphic 3" src="https://github.com/user-attachments/assets/20522921-374c-4c5e-9c02-d37ab752402e">
+
+
+<img width="1439" alt="Pasted Graphic 4" src="https://github.com/user-attachments/assets/5d306384-cca2-4b9d-adb5-8bb06e67c430">
 
 
 
 
-<img width="1013" alt="image" src="https://github.com/user-attachments/assets/b50af49a-789a-433a-a42b-c96a59e13b57">
+## Explanation of Commands
+
+### Read Constraints
+
+1. **Check and Source MCMM Setup File**
+   ```tcl
+   if {[file exists $TCL_MCMM_SETUP_FILE]} {
+      puts "RM-info : Loading TCL_MCMM_SETUP_FILE ($TCL_MCMM_SETUP_FILE)"
+      source -echo $TCL_MCMM_SETUP_FILE
+   } else {
+      puts "RM-error : Cannot find TCL_MCMM_SETUP_FILE ($TCL_MCMM_SETUP_FILE)"
+      error
+   }
+   ```
+   - This block handles the loading of the Multi-Corner Multi-Mode (MCMM) setup file for the design.
+   - It checks if the `TCL_MCMM_SETUP_FILE` exists using the `file exists` command.
+   - If the file exists, it prints an informational message and sources the file with `source -echo`.
+   - If the file does not exist, it prints an error message and raises an error to stop script execution.
+
+### Placement Configuration
+
+2. **Set Placement Options**
+   ```tcl
+   set plan.place.auto_generate_blockages true
+   eval create_placement -effort high -timing_driven -congestion -floorplan
+   legalize_placement
+   ```
+   - `set plan.place.auto_generate_blockages true`: Enables automatic generation of blockages during placement.
+   - `eval create_placement -effort high -timing_driven -congestion -floorplan`: Creates the placement with high effort, considering timing, congestion, and the existing floorplan.
+   - `legalize_placement`: Adjusts the placement to ensure legality, resolving any overlaps or other issues.
+
+3. **Report Placement**
+   ```tcl
+   report_placement -physical_hierarchy_violations all -wirelength all -hard_macro_overlap -verbose high > $REPORTS_DIR_PLACEMENT/report_placement.rpt
+   ```
+   - Generates a detailed placement report, including physical hierarchy violations, wirelength, and hard macro overlap.
+   - The report is saved to `$REPORTS_DIR_PLACEMENT/report_placement.rpt`.
+
+### Macro Placement
+
+4. **Write Macro Preferred Locations**
+   ```tcl
+   if [sizeof_collection [get_cells -hier -filter is_hard_macro==true -quiet]] {
+      file delete -force $OUTPUTS_DIR/preferred_macro_locations.tcl
+      set all_macros [get_cells -hier -filter is_hard_macro==true]
+      derive_preferred_macro_locations $all_macros -file $OUTPUTS_DIR/preferred_macro_locations.tcl
+   }
+   ```
+   - Checks if there are any hard macros in the design.
+   - If hard macros are found, it deletes any existing `preferred_macro_locations.tcl` file in the `$OUTPUTS_DIR` directory.
+   - The list of hard macros is stored in the `all_macros` variable.
+   - The `derive_preferred_macro_locations` command generates preferred locations for the hard macros and saves them to `preferred_macro_locations.tcl`.
+
+### Summary
+
+These commands manage the process of reading MCMM constraints, configuring placement, and handling macro placement in the design. They ensure that the necessary constraints for MCMM analysis are loaded, create and legalize the placement with high effort considering timing and congestion, and generate a detailed placement report. Additionally, they manage the preferred locations for hard macros, ensuring optimal placement in subsequent runs. This comprehensive approach ensures accurate and efficient placement in the design flow.
+
+---
 
 
+<img width="776" alt="image" src="https://github.com/user-attachments/assets/6f2a65a7-359e-4abc-a4a6-8af1666bcaa4">
+
+
+<img width="975" alt="image" src="https://github.com/user-attachments/assets/78b0da23-bd7e-4516-9368-46ddaf2d9da1">
+
+
+
+## Explanation of Commands
+
+### Fix All Shaped Blocks and Macros
+
+1. **Check for Hard Macros**
+   ```tcl
+   if [sizeof_collection [get_cells -hier -filter is_hard_macro==true -quiet]] {
+      set_attribute -quiet [get_cells -hier -filter is_hard_macro==true] status fixed
+   }
+   ```
+   - This block checks if there are any hard macros in the design.
+   - `get_cells -hier -filter is_hard_macro==true -quiet` retrieves all hard macros in the hierarchical design.
+   - If hard macros are found, the `set_attribute -quiet [get_cells -hier -filter is_hard_macro==true] status fixed` command sets the `status` attribute of all hard macros to `fixed`.
+   - Setting the `status` to `fixed` ensures that the placement of these hard macros is locked and they will not be moved in subsequent design stages.
+
+2. **Save Block with Specific Label**
+   ```tcl
+   save_block -hier -force -label ${PLACEMENT_LABEL_NAME}
+   ```
+   - This command saves the current state of the hierarchical block with a specific label.
+   - `-force` ensures that the block is saved even if there are warnings or if the block already exists.
+   - `-label ${PLACEMENT_LABEL_NAME}` assigns the specified label to the saved block, allowing it to be easily identified later.
+
+3. **Save All Libraries**
+   ```tcl
+   save_lib -all
+   ```
+   - This command saves all the libraries currently in use.
+   - `-all` specifies that all libraries should be saved.
+
+### Summary
+
+These commands manage the process of fixing the placement of all hard macros and saving the current state of the design. The first block checks for the presence of hard macros and sets their status to `fixed` to lock their placement. The second command saves the hierarchical block with a specific label, ensuring that the current placement is preserved. Finally, the third command saves all libraries to maintain the current state of the design and its configurations. This approach ensures that the placement of critical components is maintained and can be reliably referenced in future design stages.
 
 
 ---
 
-By following these guidelines, you can ensure that the physical design collaterals and floorplan options for the VSDBabySoC project are properly set up, leading to a more efficient design process and improved outcomes.
+<img width="975" alt="image" src="https://github.com/user-attachments/assets/cc3188c2-1b63-45a0-8cc5-30f6f42502de">
+
+
+<img width="975" alt="image" src="https://github.com/user-attachments/assets/67d7e752-7bcc-415f-835a-1a9f752f9fc6">
+
+
+<img width="1438" alt="image" src="https://github.com/user-attachments/assets/d1578f53-1112-4b8e-ac60-c4b3bbb6200c">
+
+
+
+<img width="616" alt="image" src="https://github.com/user-attachments/assets/18eb5d09-ae9f-414b-b99a-dc7ce8ef8efd">
+
+
+## Explanation of Commands
+
+### Create Power
+
+1. **Source PNS File**
+   ```tcl
+   if {[file exists $TCL_PNS_FILE]} {
+      puts "RM-info : Sourcing TCL_PNS_FILE ($TCL_PNS_FILE)"
+      source -echo $TCL_PNS_FILE
+   }
+   ```
+   - This block checks if the `TCL_PNS_FILE` exists.
+   - If it exists, an informational message is printed, and the file is sourced using `source -echo`.
+
+2. **PNS Characterization Flow**
+   ```tcl
+   if {$PNS_CHARACTERIZE_FLOW == "true" && $TCL_COMPILE_PG_FILE != ""} {
+      puts "RM-info : RUNNING PNS CHARACTERIZATION FLOW because \$PNS_CHARACTERIZE_FLOW == true"
+      characterize_block_pg -output block_pg -compile_pg_script $TCL_COMPILE_PG_FILE
+      set_constraint_mapping_file ./block_pg/pg_mapfile
+      if {$DISTRIBUTED} { 
+         set HOST_OPTIONS "-host_options block_script"
+      } else {
+         set HOST_OPTIONS ""
+      }
+      puts "RM-info : Running run_block_compile_pg $HOST_OPTIONS"
+      eval run_block_compile_pg ${HOST_OPTIONS}
+   }
+   ```
+   - If the `PNS_CHARACTERIZE_FLOW` variable is set to "true" and `TCL_COMPILE_PG_FILE` is not empty, the PNS characterization flow is executed.
+   - An informational message is printed, and `characterize_block_pg` is run to output to `block_pg` and compile the PG script specified by `TCL_COMPILE_PG_FILE`.
+   - The constraint mapping file is set to `./block_pg/pg_mapfile`.
+   - The `HOST_OPTIONS` variable is set based on whether the `DISTRIBUTED` variable is true or false.
+   - An informational message is printed, and `run_block_compile_pg` is executed with the specified `HOST_OPTIONS`.
+
+3. **Source Compile PG File**
+   ```tcl
+   } else {
+      if {$TCL_COMPILE_PG_FILE != ""} {
+         source $TCL_COMPILE_PG_FILE
+      } else {
+         puts "RM-info : No Power Networks Implemented as TCL_COMPILE_PG_FILE does not exist"
+      }
+   }
+   ```
+   - If the PNS characterization flow is not executed and `TCL_COMPILE_PG_FILE` is not empty, the `TCL_COMPILE_PG_FILE` is sourced.
+   - If `TCL_COMPILE_PG_FILE` is empty, an informational message is printed, indicating that no power networks are implemented.
+
+4. **Check PG Connectivity and DRC**
+   ```tcl
+   check_pg_connectivity -check_std_cell_pins none
+   check_pg_drc -ignore_std_cells
+   redirect -file $REPORTS_DIR_CREATE_POWER/check_mv_design.erc_mode {check_mv_design -erc_mode}
+   redirect -file $REPORTS_DIR_CREATE_POWER/check_mv_design.power_connectivity {check_mv_design -power_connectivity}
+   ```
+   - `check_pg_connectivity -check_std_cell_pins none`: Checks PG connectivity, ignoring standard cell pins.
+   - `check_pg_drc -ignore_std_cells`: Checks PG DRC, ignoring standard cells.
+   - `redirect -file $REPORTS_DIR_CREATE_POWER/check_mv_design.erc_mode {check_mv_design -erc_mode}`: Redirects the output of `check_mv_design -erc_mode` to the specified report file.
+   - `redirect -file $REPORTS_DIR_CREATE_POWER/check_mv_design.power_connectivity {check_mv_design -power_connectivity}`: Redirects the output of `check_mv_design -power_connectivity` to the specified report file.
+
+5. **Save Block and Libraries**
+   ```tcl
+   save_block -hier -force -label ${CREATE_POWER_LABEL_NAME}
+   save_lib -all
+   ```
+   - `save_block -hier -force -label ${CREATE_POWER_LABEL_NAME}`: Saves the current state of the hierarchical block with a specific label.
+   - `save_lib -all`: Saves all the libraries currently in use.
+
+### Summary
+
+These commands handle the process of creating power networks in the design. They source the necessary PNS file, run the PNS characterization flow if required, and source the compile PG file if it exists. They also check PG connectivity and DRC, generating reports for these checks. Finally, the current state of the hierarchical block and all libraries are saved, ensuring that the power network setup is preserved and can be referenced in future design stages.
+
+---
+
+
+
+<img width="1478" alt="image" src="https://github.com/user-attachments/assets/8dda1222-9bf8-42fe-8f6f-1ba9440f1c54">
+
+
+
+<img width="634" alt="image" src="https://github.com/user-attachments/assets/1aadb405-435b-41be-9122-fb395ce05be6">
+
+
+
+<img width="1001" alt="image" src="https://github.com/user-attachments/assets/873890d0-8f54-41bb-834b-2aa6ca4465c7">
+
+
+
+
+<img width="1216" alt="image" src="https://github.com/user-attachments/assets/8de26d4b-b689-474f-a7cb-f09202248031">
+
+
+
+## Explanation of Commands
+
+### Pin Placement
+
+1. **Source Pin Constraint File**
+   ```tcl
+   if {[file exists [which $TCL_PIN_CONSTRAINT_FILE]] && !$PLACEMENT_PIN_CONSTRAINT_AWARE} {
+      source -echo $TCL_PIN_CONSTRAINT_FILE
+   }
+   ```
+   - This block checks if the `TCL_PIN_CONSTRAINT_FILE` exists and if the `PLACEMENT_PIN_CONSTRAINT_AWARE` variable is not set.
+   - If both conditions are met, the `TCL_PIN_CONSTRAINT_FILE` is sourced using `source -echo`.
+
+2. **Set Application Options**
+   ```tcl
+   set_app_options -as_user_default -list {route.global.timing_driven true}
+   ```
+   - This command sets application options to default to timing-driven global routing.
+
+3. **Pre-Pin Placement Design Check**
+   ```tcl
+   if {$CHECK_DESIGN} {
+      redirect -file ${REPORTS_DIR_PLACE_PINS}/check_design.pre_pin_placement {
+         check_design -ems_database check_design.pre_pin_placement.ems -checks dp_pre_pin_placement
+      }
+   }
+   ```
+   - If `CHECK_DESIGN` is true, this block runs a design check before pin placement.
+   - The results are redirected to `${REPORTS_DIR_PLACE_PINS}/check_design.pre_pin_placement`.
+
+4. **Place Pins**
+   ```tcl
+   if {$PLACE_PINS_SELF} {
+      place_pins -self
+   }
+   ```
+   - If `PLACE_PINS_SELF` is true, this command places the pins using the `-self` option.
+
+5. **Write Pin Constraints and Verify Placement**
+   ```tcl
+   if {$PLACE_PINS_SELF} {
+      # Write top-level port constraint file based on actual port locations in the design for reuse during incremental run.
+      write_pin_constraints -self -file_name $OUTPUTS_DIR/preferred_port_locations.tcl -physical_pin_constraint {side | offset | layer} -from_existing_pins
+
+      # Verify Top-level Port Placement Results
+      check_pin_placement -self -pre_route true -pin_spacing true -sides true -layers true -stacking true
+
+      # Generate Top-level Port Placement Report
+      report_pin_placement -self > $REPORTS_DIR_PLACE_PINS/report_port_placement.rpt
+   }
+   ```
+   - If `PLACE_PINS_SELF` is true, this block writes the pin constraints based on the actual port locations to `preferred_port_locations.tcl`.
+   - It verifies the top-level port placement results, checking pre-route pin spacing, sides, layers, and stacking.
+   - It generates a report for the pin placement results, saved to `${REPORTS_DIR_PLACE_PINS}/report_port_placement.rpt`.
+
+6. **Save Block and Libraries**
+   ```tcl
+   save_block -hier -force -label ${PLACE_PINS_LABEL_NAME}
+   save_lib -all
+   ```
+   - `save_block -hier -force -label ${PLACE_PINS_LABEL_NAME}`: Saves the current state of the hierarchical block with a specific label.
+   - `save_lib -all`: Saves all the libraries currently in use.
+
+### Summary
+
+These commands manage the pin placement process in the design. They source the pin constraint file if it exists, set application options, and run a pre-pin placement design check if required. They place the pins, write the pin constraints for reuse, verify the pin placement, and generate a placement report. Finally, they save the current state of the hierarchical block and all libraries, ensuring that the pin placement configuration is preserved for future design stages.
+
+
+---
+
+
+<img width="1219" alt="image" src="https://github.com/user-attachments/assets/2ba05818-a6a7-4d01-b076-ae29698ba4ab">
+
+
+<img width="1051" alt="image" src="https://github.com/user-attachments/assets/a9d9cdd2-13ab-4de1-8272-d77ee830195d">
+
+
+
+<img width="943" alt="image" src="https://github.com/user-attachments/assets/fa1cd299-9473-4d29-bd01-8bd89089762d">
+
+
+
+<img width="943" alt="image" src="https://github.com/user-attachments/assets/aa227a78-e62f-4eac-9763-99a9933b77d0">
+
+
+**Constraints used** 
+
+<img width="943" alt="image" src="https://github.com/user-attachments/assets/3fa8d97e-76f2-4523-b003-b6794f2b6b7d">
+
+
+**Report_timing**
+
+<img width="943" alt="image" src="https://github.com/user-attachments/assets/c50617ef-75b5-45af-9766-127ed3a9ee84">
+
+**report_constraints -all_violators**
+
+
+<img width="984" alt="image" src="https://github.com/user-attachments/assets/107584d2-3f00-4577-bb60-93edddd73523">
+
+
+<img width="928" alt="image" src="https://github.com/user-attachments/assets/646f2409-237a-4267-aca5-c2a231a9161f">
+
+
+## Explanation of Commands
+
+### Timing Estimation and Reporting
+
+1. **Estimate Timing**
+   ```tcl
+   estimate_timing
+   ```
+   - This command performs a timing estimation for the design.
+
+2. **Redirect Timing Report**
+   ```tcl
+   redirect -file $REPORTS_DIR_TIMING_ESTIMATION/${DESIGN_NAME}.post_estimated_timing.rpt {
+      report_timing -corner estimated_corner -mode [all_modes]
+   }
+   ```
+   - This block redirects the output of the `report_timing` command to a file.
+   - `report_timing -corner estimated_corner -mode [all_modes]` generates a timing report for the estimated corner and all modes.
+   - The report is saved to `$REPORTS_DIR_TIMING_ESTIMATION/${DESIGN_NAME}.post_estimated_timing.rpt`.
+
+3. **Redirect Quality of Results (QoR) Report**
+   ```tcl
+   redirect -file $REPORTS_DIR_TIMING_ESTIMATION/${DESIGN_NAME}.post_estimated_timing.qor {
+      report_qor -corner estimated_corner
+   }
+   ```
+   - This block redirects the output of the `report_qor` command to a file.
+   - `report_qor -corner estimated_corner` generates a QoR report for the estimated corner.
+   - The report is saved to `$REPORTS_DIR_TIMING_ESTIMATION/${DESIGN_NAME}.post_estimated_timing.qor`.
+
+4. **Redirect QoR Summary Report**
+   ```tcl
+   redirect -file $REPORTS_DIR_TIMING_ESTIMATION/${DESIGN_NAME}.post_estimated_timing.qor.sum {
+      report_qor -summary
+   }
+   ```
+   - This block redirects the output of the `report_qor -summary` command to a file.
+   - `report_qor -summary` generates a summary QoR report.
+   - The report is saved to `$REPORTS_DIR_TIMING_ESTIMATION/${DESIGN_NAME}.post_estimated_timing.qor.sum`.
+
+### Save Block and Libraries
+
+5. **Save Block with Specific Label**
+   ```tcl
+   save_block -hier -force -label ${TIMING_ESTIMATION_LABEL_NAME}
+   ```
+   - This command saves the current state of the hierarchical block with a specific label.
+   - `-force` ensures that the block is saved even if there are warnings or if the block already exists.
+   - `-label ${TIMING_ESTIMATION_LABEL_NAME}` assigns the specified label to the saved block, allowing it to be easily identified later.
+
+6. **Save All Libraries**
+   ```tcl
+   save_lib -all
+   ```
+   - This command saves all the libraries currently in use.
+   - `-all` specifies that all libraries should be saved.
+
+### Summary
+
+These commands manage the timing estimation process and generate detailed reports on the design's timing and quality of results (QoR). They estimate the timing, generate and redirect timing and QoR reports to specified files, and save the current state of the hierarchical block and all libraries. This ensures that the timing estimation results and the design configuration are preserved for future reference and analysis.
+
+---
+
+<img width="947" alt="image" src="https://github.com/user-attachments/assets/61e945dd-e7e0-4cbb-b7f7-b0bba0776457">
+
+---
+
+
+<img width="1512" alt="image" src="https://github.com/user-attachments/assets/6f351092-1d28-485d-8d45-88deea9ce26f">
+
+---
+
+<img width="649" alt="image" src="https://github.com/user-attachments/assets/66a56d28-a793-46b3-a045-efac14e604bc">
+
+---
+
+<img width="1433" alt="image" src="https://github.com/user-attachments/assets/cabfeccd-525c-43ff-a455-7251cea2fdbf">
+
+---
+
+<img width="1433" alt="Pasted Graphic 5" src="https://github.com/user-attachments/assets/c2012bc8-6395-45d6-af71-80fb194647a8">
+
+---
+
+<img width="1433" alt="image" src="https://github.com/user-attachments/assets/d26ebea7-3725-4e4e-92ec-864153fb0042">
+
+
+## Explanation of Commands
+
+### Place, Clock Tree Synthesis (CTS), and Route
+
+1. **Set Host Options**
+   ```tcl
+   set_host_options -max_cores 8
+   ```
+   - This command sets the maximum number of cores to be used by the host to 8. This helps in parallelizing the process to utilize available CPU resources efficiently.
+
+2. **Remove Estimated Corner**
+   ```tcl
+   remove_corners [get_corners estimated_corner]
+   ```
+   - This command removes the estimated corner from the design's corners. This is usually done to clean up any temporary or placeholder timing corners used during initial estimations.
+
+3. **Set Application Options**
+   ```tcl
+   set_app_options -name place.coarse.continue_on_missing_scandef -value true
+   ```
+   - This command sets an application option to allow the placement process to continue even if a scan definition file is missing. This can be useful in scenarios where scan chains are not fully defined during initial placement.
+
+4. **Perform Placement Optimization**
+   ```tcl
+   place_opt
+   ```
+   - This command performs placement optimization on the design. It adjusts the positions of standard cells to improve the design's performance and area utilization.
+
+5. **Perform Clock Tree Synthesis (CTS) Optimization**
+   ```tcl
+   clock_opt
+   ```
+   - This command performs clock tree synthesis optimization. It ensures that the clock distribution network is optimized for minimal skew and optimal timing performance.
+
+6. **Perform Routing**
+   ```tcl
+   route_auto -max_detail_route_iterations 5
+   ```
+   - This command performs automatic routing with a maximum of 5 iterations for detailed routing. Routing connects the physical wires between cells, adhering to design rules and optimizing for performance and manufacturability.
+
+7. **Create Standard Cell Fillers**
+   ```tcl
+   set FILLER_CELLS [get_object_name [sort_collection -descending [get_lib_cells sky130_fd_sc_hd__fill*] area]]
+   create_stdcell_fillers -lib_cells $FILLER_CELLS
+   ```
+   - `set FILLER_CELLS [get_object_name [sort_collection -descending [get_lib_cells sky130_fd_sc_hd__fill*] area]]`: This command identifies filler cells from the standard cell library, sorted in descending order by area.
+   - `create_stdcell_fillers -lib_cells $FILLER_CELLS`: This command creates standard cell fillers using the identified filler cells. Filler cells are used to fill gaps between standard cells to ensure manufacturability and to maintain the integrity of the power and ground networks.
+
+### Save Block and Libraries
+
+8. **Save Block with Specific Label**
+   ```tcl
+   save_block -hier -force -label post_route
+   ```
+   - This command saves the current state of the hierarchical block with the label `post_route`.
+   - `-force` ensures that the block is saved even if there are warnings or if the block already exists.
+   - `-label post_route` assigns the label `post_route` to the saved block.
+
+9. **Save All Libraries**
+   ```tcl
+   save_lib -all
+   ```
+   - This command saves all the libraries currently in use.
+   - `-all` specifies that all libraries should be saved.
+
+### Summary
+
+These commands manage the process of placement, clock tree synthesis, and routing for the design. They set the maximum number of cores for parallel processing, remove temporary corners, set application options, and perform placement optimization. They also handle clock tree synthesis and automatic routing, create standard cell fillers, and save the current state of the hierarchical block and all libraries. This ensures that the design is optimized and all steps are properly documented and saved for future reference.
+
+---
+
+### report_timing
+
+<img width="1512" alt="image" src="https://github.com/user-attachments/assets/09153c82-112c-45ab-8e6d-f788d012844e">
+
+---
+
+<img width="1512" alt="image" src="https://github.com/user-attachments/assets/ecfa9dc4-9fde-4a53-ab3f-0eb7544bf908">
+
+
+
+
 
 </details>
 
